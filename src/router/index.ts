@@ -36,7 +36,7 @@ const routerOptions: RouterOptions = {
 
 const router = createRouter(routerOptions)
 
-router.beforeEach((to, _, next) => {
+router.afterEach(async (to, _) => {
   const { layout } = useLayout()
   const { triggerError } = useError()
   if (to.meta.layout && to.meta.layout !== "default") {
@@ -47,7 +47,6 @@ router.beforeEach((to, _, next) => {
   } else if (layout.value === "error") {
     layout.value = "default"
   }
-  next()
 })
 
 export default router

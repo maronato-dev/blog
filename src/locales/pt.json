@@ -1,5 +1,14 @@
 {
   "post-card": {
     "reading-time": "leitura de {time} min"
+  },
+  "postOrPage": {
+    "head": {
+      "title": {
+        "loading": "Carregando... - {blogTitle}",
+        "error": "Erro! - {blogTitle}",
+        "content": "{title} - {blogTitle}"
+      }
+    }
   }
 }

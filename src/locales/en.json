@@ -8,5 +8,14 @@
   },
   "post-card": {
     "reading-time": "{time} min read"
+  },
+  "postOrPage": {
+    "head": {
+      "title": {
+        "loading": "Loading... - {blogTitle}",
+        "error": "Error! - {blogTitle}",
+        "content": "{title} - {blogTitle}"
+      }
+    }
   }
 }

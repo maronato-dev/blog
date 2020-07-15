@@ -13,7 +13,7 @@ import { defineComponent, onMounted, watch } from "vue"
 import { useLocaleSync } from "./hooks/locale"
 import { useTheme } from "./hooks/theme"
 import { useLayoutComponent, useLayout, components } from "./hooks/layout"
-import { useSettings, useSocialMetaTags, useDefaultTitle } from "./hooks/ghost"
+import { useSettings, useSocialMetaTags } from "./hooks/ghost"
 
 export default defineComponent({
   name: "App",
@@ -22,7 +22,6 @@ export default defineComponent({
     useLocaleSync()
     useTheme()
     useSocialMetaTags()
-    useDefaultTitle()
     const { layout } = useLayout()
     const { fetch, settings } = useSettings()
     watch(
@@ -39,6 +38,9 @@ export default defineComponent({
     // Make sure settings are updated on app load
     onMounted(fetch)
     const layoutComponent = useLayoutComponent()
+    watch(layoutComponent, () =>
+      console.log("changing layout to", layoutComponent.value)
+    )
     return { layoutComponent, settings }
   },
 })

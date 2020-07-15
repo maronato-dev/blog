@@ -39,7 +39,7 @@ interface ScriptAttrs {
 interface BodyAttrs {
   class?: string
 }
-type Title = string
+type Title = string | null
 
 type Links = LinkAttrs[]
 type Styles = StyleAttrs[]
@@ -83,6 +83,7 @@ export const useMeta = () => {
 
   const vm = getCurrentInstance()
   if (!vm) throw "useMeta must be called inside setup()"
+  console.log("meta")
 
   let head: Required<Head>
   let nodeset: Ref<Nodeset>
@@ -93,7 +94,7 @@ export const useMeta = () => {
     headRefs = toRefs(head)
   } else {
     head = reactive<Required<Head>>({
-      title: document.title,
+      title: null,
       bodyAttrs: {},
       link: [],
       style: [],
@@ -104,12 +105,13 @@ export const useMeta = () => {
     nodeset = ref<Nodeset>({})
 
     const previousTitle = document.title
-    const parentUpdate = inject(
-      HeadInjectKey,
-      () => (document.title = previousTitle)
-    )
+    const parentUpdate = inject(HeadInjectKey, () => {
+      console.log("resetting title to default")
+      document.title = previousTitle
+    })
 
     const update = () => {
+      console.log(vm, "calling update with head", head)
       removeNodeset(nodeset.value)
       nodeset.value = createNodeset(head)
     }
@@ -117,6 +119,7 @@ export const useMeta = () => {
     provide(HeadInjectKey, update)
 
     const cleanup = () => {
+      console.log(vm, "cleaning up nodeset", nodeset.value)
       removeNodeset(nodeset.value)
       parentUpdate()
     }
@@ -195,6 +198,7 @@ const createNodeset = (head: Head) => {
     } else if (key === "title") {
       const title = value as Nodeset["title"]
       if (title) {
+        console.log("updating title to", title)
         document.title = title
         nodeset.title = title
       }

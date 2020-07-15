@@ -201,6 +201,9 @@ export const useCurrentPageOrPost = (slug: string) => {
   // Reload post when changing locale
   watch(i18n.locale, fetch)
 
+  const contentTitle = computed(() => content.value?.title)
+  useBlogTitle(contentTitle, fetchState)
+
   return { content, fetch, fetchState }
 }
 
@@ -235,11 +238,11 @@ export const useBlogTitle = (
   const title = computed(() => {
     const blogTitle = settings.value?.title || ""
     if (fetchState.pending) {
-      return i18n.t("post.head.title.loading", { blogTitle })
+      return i18n.t("postOrPage.head.title.loading", { blogTitle })
     } else if (fetchState.error) {
-      return i18n.t("post.head.title.error", { blogTitle })
+      return i18n.t("postOrPage.head.title.error", { blogTitle })
     } else {
-      return i18n.t("post.head.title.content", {
+      return i18n.t("postOrPage.head.title.content", {
         title: resolved.value,
         blogTitle,
       })
