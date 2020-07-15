@@ -1,0 +1,12 @@
+{
+  "index": "Index",
+  "layout": {
+    "error": {
+      "500-message": "Oops! Something went wrong!",
+      "404-message": "Page not found!"
+    }
+  },
+  "post-card": {
+    "reading-time": "{time} min read"
+  }
+}

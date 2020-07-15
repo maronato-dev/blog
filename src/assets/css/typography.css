@@ -1,0 +1,23 @@
+.animated-underline {
+  @apply relative opacity-75 transition-opacity duration-500 ease-in-out p-3;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+
+  &:hover,
+  &.active {
+    @apply no-underline opacity-100;
+  }
+  &::before {
+    @apply absolute bg-current opacity-25 transition-all duration-500 ease-in-out;
+    height: 1px;
+    right: 100%;
+    bottom: 8px;
+    left: 12px;
+    content: "";
+  }
+  &:hover::before,
+  &.active::before {
+    @apply opacity-50;
+    right: 12px;
+  }
+}
