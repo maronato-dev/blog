@@ -1,14 +1,28 @@
 <template>
   <div class="flex justify-center items-center pt-20">
-    <loading-spinner />
+    <loading-spinner v-show="show" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, ref } from "vue"
 import LoadingSpinner from "./LoadingSpinner.vue"
+import { useTimeoutFn } from "@vueuse/core"
 
 export default defineComponent({
   components: { LoadingSpinner },
+  props: {
+    delay: {
+      type: Number,
+      default: 200,
+    },
+  },
+  setup(props) {
+    const show = ref(false)
+    useTimeoutFn(() => {
+      show.value = true
+    }, props.delay)
+    return { show }
+  },
 })
 </script>

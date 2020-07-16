@@ -1,11 +1,16 @@
-import { useStorage, usePreferredColorScheme } from "@vueuse/core"
 import { computed, Ref, watchEffect } from "vue"
+import { useStorage, usePreferredColorScheme } from "@vueuse/core"
 import { useMeta } from "./meta"
 
 type ColorOptions = "light" | "dark"
 type StoredTheme = ColorOptions | "system"
 
-const useThemeState = () => {
+function createGlobalState<T>(factory: () => T) {
+  const state = factory()
+  return () => state
+}
+
+const useThemeState = createGlobalState(() => {
   const preference = usePreferredColorScheme()
   const manualValue = useStorage("theme-value", "system") as Ref<StoredTheme>
 
@@ -18,12 +23,13 @@ const useThemeState = () => {
         : preferenceOrDark
     },
     set(value: ColorOptions) {
+      console.log("setting theme to", value)
       manualValue.value = value
     },
   })
 
   return { preference, theme }
-}
+})
 
 export const useTheme = () => {
   const { theme, preference } = useThemeState()
@@ -31,6 +37,7 @@ export const useTheme = () => {
 
   // Update body class
   watchEffect(() => {
+    console.log("updating body class to", theme.value)
     bodyAttrs.value = { class: `${theme.value}-mode` }
   })
 

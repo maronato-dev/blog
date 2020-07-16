@@ -1,3 +1,4 @@
+import { defineAsyncComponent } from "vue"
 import {
   createRouter,
   RouterOptions,
@@ -5,21 +6,60 @@ import {
   RouteRecordRaw,
 } from "vue-router"
 
-import Index from "../views/Index.vue"
-import PageNotFound from "../views/PageNotFound.vue"
-import Preview from "../views/Preview.vue"
-import PostOrPage from "../views/PostOrPage.vue"
 import { useError, useLayout } from "../hooks/layout"
+import LoadingComponent from "../components/ui/LoadingContent.vue"
 
 const routes: RouteRecordRaw[] = [
-  { path: "/", component: Index, name: "home" },
-  { path: "/:slug", component: PostOrPage, props: true, name: "postOrPage" },
-  { path: "/tag/:slug", component: Index, props: true, name: "tag" },
-  { path: "/author/:slug", component: Index, props: true, name: "author" },
-  { path: "/p/:uuid", component: Preview, props: true, name: "preview" },
+  {
+    path: "/",
+    name: "home",
+    component: defineAsyncComponent({
+      loader: () => import("../views/Index.vue"),
+      loadingComponent: LoadingComponent,
+    }),
+  },
+  {
+    path: "/:slug",
+    props: true,
+    name: "postOrPage",
+    component: defineAsyncComponent({
+      loader: () => import("../views/PostOrPage.vue"),
+      loadingComponent: LoadingComponent,
+    }),
+  },
+  {
+    path: "/tag/:slug",
+    props: true,
+    name: "tag",
+    component: defineAsyncComponent({
+      loader: () => import("../views/Index.vue"),
+      loadingComponent: LoadingComponent,
+    }),
+  },
+  {
+    path: "/author/:slug",
+    props: true,
+    name: "author",
+    component: defineAsyncComponent({
+      loader: () => import("../views/Index.vue"),
+      loadingComponent: LoadingComponent,
+    }),
+  },
+  {
+    path: "/p/:uuid",
+    props: true,
+    name: "preview",
+    component: defineAsyncComponent({
+      loader: () => import("../views/Preview.vue"),
+      loadingComponent: LoadingComponent,
+    }),
+  },
   {
     path: "/:catchAll(.*)",
-    component: PageNotFound,
+    component: defineAsyncComponent({
+      loader: () => import("../views/PageNotFound.vue"),
+      loadingComponent: LoadingComponent,
+    }),
     name: "notFound",
     meta: {
       layout: "error",

@@ -203,6 +203,7 @@ export const useCurrentPageOrPost = (slug: string) => {
 
   const contentTitle = computed(() => content.value?.title)
   useBlogTitle(contentTitle, fetchState)
+  useSocialMetaTags(content)
 
   return { content, fetch, fetchState }
 }

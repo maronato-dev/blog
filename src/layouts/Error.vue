@@ -1,23 +1,34 @@
 <template>
-  <div>Error {{ code }}</div>
-  <div>{{ message }}</div>
-  <router-link to="/">Go back</router-link>
+  <div class="wrapper">
+    <div class="flex-grow">
+      <nav-bar />
+      <div class="mt-20">
+        <div>Error {{ code }}</div>
+        <div>{{ message }}</div>
+        <router-link to="/">Go back</router-link>
+      </div>
+    </div>
+    <blog-footer />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch } from "vue"
+import { defineComponent, computed } from "vue"
+import NavBar from "../components/layout/Navbar.vue"
+import BlogFooter from "../components/layout/BlogFooter.vue"
 import { useI18n } from "vue-i18n"
 import { useLayout } from "../hooks/layout"
 import { useFormattedTitle } from "../hooks/ghost/content"
-import { useMeta } from "../hooks/meta"
 
 export default defineComponent({
   name: "ErrorLayout",
+  components: {
+    NavBar,
+    BlogFooter,
+  },
   setup() {
     const { error } = useLayout()
     const i18n = useI18n()
-    const { title } = useMeta()
-    watch(title, () => console.log("changed title", title.value))
 
     const code = computed(() => (error.value ? error.value.code : 500))
     const message = computed(() =>
@@ -28,6 +39,9 @@ export default defineComponent({
   },
 })
 </script>
-
-<style>
+<style lang="postcss" scoped>
+.wrapper {
+  @apply flex flex-col;
+  height: 100vh;
+}
 </style>

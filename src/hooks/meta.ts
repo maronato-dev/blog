@@ -39,7 +39,7 @@ interface ScriptAttrs {
 interface BodyAttrs {
   class?: string
 }
-type Title = string | null
+type Title = string
 
 type Links = LinkAttrs[]
 type Styles = StyleAttrs[]
@@ -47,12 +47,12 @@ type Metas = MetaAttrs[]
 type Scripts = ScriptAttrs[]
 
 interface Head {
-  bodyAttrs?: BodyAttrs
-  title?: Title
-  link?: Links
-  style?: Styles
-  meta?: Metas
-  script?: Scripts
+  bodyAttrs: BodyAttrs | null
+  title: Title | null
+  link: Links | null
+  style: Styles | null
+  meta: Metas | null
+  script: Scripts | null
 }
 
 type HeadTags = Exclude<keyof Head, "bodyAttrs" | "title">
@@ -69,8 +69,10 @@ interface Nodeset {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Dictionary = { [key: string]: any }
 
-const metaMap = new WeakMap<ComponentInternalInstance, Required<Head>>()
+const metaMap = new WeakMap<ComponentInternalInstance, Head>()
 const HeadInjectKey: InjectionKey<() => void> = Symbol("useHead")
+
+const unproxy = (obj: unknown) => JSON.parse(JSON.stringify(obj))
 
 export const useMeta = () => {
   // 1. create current reactive object
@@ -85,33 +87,33 @@ export const useMeta = () => {
   if (!vm) throw "useMeta must be called inside setup()"
   console.log("meta")
 
-  let head: Required<Head>
+  let head: Head
   let nodeset: Ref<Nodeset>
-  let headRefs: ToRefs<typeof head>
+  let headRefs: ToRefs<Head>
 
   if (metaMap.has(vm)) {
-    head = metaMap.get(vm) as NonNullable<ReturnType<typeof metaMap["get"]>>
+    head = metaMap.get(vm) as Head
     headRefs = toRefs(head)
   } else {
-    head = reactive<Required<Head>>({
+    head = reactive<Head>({
       title: null,
-      bodyAttrs: {},
-      link: [],
-      style: [],
-      meta: [],
-      script: [],
+      bodyAttrs: null,
+      link: null,
+      style: null,
+      meta: null,
+      script: null,
     })
     metaMap.set(vm, head)
     nodeset = ref<Nodeset>({})
 
     const previousTitle = document.title
-    const parentUpdate = inject(HeadInjectKey, () => {
-      console.log("resetting title to default")
-      document.title = previousTitle
-    })
+    const parentUpdate = inject(
+      HeadInjectKey,
+      () => (document.title = previousTitle)
+    )
 
     const update = () => {
-      console.log(vm, "calling update with head", head)
+      console.log(vm, "calling update with head", unproxy(head))
       removeNodeset(nodeset.value)
       nodeset.value = createNodeset(head)
     }
@@ -119,7 +121,7 @@ export const useMeta = () => {
     provide(HeadInjectKey, update)
 
     const cleanup = () => {
-      console.log(vm, "cleaning up nodeset", nodeset.value)
+      console.log(vm, "cleaning up nodeset", unproxy(nodeset.value))
       removeNodeset(nodeset.value)
       parentUpdate()
     }
@@ -154,6 +156,7 @@ const removeNodeset = (nodeset: Nodeset) => {
     if (nodeType === "bodyAttrs") {
       const attrs = value as Nodeset["bodyAttrs"]
       if (attrs) {
+        console.log("Removing body attrs", unproxy(attrs))
         removeAttributes(document.body, attrs)
       }
     } else if (nodeType !== "title") {
@@ -190,32 +193,35 @@ const createNodeset = (head: Head) => {
   const nodeset: Nodeset = {}
   Object.entries(head).forEach(([key, value]) => {
     if (key === "bodyAttrs") {
-      const attrs = value as Nodeset["bodyAttrs"]
+      const attrs = value as Head["bodyAttrs"]
       if (attrs) {
+        console.log("Setting body attrs", unproxy(attrs))
         setAttributes(document.body, attrs)
         nodeset.bodyAttrs = attrs
       }
     } else if (key === "title") {
-      const title = value as Nodeset["title"]
+      const title = value as Head["title"]
       if (title) {
         console.log("updating title to", title)
         document.title = title
         nodeset.title = title
       }
     } else {
-      const nodes = value as Dictionary[]
-      nodeset[key as HeadTags] = nodes.map(node => {
-        let el = getById(node)
-        if (!el && key === "meta") {
-          el = getMetaElement(node)
-        }
-        if (!el) {
-          el = document.createElement(key)
-        }
-        setAttributes(el, node)
-        document.head.appendChild(el)
-        return el as HTMLElement
-      })
+      const nodes = value as Dictionary[] | null
+      if (nodes) {
+        nodeset[key as HeadTags] = nodes.map(node => {
+          let el = getById(node)
+          if (!el && key === "meta") {
+            el = getMetaElement(node)
+          }
+          if (!el) {
+            el = document.createElement(key)
+          }
+          setAttributes(el, node)
+          document.head.appendChild(el)
+          return el as HTMLElement
+        })
+      }
     }
   })
   return nodeset
