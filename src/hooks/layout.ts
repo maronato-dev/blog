@@ -3,6 +3,7 @@ import { createGlobalState } from "@vueuse/core"
 import DefaultLayout from "../layouts/Default.vue"
 import ErrorLayout from "../layouts/Error.vue"
 import LoadingLayout from "../layouts/Loading.vue"
+import { useI18n } from "vue-i18n"
 
 export const components = {
   DefaultLayout,
@@ -68,5 +69,12 @@ export const useLayoutComponent = () => {
   const component = computed(() => {
     return layoutMap[layout.value].name || "div"
   })
+
+  // Reset on locale change
+  const i18n = useI18n()
+  watch(i18n.locale, () => {
+    layout.value = "default"
+  })
+
   return component
 }
