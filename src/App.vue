@@ -34,9 +34,6 @@ export default defineComponent({
     // Make sure settings are updated on app load
     onMounted(fetch)
     const layoutComponent = useLayoutComponent()
-    watch(layoutComponent, () =>
-      console.log("changing layout to", layoutComponent.value)
-    )
     return { layoutComponent, settings }
   },
 })

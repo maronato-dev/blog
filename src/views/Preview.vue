@@ -36,7 +36,6 @@ export default defineComponent({
       const pending = requestState.pending
       const postLoaded = !!post.value
       if (hasError || (!pending && !postLoaded)) {
-        console.log("trigger")
         trigger404()
       }
     })

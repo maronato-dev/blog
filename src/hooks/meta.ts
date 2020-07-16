@@ -72,8 +72,6 @@ type Dictionary = { [key: string]: any }
 const metaMap = new WeakMap<ComponentInternalInstance, Head>()
 const HeadInjectKey: InjectionKey<() => void> = Symbol("useHead")
 
-const unproxy = (obj: unknown) => JSON.parse(JSON.stringify(obj))
-
 export const useMeta = () => {
   // 1. create current reactive object
   // 2. get parent node set
@@ -85,7 +83,6 @@ export const useMeta = () => {
 
   const vm = getCurrentInstance()
   if (!vm) throw "useMeta must be called inside setup()"
-  console.log("meta")
 
   let head: Head
   let nodeset: Ref<Nodeset>
@@ -113,7 +110,6 @@ export const useMeta = () => {
     )
 
     const update = () => {
-      console.log(vm, "calling update with head", unproxy(head))
       removeNodeset(nodeset.value)
       nodeset.value = createNodeset(head)
     }
@@ -121,7 +117,6 @@ export const useMeta = () => {
     provide(HeadInjectKey, update)
 
     const cleanup = () => {
-      console.log(vm, "cleaning up nodeset", unproxy(nodeset.value))
       removeNodeset(nodeset.value)
       parentUpdate()
     }
@@ -156,7 +151,6 @@ const removeNodeset = (nodeset: Nodeset) => {
     if (nodeType === "bodyAttrs") {
       const attrs = value as Nodeset["bodyAttrs"]
       if (attrs) {
-        console.log("Removing body attrs", unproxy(attrs))
         removeAttributes(document.body, attrs)
       }
     } else if (nodeType !== "title") {
@@ -195,14 +189,12 @@ const createNodeset = (head: Head) => {
     if (key === "bodyAttrs") {
       const attrs = value as Head["bodyAttrs"]
       if (attrs) {
-        console.log("Setting body attrs", unproxy(attrs))
         setAttributes(document.body, attrs)
         nodeset.bodyAttrs = attrs
       }
     } else if (key === "title") {
       const title = value as Head["title"]
       if (title) {
-        console.log("updating title to", title)
         document.title = title
         nodeset.title = title
       }

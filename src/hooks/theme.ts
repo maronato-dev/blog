@@ -23,7 +23,6 @@ const useThemeState = createGlobalState(() => {
         : preferenceOrDark
     },
     set(value: ColorOptions) {
-      console.log("setting theme to", value)
       manualValue.value = value
     },
   })
@@ -37,7 +36,6 @@ export const useTheme = () => {
 
   // Update body class
   watchEffect(() => {
-    console.log("updating body class to", theme.value)
     bodyAttrs.value = { class: `${theme.value}-mode` }
   })
 
