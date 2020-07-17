@@ -95,8 +95,6 @@ services:
         APP_ENV: prod
     environment:
       - NODE_ENV=production
-    secrets:
-      - frontend_secrets
     deploy:
       labels:
         # Enable traefik

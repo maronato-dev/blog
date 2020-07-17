@@ -25,11 +25,9 @@ interface BrowseResults<T> extends Array<T> {
 }
 
 export const useGhostContentApi = () => {
-  const { protocol, hostname } = window.location
-  const url = `${protocol}//${hostname}`
   const api = new GhostContentAPI({
-    url,
-    key: "f3d212e9b66201c7f1cc49c1a0",
+    url: import.meta.env.VITE_GHOST_API_URL,
+    key: import.meta.env.VITE_GHOST_API_KEY,
     version: "v3",
   })
   return api

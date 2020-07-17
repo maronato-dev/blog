@@ -16,7 +16,8 @@ const useAdminAPIRequest = <T, R = AxiosResponse<T>>(
 ) => {
   const response = ref(null) as Ref<R | null>
   if (!params.url) {
-    params.url = `/ghost/api/v3/admin${params.endpoint}`
+    const ghostApi = import.meta.env.VITE_GHOST_API_URL
+    params.url = `${ghostApi}/ghost/api/v3/admin${params.endpoint}`
   }
   const [fetch, requestState] = useFetchData<AxiosError<T>>(async () => {
     response.value = await axios.request(params)

@@ -2,7 +2,7 @@ import firebase from "firebase/app"
 import "firebase/firestore"
 
 const firebaseConfig = {
-  projectId: "blog-beef8",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
 }
 
 export const app = firebase.initializeApp(firebaseConfig)
