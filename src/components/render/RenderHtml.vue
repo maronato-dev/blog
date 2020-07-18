@@ -1,6 +1,20 @@
 <script lang="ts">
 import { defineComponent, compile, onMounted, getCurrentInstance } from "vue"
 import reframe from "reframe.js"
+import Prism from "prismjs"
+
+// Configure prism
+import "prismjs/plugins/autoloader/prism-autoloader.min.js"
+import "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"
+import "prismjs/plugins/toolbar/prism-toolbar.min.js"
+import "prismjs/plugins/show-language/prism-show-language.min.js"
+
+import "../../assets/css/prismjs/plugins/toolbar.css"
+import "../../assets/css/prismjs/themes/material-dark.css"
+
+Prism.plugins.autoloader.languages_path =
+  "https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/"
+Prism.languages.vue = Prism.languages.html
 
 const reframeEmbeds = (el: HTMLElement) => {
   const selectors = [
@@ -34,6 +48,8 @@ export default defineComponent({
       }
       reframeEmbeds(el)
     })
+
+    onMounted(Prism.highlightAll)
     return compile(props.html)
   },
 })
