@@ -19,6 +19,7 @@ import { useFetchData } from "../fetch"
 import { useError } from "../layout"
 import { useTitle, useMeta } from "../meta"
 import { createGlobalState, useStorage } from "@vueuse/core"
+import { useRouter } from "vue-router"
 
 interface BrowseResults<T> extends Array<T> {
   meta: { pagination: Pagination }
@@ -168,21 +169,36 @@ export const useSettings = () => {
 export const useCurrentPageOrPost = (slug: string) => {
   const api = useGhostContentApi()
   const i18n = useI18n()
+  const router = useRouter()
   const { trigger404 } = useError()
 
   const content = ref<PostOrPage | undefined>(undefined)
 
   const getContent = () => {
-    const localeSlug = `${i18n.locale.value}-${slug}`
+    const getLocaleFromSlug = (path: string) =>
+      i18n.availableLocales.find(locale => path.startsWith(`${locale}-`))
+
+    const slugLocale = getLocaleFromSlug(slug)
+    let localizedSlug: string
+
+    if (slugLocale) {
+      localizedSlug = slug
+      i18n.locale.value = slugLocale
+      const nonLocalizedSlug = slug.substr(slugLocale.length + 1)
+      console.log("redirecting to", nonLocalizedSlug)
+      router.replace({ name: "postOrPage", params: { slug: nonLocalizedSlug } })
+    } else {
+      localizedSlug = `${i18n.locale.value}-${slug}`
+    }
 
     return api.posts
       .read(
-        { slug: localeSlug },
+        { slug: localizedSlug },
         { include: ["authors", "count.posts", "tags"] }
       )
       .catch(() =>
         api.pages.read(
-          { slug: localeSlug },
+          { slug: localizedSlug },
           { include: ["authors", "count.posts", "tags"] }
         )
       )

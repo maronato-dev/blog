@@ -20,7 +20,7 @@ services:
       - 8080:2368
     labels:
       # Ghost should live under ghost.DOMAIN
-      - traefik.http.routers.ghost.rule=Host(`blog.${DOMAIN}`) && PathPrefix(`/ghost/`, `/content/`, `/members/`)
+      - traefik.http.routers.ghost.rule=Host(`blog.${DOMAIN}`) && PathPrefix(`/ghost/`, `/content/`, `/members/`, `/sitemap`,  `/robots.txt`)
       # Make sure the loadbalancer uses the correct port
       - traefik.http.services.ghost.loadbalancer.server.port=2368
       # Development env only uses http
