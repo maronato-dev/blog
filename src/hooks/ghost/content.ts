@@ -27,8 +27,8 @@ interface BrowseResults<T> extends Array<T> {
 
 export const useGhostContentApi = () => {
   const api = new GhostContentAPI({
-    url: import.meta.env.VITE_GHOST_API_URL,
-    key: import.meta.env.VITE_GHOST_API_KEY,
+    url: import.meta.env.VITE_GHOST_API_URL as string,
+    key: import.meta.env.VITE_GHOST_API_KEY as string,
     version: "v3",
   })
   return api
@@ -275,7 +275,8 @@ const getCurrentUrl = () => {
 }
 
 export const useSocialMetaTags = (content?: Ref<PostOrPage | undefined>) => {
-  const { meta } = useMeta()
+  const { meta, link } = useMeta()
+  const i18n = useI18n()
   const { settings } = useSettings()
   watchEffect(() => {
     meta.value = [
@@ -369,6 +370,23 @@ export const useSocialMetaTags = (content?: Ref<PostOrPage | undefined>) => {
           "",
       },
     ]
+    if (content && content.value) {
+      const nonLocalizedSlug = content.value.slug.substr(
+        i18n.locale.value.length + 1
+      )
+      const origin = window.location.origin
+      const hreflang = i18n.availableLocales.map(locale => ({
+        rel: "alternate",
+        hreflang: locale,
+        href: `${origin}/${locale}-${nonLocalizedSlug}`,
+      }))
+      hreflang.push({
+        rel: "alternate",
+        hreflang: "x-default",
+        href: `${origin}/${nonLocalizedSlug}`,
+      })
+      link.value = hreflang
+    }
   })
 }
 
