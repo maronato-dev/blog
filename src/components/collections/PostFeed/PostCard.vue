@@ -5,7 +5,13 @@
       :to="`/${post.slug}`"
       class="relative block overflow-hidden rounded-lg shadow-md group-hover:shadow-xl translate-y-0 group-hover:-translate-y-1 dark-group-hover:opacity-100 dark:opacity-85 transform transition-all duration-200 image-link delay-300"
     >
-      <img class="w-full h-64 object-cover image" :src="post.feature_image" :alt="post.title" />
+      <img
+        class="w-full h-64 object-cover image"
+        :srcset="getSrcset(post.feature_image)"
+        loading="lazy"
+        :src="getImageUrl(post.feature_image, 'm')"
+        :alt="post.title"
+      />
     </router-link>
 
     <div class="flex-grow flex flex-col content">
@@ -41,6 +47,7 @@
 import { defineComponent, PropType, computed } from "vue"
 import { PostOrPage } from "@tryghost/content-api"
 import { useI18n } from "vue-i18n"
+import { getImageUrl, getSrcset } from "./imageUtils"
 
 interface Props {
   post: PostOrPage
@@ -95,6 +102,8 @@ export default defineComponent({
       isoDate,
       readingTime,
       exerpt,
+      getImageUrl,
+      getSrcset,
     }
   },
 })

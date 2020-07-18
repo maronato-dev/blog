@@ -49,7 +49,7 @@ export default defineComponent({
       reframeEmbeds(el)
     })
 
-    onMounted(Prism.highlightAll)
+    onMounted(() => Prism.highlightAll())
     return compile(props.html)
   },
 })

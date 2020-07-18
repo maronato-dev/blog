@@ -86,11 +86,11 @@ export default defineComponent({
     const toggle = () => (collapse.value = !collapse.value)
 
     const { y } = useWindowScroll()
-    const throttleY = useThrottle(y, 300)
+    const throttleY = useThrottle(y, 100)
     const lastScroll = ref(y.value)
     const hide = ref(false)
     watch(throttleY, () => {
-      const threshold = 200
+      const threshold = 40
       const difference = throttleY.value - lastScroll.value
       const goingDown = difference > threshold / 2
       const goingUp = -difference > threshold || y.value < threshold
