@@ -3,23 +3,15 @@ import GhostContentAPI, {
   SettingsResponse,
   PostOrPage,
 } from "@tryghost/content-api"
-import {
-  ref,
-  watch,
-  computed,
-  onBeforeMount,
-  Ref,
-  watchEffect,
-  reactive,
-  isRef,
-} from "vue"
+import { ref, watch, computed, onBeforeMount, Ref, reactive, isRef } from "vue"
 import axios, { AxiosError } from "axios"
 import { useI18n, Composer } from "vue-i18n"
 import { useFetchData } from "../fetch"
 import { useError } from "../layout"
-import { useTitle, useMeta } from "../meta"
+import { useTitle } from "../meta"
 import { createGlobalState, useStorage } from "@vueuse/core"
 import { useRouter } from "vue-router"
+import { useSEOTags } from "../seo"
 
 interface BrowseResults<T> extends Array<T> {
   meta: { pagination: Pagination }
@@ -215,9 +207,9 @@ export const useCurrentPageOrPost = (slug: string) => {
   // Reload post when changing locale
   watch(i18n.locale, fetch)
 
-  const contentTitle = computed(() => content.value?.title)
+  const contentTitle = computed(() => content.value && content.value.title)
   useBlogTitle(contentTitle, fetchState)
-  useSocialMetaTags(content)
+  useSEOTags(content)
 
   return { content, fetch, fetchState }
 }
@@ -225,7 +217,7 @@ export const useCurrentPageOrPost = (slug: string) => {
 export const useDefaultTitle = () => {
   const { settings } = useSettings()
   const title = computed(() => {
-    return settings.value?.title || ""
+    return (settings.value && settings.value.title) || ""
   })
   useTitle(title)
 }
@@ -234,7 +226,7 @@ export const useFormattedTitle = (compTitle: string | Ref<string>) => {
   const { settings } = useSettings()
 
   const buildTitle = (comp: string) => {
-    return `${comp} - ${settings.value?.title || ""}`
+    return `${comp} - ${(settings.value && settings.value.title) || ""}`
   }
 
   const title = computed(() => {
@@ -251,7 +243,7 @@ export const useBlogTitle = (
   const { settings } = useSettings()
 
   const title = computed(() => {
-    const blogTitle = settings.value?.title || ""
+    const blogTitle = (settings.value && settings.value.title) || ""
     if (fetchState.pending) {
       return i18n.t("postOrPage.head.title.loading", { blogTitle })
     } else if (fetchState.error) {
@@ -264,130 +256,6 @@ export const useBlogTitle = (
     }
   })
   useTitle(title)
-}
-
-const getCurrentUrl = () => {
-  if (typeof window === "undefined") {
-    return undefined
-  }
-  const location = window.location
-  return `${location.origin}${location.pathname}`
-}
-
-export const useSocialMetaTags = (content?: Ref<PostOrPage | undefined>) => {
-  const { meta, link } = useMeta()
-  const i18n = useI18n()
-  const { settings } = useSettings()
-  watchEffect(() => {
-    meta.value = [
-      {
-        name: "description",
-        content:
-          content?.value?.meta_description ||
-          content?.value?.custom_excerpt ||
-          content?.value?.excerpt ||
-          settings.value?.meta_description ||
-          settings.value?.description ||
-          "",
-      },
-      { property: "og:site_name", content: settings.value?.title || "" },
-      { property: "og:type", content: "article" },
-      {
-        property: "og:title",
-        content:
-          content?.value?.og_title ||
-          content?.value?.title ||
-          settings.value?.og_title ||
-          settings.value?.title ||
-          "",
-      },
-      {
-        property: "og:description",
-        content:
-          content?.value?.og_description ||
-          content?.value?.custom_excerpt ||
-          content?.value?.excerpt ||
-          settings.value?.og_description ||
-          settings.value?.description ||
-          "",
-      },
-      {
-        property: "og:url",
-        content:
-          getCurrentUrl() || content?.value?.url || settings.value?.url || "",
-      },
-      {
-        property: "og:image",
-        content:
-          content?.value?.og_image ||
-          content?.value?.feature_image ||
-          settings.value?.og_image ||
-          "",
-      },
-      {
-        property: "article:published_time",
-        content: content?.value?.published_at || "",
-      },
-      {
-        property: "article:modified_time",
-        content: content?.value?.updated_at || "",
-      },
-      {
-        property: "article:tag",
-        content: content?.value?.primary_tag?.name || "",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content:
-          content?.value?.twitter_title ||
-          content?.value?.title ||
-          settings.value?.twitter_title ||
-          settings.value?.title ||
-          "",
-      },
-      {
-        name: "twitter:description",
-        content:
-          content?.value?.twitter_description ||
-          content?.value?.custom_excerpt ||
-          content?.value?.excerpt ||
-          settings.value?.twitter_description ||
-          settings.value?.description ||
-          "",
-      },
-      {
-        name: "twitter:url",
-        content:
-          getCurrentUrl() || content?.value?.url || settings.value?.url || "",
-      },
-      {
-        name: "twitter:image",
-        content:
-          content?.value?.twitter_image ||
-          content?.value?.feature_image ||
-          settings.value?.twitter_image ||
-          "",
-      },
-    ]
-    if (content && content.value) {
-      const nonLocalizedSlug = content.value.slug.substr(
-        i18n.locale.value.length + 1
-      )
-      const origin = window.location.origin
-      const hreflang = i18n.availableLocales.map(locale => ({
-        rel: "alternate",
-        hreflang: locale,
-        href: `${origin}/${locale}-${nonLocalizedSlug}`,
-      }))
-      hreflang.push({
-        rel: "alternate",
-        hreflang: "x-default",
-        href: `${origin}/${nonLocalizedSlug}`,
-      })
-      link.value = hreflang
-    }
-  })
 }
 
 export const useSubscribe = (emailRef: Ref<string>) => {

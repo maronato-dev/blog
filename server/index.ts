@@ -28,7 +28,11 @@ app.use(morgan("tiny"))
 // Production static server
 app.use(compression())
 
-app.use(express.static(distFolder))
+app.use(
+  express.static(distFolder, {
+    maxAge: 31536000000,
+  })
+)
 
 app.get("*", (_req, res) => {
   res.sendFile(path.resolve(distFolder, "./index.html"))

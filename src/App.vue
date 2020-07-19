@@ -9,7 +9,8 @@ import { defineComponent, onMounted, watch } from "vue"
 import { useLocaleSync } from "./hooks/locale"
 import { useTheme } from "./hooks/theme"
 import { useLayoutComponent, useLayout, components } from "./hooks/layout"
-import { useSettings, useSocialMetaTags } from "./hooks/ghost"
+import { useSettings } from "./hooks/ghost"
+import { useSEOTags } from "./hooks/seo"
 
 export default defineComponent({
   name: "App",
@@ -17,7 +18,7 @@ export default defineComponent({
   setup() {
     useLocaleSync()
     useTheme()
-    useSocialMetaTags()
+    useSEOTags()
     const { layout } = useLayout()
     const { fetch, settings } = useSettings()
     watch(

@@ -14,37 +14,37 @@ import {
   ToRefs,
 } from "vue"
 
-interface LinkAttrs {
+export interface LinkAttrs {
   rel?: string
   href?: string
   id?: string
 }
-interface StyleAttrs {
+export interface StyleAttrs {
   cssText?: string
   type?: string
   id?: string
 }
-interface MetaAttrs {
+export interface MetaAttrs {
   name?: string
   content?: string
   property?: string
   id?: string
   multiple?: boolean
 }
-interface ScriptAttrs {
+export interface ScriptAttrs {
   src?: string
   type?: string
   id?: string
 }
-interface BodyAttrs {
+export interface BodyAttrs {
   class?: string
 }
-type Title = string
+export type Title = string
 
-type Links = LinkAttrs[]
-type Styles = StyleAttrs[]
-type Metas = MetaAttrs[]
-type Scripts = ScriptAttrs[]
+export type Links = LinkAttrs[]
+export type Styles = StyleAttrs[]
+export type Metas = MetaAttrs[]
+export type Scripts = ScriptAttrs[]
 
 interface Head {
   bodyAttrs: BodyAttrs | null

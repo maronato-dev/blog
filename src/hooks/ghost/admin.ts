@@ -42,6 +42,8 @@ export const usePreviewPost = (uuid: string) => {
   const { response, requestState } = useAdminAPIRequest<BrowsePostResponse>(
     request
   )
-  const post = computed(() => response.value?.data.posts[0])
+  const post = computed(() =>
+    response.value ? response.value.data.posts[0] : undefined
+  )
   return { post, requestState }
 }
