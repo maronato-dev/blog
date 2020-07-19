@@ -1,5 +1,11 @@
 <script lang="ts">
-import { defineComponent, compile, onMounted, getCurrentInstance } from "vue"
+import {
+  defineComponent,
+  compile,
+  onMounted,
+  getCurrentInstance,
+  computed,
+} from "vue"
 import reframe from "reframe.js"
 import Prism from "prismjs"
 
@@ -38,6 +44,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const html = computed(() => props.html.split("<code").join("<code v-pre"))
     onMounted(() => {
       const vm = getCurrentInstance()
       if (!vm) throw "Component instance not available!"
@@ -50,7 +57,7 @@ export default defineComponent({
     })
 
     onMounted(() => Prism.highlightAll())
-    return compile(props.html)
+    return compile(html.value)
   },
 })
 </script>
