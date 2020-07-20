@@ -4,6 +4,7 @@ import DefaultLayout from "../layouts/Default.vue"
 import ErrorLayout from "../layouts/Error.vue"
 import LoadingLayout from "../layouts/Loading.vue"
 import { useI18n } from "vue-i18n"
+import { useMeta } from "./meta"
 
 export const components = {
   DefaultLayout,
@@ -74,6 +75,17 @@ export const useLayoutComponent = () => {
   const i18n = useI18n()
   watch(i18n.locale, () => {
     layout.value = "default"
+  })
+
+  // Set noindex on error
+  const { meta } = useMeta()
+  watch(layout, () => {
+    let metaArray = meta.value || []
+    metaArray = metaArray.filter(m => m.name !== "robots")
+    if (layout.value === "error") {
+      metaArray.push({ name: "robots", content: "noindex" })
+    }
+    meta.value = metaArray
   })
 
   return component
