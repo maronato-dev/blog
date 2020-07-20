@@ -1,7 +1,7 @@
 <template>
   <nav
     v-click-outside="clickOutside"
-    class="bg-white py-3 px-8 dark:bg-gray-900 dark:text-gray-100 shadow fixed w-full z-10"
+    class="bg-white py-3 px-8 dark:bg-gray-900 dark:text-gray-100 shadow-sm fixed w-full z-10"
     :class="{ hide }"
   >
     <div class="container mx-auto flex items-center justify-between flex-wrap">

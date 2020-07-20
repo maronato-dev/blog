@@ -17,6 +17,14 @@
         "error": "Error! - {blogTitle}",
         "content": "{title} - {blogTitle}"
       }
+    },
+    "footer": {
+      "footnotes": {
+        "title": "Footnotes"
+      },
+      "references": {
+        "title": "References"
+      }
     }
   }
 }

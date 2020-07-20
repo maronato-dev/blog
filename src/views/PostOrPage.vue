@@ -1,6 +1,6 @@
 <template>
   <main class="mt-5 pb-2 relative flex-grow outer">
-    <div class="max-w-screen-lg w-full mx-auto">
+    <div class="max-w-screen-xl w-full mx-auto">
       <transition name="fade" mode="out-in" appear>
         <loading-content v-if="fetchState.pending" />
         <div v-else-if="fetchState.error">Error</div>
@@ -16,6 +16,10 @@
 <script lang="ts">
 import { defineComponent } from "vue"
 import { useCurrentPageOrPost } from "../hooks/ghost/content"
+import {
+  providePostFootnotes,
+  providePostReferences,
+} from "../hooks/postHelpers"
 import LoadingContent from "../components/ui/LoadingContent.vue"
 import Post from "../components/post/Post.vue"
 
@@ -30,6 +34,11 @@ export default defineComponent({
   },
   setup(props) {
     const { content, fetchState } = useCurrentPageOrPost(props.slug)
+
+    // Provide post counters
+    providePostFootnotes()
+    providePostReferences()
+
     return { content, fetchState }
   },
 })

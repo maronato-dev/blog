@@ -4,16 +4,24 @@
   min-height: 230px;
   font-family: "Merriweather", Georgia, Cambria, "Times New Roman", Times, serif;
   line-height: 1.6em;
-  font-size: 1.125rem;
-  @screen sm {
-    padding: 0 5vw;
-  }
+  @apply text-sm;
   @screen md {
-    font-size: 1.25rem;
-    padding: 0 11vw;
+    @apply text-base;
+    flex-basis: calc(100% * 3 / 4);
+    max-width: calc(100% * 3 / 4);
+    &.aside {
+      @apply flex-grow-0 flex-shrink-0 m-0;
+    }
   }
   @screen lg {
-    padding: 0 170px 6vw;
+    flex-basis: calc(100% * 2 / 3);
+    max-width: calc(100% * 2 / 3);
+  }
+  @screen xl {
+    @apply text-xl;
+    &.aside {
+      margin-left: calc(100% / 6);
+    }
   }
 
   & .img {
@@ -554,6 +562,20 @@ Usage (In Ghost editor):
 
   & .kg-width-full .kg-image {
     max-width: 100vw;
+  }
+
+  &.aside {
+    & .kg-width-wide,
+    & .kg-width-full {
+      @screen md {
+        @apply self-start left-0;
+        margin-left: -5vw;
+      }
+
+      @screen xl {
+        @apply self-center ml-0;
+      }
+    }
   }
 
   & figure {

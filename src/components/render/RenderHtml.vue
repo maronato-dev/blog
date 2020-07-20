@@ -6,6 +6,7 @@ import {
   getCurrentInstance,
   computed,
 } from "vue"
+import components from "./components"
 import reframe from "reframe.js"
 import Prism from "prismjs"
 
@@ -37,6 +38,7 @@ const reframeEmbeds = (el: HTMLElement) => {
 }
 
 export default defineComponent({
+  components,
   props: {
     html: {
       type: String,
@@ -57,6 +59,7 @@ export default defineComponent({
     })
 
     onMounted(() => Prism.highlightAll())
+
     return compile(html.value)
   },
 })

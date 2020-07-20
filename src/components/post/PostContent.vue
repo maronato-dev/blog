@@ -1,5 +1,5 @@
 <template>
-  <div class="ghost-content">
+  <div class="ghost-content" :class="{ aside }">
     <div class="flex flex-col items-center">
       <render-html :html="html" />
     </div>
@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, computed } from "vue"
 import RenderHtml from "../render/RenderHtml.vue"
+import { usePostFootnotes } from "../../hooks/postHelpers"
 
 export default defineComponent({
   components: { RenderHtml },
@@ -17,6 +18,11 @@ export default defineComponent({
       type: String,
       required: true,
     },
+  },
+  setup() {
+    const { count: footnoteCount } = usePostFootnotes()
+    const aside = computed(() => footnoteCount.value > 0)
+    return { aside }
   },
 })
 </script>
