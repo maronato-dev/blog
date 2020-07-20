@@ -2,11 +2,19 @@
   <div class="wrapper">
     <div class="flex-grow">
       <nav-bar />
-      <div class="mt-20">
-        <div>Error {{ code }}</div>
-        <div>{{ message }}</div>
-        <router-link to="/">Go back</router-link>
-      </div>
+      <section
+        class="my-20 px-5 mx-auto container content-center text-center flex flex-col flex-wrap"
+      >
+        <page404 v-if="code === 404" />
+        <page500 v-else-if="code === 500" />
+        <template v-else>
+          <div>Error {{ code }}</div>
+          <div>{{ message }}</div>
+        </template>
+        <div class="flex-row">
+          <router-link class="animated-underline text-xl font-bold" to="/">{{ goBackMessage }}</router-link>
+        </div>
+      </section>
     </div>
     <blog-footer />
   </div>
@@ -16,6 +24,8 @@
 import { defineComponent, computed } from "vue"
 import NavBar from "../components/layout/Navbar.vue"
 import BlogFooter from "../components/layout/BlogFooter.vue"
+import Page404 from "../components/layout/404.vue"
+import Page500 from "../components/layout/500.vue"
 import { useI18n } from "vue-i18n"
 import { useLayout } from "../hooks/layout"
 import { useFormattedTitle } from "../hooks/ghost/content"
@@ -25,6 +35,8 @@ export default defineComponent({
   components: {
     NavBar,
     BlogFooter,
+    Page404,
+    Page500,
   },
   setup() {
     const { error } = useLayout()
@@ -34,8 +46,11 @@ export default defineComponent({
     const message = computed(() =>
       i18n.t(error.value ? error.value.message : "layout.error.500-message")
     )
+    const goBackMessage = computed(() => {
+      return i18n.t("layout.error.go-back")
+    })
     useFormattedTitle(message)
-    return { code, message }
+    return { code, message, goBackMessage }
   },
 })
 </script>
