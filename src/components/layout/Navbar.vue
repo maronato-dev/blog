@@ -118,7 +118,9 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 nav {
-  @apply transition-transform transform translate-y-0 ease-in-out duration-150;
+  @apply transition-transform transform translate-y-0 ease-in-out duration-300;
+  perspective: 1000px;
+  backface-visibility: hidden;
   &.hide {
     @apply -translate-y-full;
   }
