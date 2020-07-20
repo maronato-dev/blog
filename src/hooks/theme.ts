@@ -36,7 +36,10 @@ export const useTheme = () => {
 
   // Update body class
   watchEffect(() => {
-    bodyAttrs.value = { class: `${theme.value}-mode` }
+    const themeClass = { class: `${theme.value}-mode` }
+    bodyAttrs.value = bodyAttrs.value
+      ? { ...bodyAttrs.value, ...themeClass }
+      : themeClass
   })
 
   const isDark = computed(() => theme.value === "dark")

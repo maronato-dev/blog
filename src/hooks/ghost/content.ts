@@ -176,9 +176,6 @@ export const useCurrentPageOrPost = (slug: string) => {
     if (slugLocale) {
       localizedSlug = slug
       i18n.locale.value = slugLocale
-      const nonLocalizedSlug = slug.substr(slugLocale.length + 1)
-      console.log("redirecting to", nonLocalizedSlug)
-      router.replace({ name: "postOrPage", params: { slug: nonLocalizedSlug } })
     } else {
       localizedSlug = `${i18n.locale.value}-${slug}`
     }
@@ -196,6 +193,14 @@ export const useCurrentPageOrPost = (slug: string) => {
       )
       .then(response => {
         content.value = response
+        if (slugLocale) {
+          // If content loaded using a localized slug, replace the path with non-localized slug
+          const nonLocalizedSlug = slug.substr(slugLocale.length + 1)
+          router.replace({
+            name: "postOrPage",
+            params: { slug: nonLocalizedSlug },
+          })
+        }
       })
       .catch(e => {
         trigger404()
@@ -207,7 +212,9 @@ export const useCurrentPageOrPost = (slug: string) => {
   // Reload post when changing locale
   watch(i18n.locale, fetch)
 
-  const contentTitle = computed(() => content.value && content.value.title)
+  const contentTitle = computed(
+    () => content.value && (content.value.meta_title || content.value.title)
+  )
   useBlogTitle(contentTitle, fetchState)
   useSEOTags(content)
 
@@ -217,7 +224,10 @@ export const useCurrentPageOrPost = (slug: string) => {
 export const useDefaultTitle = () => {
   const { settings } = useSettings()
   const title = computed(() => {
-    return (settings.value && settings.value.title) || ""
+    return (
+      (settings.value && (settings.value.meta_title || settings.value.title)) ||
+      ""
+    )
   })
   useTitle(title)
 }
@@ -226,7 +236,10 @@ export const useFormattedTitle = (compTitle: string | Ref<string>) => {
   const { settings } = useSettings()
 
   const buildTitle = (comp: string) => {
-    return `${comp} - ${(settings.value && settings.value.title) || ""}`
+    return `${comp} - ${
+      (settings.value && (settings.value.meta_title || settings.value.title)) ||
+      ""
+    }`
   }
 
   const title = computed(() => {
@@ -243,7 +256,9 @@ export const useBlogTitle = (
   const { settings } = useSettings()
 
   const title = computed(() => {
-    const blogTitle = (settings.value && settings.value.title) || ""
+    const blogTitle =
+      (settings.value && (settings.value.meta_title || settings.value.title)) ||
+      ""
     if (fetchState.pending) {
       return i18n.t("postOrPage.head.title.loading", { blogTitle })
     } else if (fetchState.error) {
