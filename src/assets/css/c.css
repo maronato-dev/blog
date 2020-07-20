@@ -184,12 +184,17 @@
   & kbd,
   & pre,
   & samp {
-    font-family: monospace, monospace;
-    font-size: 1rem !important;
+    font-family: Roboto Mono, monospace;
   }
-  & code,
   & pre {
     @apply rounded-md;
+  }
+  & :not(pre) {
+    & > code,
+    & > kbd,
+    & > samp {
+      @apply whitespace-normal p-1 rounded-md bg-gray-300;
+    }
   }
   & div.code-toolbar {
     @apply w-full;
@@ -837,6 +842,12 @@ Usage (In Ghost editor):
 
     & table th, & table td {
       @apply border-gray-800 border border-solid;
+    }
+
+    & :not(pre) {
+      & > code, & > kbd, & > samp {
+        @apply bg-gray-800;
+      }
     }
 
     & .kg-bookmark-container, & .kg-bookmark-container:hover {
