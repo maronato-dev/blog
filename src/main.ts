@@ -25,6 +25,11 @@ const i18n = () => {
           month: "short",
           day: "numeric",
         },
+        medium: {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        },
         long: {
           year: "numeric",
           month: "short",
@@ -39,6 +44,11 @@ const i18n = () => {
         short: {
           year: "numeric",
           month: "short",
+          day: "numeric",
+        },
+        medium: {
+          year: "numeric",
+          month: "long",
           day: "numeric",
         },
         long: {

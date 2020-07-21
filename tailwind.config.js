@@ -55,6 +55,7 @@ module.exports = {
     borderColor: ["dark", "dark-focus", "dark-focus-within"],
     textColor: ["dark", "dark-hover", "dark-active", "dark-placeholder"],
     translate: ["hover", "group-hover"],
+    scale: ["hover", "focus", "active", "group-hover"],
     opacity: [
       "dark",
       "dark-hover",

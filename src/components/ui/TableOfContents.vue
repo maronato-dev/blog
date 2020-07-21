@@ -2,7 +2,7 @@
   <aside class="text-current text-xs font-mono tracking-wider toc">
     <div class="opacity-75 font-semibold">Contents</div>
     <ol class="list-decimal pl-6">
-      <li v-for="heading in toc" :key="heading.id" class="mb-1">
+      <li v-for="heading in toc" :key="heading.id" class="py-1">
         <a class="animated-underline" :href="`#${heading.id}`">{{ heading.text }}</a>
       </li>
     </ol>

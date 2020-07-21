@@ -1,6 +1,6 @@
 <template>
   <article>
-    <div class="font-bold text-2xl">{{ post.title }}</div>
+    <post-header :post="post" />
     <section v-if="showToc">
       <table-of-contents :toc="toc" />
     </section>
@@ -18,6 +18,7 @@
 import { defineComponent, PropType, watch, ref, onMounted, computed } from "vue"
 import { PostOrPage } from "@tryghost/content-api"
 import PostContent from "./PostContent.vue"
+import PostHeader from "./PostHeader.vue"
 import { usePostFootnotes, usePostReferences } from "../../hooks/postHelpers"
 import ContentFootnotes from "../../components/collections/ContentFooter/ContentFootnotes.vue"
 import ContentReferences from "../../components/collections/ContentFooter/ContentReferences.vue"
@@ -33,6 +34,7 @@ export default defineComponent({
     ContentFootnotes,
     ContentReferences,
     TableOfContents,
+    PostHeader,
   },
   props: {
     post: {
