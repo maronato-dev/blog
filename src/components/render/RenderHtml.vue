@@ -60,6 +60,18 @@ export default defineComponent({
 
     onMounted(() => Prism.highlightAll())
 
+    // Load mathjax
+    onMounted(() => {
+      window.MathJax.config.tex.inlineMath = [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ]
+      window.MathJax.startup.getComponents()
+      window.MathJax.startup.document.state(0)
+      window.MathJax.texReset()
+      window.MathJax.typeset()
+    })
+
     return compile(html.value)
   },
 })
