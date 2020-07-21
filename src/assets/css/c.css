@@ -201,7 +201,7 @@
     font-family: Roboto Mono, monospace;
   }
   & pre {
-    @apply rounded-md;
+    @apply rounded-md shadow-md;
   }
   & :not(pre) {
     & > code,
