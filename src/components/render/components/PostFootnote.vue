@@ -32,7 +32,7 @@ export default defineComponent((_props, { slots }) => {
   }
 
   @screen md {
-    @apply right-0 block transform translate-x-full pl-5 -mt-4;
+    @apply right-0 block transform translate-x-full pl-5 -mt-6;
     width: calc(100% / 3);
   }
   @screen lg {
