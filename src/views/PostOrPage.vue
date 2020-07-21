@@ -1,6 +1,6 @@
 <template>
   <main class="mt-5 pb-2 relative flex-grow outer">
-    <div class="max-w-screen-xl w-full mx-auto">
+    <div class="max-1500 w-full mx-auto">
       <transition name="fade" mode="out-in" appear>
         <loading-content v-if="fetchState.pending" />
         <div v-else-if="fetchState.error">Error</div>
@@ -47,5 +47,8 @@ export default defineComponent({
 .outer {
   padding: 0 5vw;
   font-size: 62.5%;
+}
+.max-1500 {
+  max-width: 1500px;
 }
 </style>

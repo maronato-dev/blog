@@ -4,7 +4,6 @@
   min-height: 230px;
   font-family: "Merriweather", Georgia, Cambria, "Times New Roman", Times, serif;
   line-height: 1.6em;
-  @apply text-sm;
   @screen md {
     @apply text-base;
     flex-basis: calc(100% * 3 / 4);
@@ -19,8 +18,10 @@
   }
   @screen xl {
     @apply text-xl;
+    flex-basis: calc(100% / 2);
+    max-width: calc(100% / 2);
     &.aside {
-      margin-left: calc(100% / 6);
+      margin-left: calc(100% / 4);
     }
   }
 

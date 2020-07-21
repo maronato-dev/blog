@@ -7,9 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue"
+import { defineComponent } from "vue"
 import RenderHtml from "../render/RenderHtml.vue"
-import { usePostFootnotes } from "../../hooks/postHelpers"
 
 export default defineComponent({
   components: { RenderHtml },
@@ -18,11 +17,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-  },
-  setup() {
-    const { count: footnoteCount } = usePostFootnotes()
-    const aside = computed(() => footnoteCount.value > 0)
-    return { aside }
+    aside: Boolean,
   },
 })
 </script>

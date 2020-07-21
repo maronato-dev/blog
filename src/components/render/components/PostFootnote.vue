@@ -32,14 +32,14 @@ export default defineComponent((_props, { slots }) => {
   }
 
   @screen md {
-    @apply right-0 block transform translate-x-full -ml-12 -mt-6;
+    @apply right-0 block transform translate-x-full pl-5 -mt-4;
     width: calc(100% / 3);
   }
   @screen lg {
     width: calc(100% / 2);
   }
   @screen xl {
-    width: calc(100% / 3);
+    width: calc(100% / 2);
   }
 }
 .ref-link {
