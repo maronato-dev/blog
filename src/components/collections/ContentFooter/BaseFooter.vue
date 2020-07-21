@@ -24,7 +24,7 @@ export default defineComponent({
 .content-list {
   @screen xl {
     @apply mx-auto;
-    max-width: calc(100% * 2 / 3);
+    max-width: calc(100% / 2);
   }
 }
 </style>
