@@ -4,8 +4,8 @@
   min-height: 230px;
   font-family: "Merriweather", Georgia, Cambria, "Times New Roman", Times, serif;
   line-height: 1.6em;
+  @apply text-base;
   @screen md {
-    @apply text-base;
     flex-basis: calc(100% * 3 / 4);
     max-width: calc(100% * 3 / 4);
     &.aside {
@@ -169,16 +169,21 @@
   }
   & sub,
   & sup {
-    position: relative;
     font-size: 75%;
     line-height: 0;
-    vertical-align: baseline;
+    @apply align-baseline relative ml-0 mr-1;
+    & a {
+      @apply no-underline border-b border-gray-500 border-solid border-opacity-100 transition-opacity duration-200;
+      &:hover {
+        @apply opacity-75 text-current;
+      }
+    }
   }
   & sup {
-    top: -0.5em;
+    top: -0.8em;
   }
   & sub {
-    bottom: -0.25em;
+    bottom: -0.4em;
   }
   & img {
     border: 0;
@@ -202,7 +207,7 @@
     & > code,
     & > kbd,
     & > samp {
-      @apply whitespace-normal p-1 rounded-md bg-gray-300;
+      @apply whitespace-normal p-1 rounded-md bg-gray-200;
     }
   }
   & div.code-toolbar {
