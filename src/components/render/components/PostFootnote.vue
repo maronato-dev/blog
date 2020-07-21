@@ -1,5 +1,5 @@
 <template>
-  <sup class="footnote-ref">
+  <sup class="footnote-ref" :class="{ active }">
     <a :id="`fnref${assigned}`" class="ref-link" :href="`#fn${assigned}`">[{{ assigned }}]</a>
   </sup>
   <aside :id="`fa${assigned}`" class="footnote-aside">
@@ -8,12 +8,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, computed } from "vue"
 import { usePostFootnotes } from "../../../hooks/postHelpers"
+import { useRoute } from "vue-router"
 
 export default defineComponent((_props, { slots }) => {
   const { assigned } = usePostFootnotes(slots.default)
-  return { assigned }
+  const route = useRoute()
+  const active = computed(() => route.hash === `#fnref${assigned}`)
+  return { assigned, active }
 })
 </script>
 <style lang="postcss" scoped>
@@ -44,5 +47,11 @@ export default defineComponent((_props, { slots }) => {
 }
 .ref-link {
   @apply pt-24 -mt-24;
+}
+.footnote-ref.active {
+  @apply bg-gray-400 bg-opacity-75;
+  @nest .dark-mode & {
+    @apply bg-gray-700;
+  }
 }
 </style>
