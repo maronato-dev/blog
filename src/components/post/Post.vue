@@ -53,7 +53,7 @@ export default defineComponent({
       updateToc()
     })
     const showToc = computed(() =>
-      !props.post.reading_time ? false : props.post.reading_time < 10
+      !props.post.reading_time ? false : props.post.reading_time >= 10
     )
 
     const aside = computed(() => {
