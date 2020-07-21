@@ -27,6 +27,14 @@ export const useLocaleSync = () => {
   watch(i18n.locale, () => (locale.value = i18n.locale.value as Locales))
   // Sync locale state changes
   watch(locale, () => (i18n.locale.value = locale.value))
+  // Update html lang
+  watch(
+    i18n.locale,
+    () => {
+      document.documentElement.lang = i18n.locale.value
+    },
+    { immediate: true }
+  )
 }
 
 export const useLocaleNames = () => {
