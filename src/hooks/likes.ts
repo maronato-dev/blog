@@ -27,7 +27,7 @@ export const usePostLikes = (slug: string) => {
   const increment = firebase.firestore.FieldValue.increment(1)
   const decrement = firebase.firestore.FieldValue.increment(-1)
   const { liked, like, dislike } = useLocalPostLikes(slug)
-  const { likes } = useFirestorePost(slug)
+  const { likes, loading } = useFirestorePost(slug)
   const postRef = usePostRef(slug)
 
   watch(liked, value => {
@@ -43,5 +43,5 @@ export const usePostLikes = (slug: string) => {
     }
   }
 
-  return { likes, liked, like, dislike, toggleLike }
+  return { likes, liked, like, dislike, toggleLike, loading }
 }

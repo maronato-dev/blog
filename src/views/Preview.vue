@@ -1,26 +1,30 @@
 <template>
-  <div class="container mx-auto">
-    <transition name="fade" mode="out-in" appear>
-      <loading-content v-if="requestState.pending" />
-      <div v-else-if="requestState.error">Error</div>
-      <div v-else>
-        <RenderHtml :html="post.html" />
-      </div>
-    </transition>
-  </div>
+  <main class="mt-5 pb-2 relative flex-grow outer">
+    <div class="max-1500 w-full mx-auto">
+      <transition name="fade" mode="out-in" appear>
+        <loading-content v-if="requestState.pending" />
+        <div v-else-if="requestState.error">Error</div>
+        <post v-else :post="post" />
+      </transition>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, watchEffect } from "vue"
-import { useRoute } from "vue-router"
 import { usePreviewPost } from "../hooks/ghost/admin"
-import RenderHtml from "../components/render/RenderHtml.vue"
+import {
+  providePostFootnotes,
+  providePostReferences,
+} from "../hooks/postHelpers"
 import LoadingContent from "../components/ui/LoadingContent.vue"
+import Post from "../components/post/Post.vue"
 import { useError } from "../hooks/layout"
+import { useFormattedTitle } from "../hooks/ghost"
 
 export default defineComponent({
-  name: "IndexPage",
-  components: { RenderHtml, LoadingContent },
+  name: "PreviewPage",
+  components: { Post, LoadingContent },
   props: {
     uuid: {
       type: String,
@@ -28,7 +32,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const route = useRoute()
     const { trigger404 } = useError()
     const { post, requestState } = usePreviewPost(props.uuid)
     watchEffect(() => {
@@ -39,7 +42,25 @@ export default defineComponent({
         trigger404()
       }
     })
-    return { route, post, requestState }
+
+    // Provide post counters
+    providePostFootnotes()
+    providePostReferences()
+
+    // Set title
+    useFormattedTitle("Preview")
+
+    return { post, requestState }
   },
 })
 </script>
+
+<style lang="postcss" scoped>
+.outer {
+  padding: 0 5vw;
+  font-size: 62.5%;
+}
+.max-1500 {
+  max-width: 1500px;
+}
+</style>

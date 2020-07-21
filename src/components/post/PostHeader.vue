@@ -24,7 +24,10 @@
           class="cursor-pointer flex flex-row justify-between group items-center"
           @click="toggleLike"
         >
-          {{ likes }}
+          <span
+            class="transition-opacity duration-500 likes-number"
+            :class="{ 'opacity-0': loadingLikes }"
+          >{{ likes }}</span>
           <img
             class="h-5 text-red-600 ml-2 fill-current transition-all duration-300 group-hover:scale-125 active:scale-125 transform"
             :class="{ 'scale-125': liked }"
@@ -93,7 +96,9 @@ export default defineComponent({
         ? props.post.slug.substr(i18n.locale.value.length + 1)
         : props.post.slug
     )
-    const { likes, toggleLike, liked } = usePostLikes(nonLocalizedSlug.value)
+    const { likes, toggleLike, liked, loading: loadingLikes } = usePostLikes(
+      nonLocalizedSlug.value
+    )
     const likeIcon = computed(() => (liked.value ? HeartIcon : EmptyHeartIcon))
 
     return {
@@ -106,6 +111,7 @@ export default defineComponent({
       liked,
       getImageUrl,
       getSrcset,
+      loadingLikes,
     }
   },
 })
@@ -113,5 +119,8 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .excerpt {
   font-family: "Merriweather", Georgia, Cambria, "Times New Roman", Times, serif;
+}
+.likes-number {
+  font-variant-numeric: tabular-nums lining-nums;
 }
 </style>

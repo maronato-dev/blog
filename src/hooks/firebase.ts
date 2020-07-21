@@ -1,4 +1,4 @@
-import { onUnmounted, reactive, toRefs } from "vue"
+import { onUnmounted, reactive, toRefs, ref } from "vue"
 import { db } from "../db/firestore"
 
 interface PostInfo {
@@ -15,14 +15,16 @@ export const useFirestorePost = (slug: string) => {
     id: slug,
     likes: 0,
   })
+  const loading = ref(true)
   const observer = usePostRef(slug).onSnapshot(snapshot => {
     if (!snapshot.exists) {
       db.collection("posts").doc(slug).set(post)
     } else {
       Object.assign(post, snapshot.data())
+      loading.value = false
     }
   })
   onUnmounted(observer)
 
-  return toRefs(post)
+  return { ...toRefs(post), loading }
 }
