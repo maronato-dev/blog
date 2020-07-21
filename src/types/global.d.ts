@@ -5,6 +5,7 @@ declare interface Window {
     config: {
       tex: {
         inlineMath?: string[][]
+        tags?: string
       }
     }
     startup: {
