@@ -3,7 +3,7 @@
     <router-link
       v-if="post.feature_image"
       :to="`/${post.slug}`"
-      class="relative block overflow-hidden rounded-lg shadow-md group-hover:shadow-xl translate-y-0 group-hover:-translate-y-1 dark-group-hover:opacity-100 dark:opacity-85 transform transition-all duration-200 image-link delay-300"
+      class="relative block overflow-hidden rounded-lg shadow-md group-hover:shadow-lg translate-y-0 group-hover:-translate-y-2 dark-group-hover:opacity-100 transform transition-all duration-200 image-link delay-150"
     >
       <img
         class="w-full h-64 object-cover image"
