@@ -9,12 +9,26 @@
         "error": "Erro! - {blogTitle}",
         "content": "{title} - {blogTitle}"
       }
+    },
+    "footer": {
+      "footnotes": {
+        "title": "Notas de rodapé"
+      },
+      "references": {
+        "title": "Referências"
+      }
     }
   },
   "layout": {
     "error": {
       "go-back": "← Voltar para a tela inicial",
-      "404-message": "Página não encontrada!"
+      "404-message": "Página não encontrada!",
+      "500-message": "Opa! Algo de errado aconteceu."
+    }
+  },
+  "ui": {
+    "toc": {
+      "contents-text": "Conteúdo"
     }
   }
 }

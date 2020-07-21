@@ -1,7 +1,7 @@
 <template>
-  <aside class="text-current text-xs font-mono tracking-wider toc">
-    <div class="opacity-75 font-semibold">Contents</div>
-    <ol class="list-decimal pl-6">
+  <aside class="text-current text-sm tracking-wider toc">
+    <div class="opacity-75 font-semibold">{{ contentsText }}</div>
+    <ol class="list-decimal pl-5">
       <li v-for="heading in toc" :key="heading.id" class="py-1">
         <a class="animated-underline pt-0" :href="`#${heading.id}`">{{ heading.text }}</a>
       </li>
@@ -11,7 +11,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue"
+import { defineComponent, PropType, computed } from "vue"
+import { useI18n } from "vue-i18n"
 
 interface Heading {
   type: "H1" | "H2" | "H3" | "H4"
@@ -47,6 +48,11 @@ export default defineComponent({
       type: Array as PropType<TOC>,
       required: true,
     },
+  },
+  setup() {
+    const i18n = useI18n()
+    const contentsText = computed(() => i18n.t("ui.toc.contents-text"))
+    return { contentsText }
   },
 })
 </script>

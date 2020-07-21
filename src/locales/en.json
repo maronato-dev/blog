@@ -1,8 +1,7 @@
 {
-  "index": "Index",
   "layout": {
     "error": {
-      "500-message": "Oops! Something went wrong!",
+      "500-message": "Oops! Something went wrong.",
       "404-message": "Page not found!",
       "go-back": "← Go to the front page"
     }
@@ -25,6 +24,11 @@
       "references": {
         "title": "References"
       }
+    }
+  },
+  "ui": {
+    "toc": {
+      "contents-text": "Contents"
     }
   }
 }
