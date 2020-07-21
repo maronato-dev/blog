@@ -3,7 +3,7 @@
     <div class="opacity-75 font-semibold">Contents</div>
     <ol class="list-decimal pl-6">
       <li v-for="heading in toc" :key="heading.id" class="py-1">
-        <a class="animated-underline" :href="`#${heading.id}`">{{ heading.text }}</a>
+        <a class="animated-underline pt-0" :href="`#${heading.id}`">{{ heading.text }}</a>
       </li>
     </ol>
   </aside>
