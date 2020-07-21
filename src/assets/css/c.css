@@ -230,6 +230,33 @@
   }
 
   /* Base */
+  /* Generic text */
+  /* ---------------------------------------------------------- */
+  & blockquote,
+  & dl,
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6,
+  & ol,
+  & p,
+  & pre,
+  & ul {
+    margin: 0 0 1.5em;
+    min-width: 100%;
+  }
+
+  @media (max-width: 500px) {
+    & p,
+    & ul,
+    & ol,
+    & dl,
+    & pre {
+      margin-bottom: 1.28em;
+    }
+  }
   & hr {
     position: relative;
     display: block;
@@ -424,34 +451,6 @@
     @screen md {
       font-size: 1.25rem;
       line-height: 1.15;
-    }
-  }
-
-  /* Generic text */
-  /* ---------------------------------------------------------- */
-  & blockquote,
-  & dl,
-  & h1,
-  & h2,
-  & h3,
-  & h4,
-  & h5,
-  & h6,
-  & ol,
-  & p,
-  & pre,
-  & ul {
-    margin: 0 0 1.5em;
-    min-width: 100%;
-  }
-
-  @media (max-width: 500px) {
-    & p,
-    & ul,
-    & ol,
-    & dl,
-    & pre {
-      margin-bottom: 1.28em;
     }
   }
 

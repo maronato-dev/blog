@@ -11,6 +11,9 @@
       <content-footnotes v-if="footnoteCount > 0" />
       <content-references v-if="referenceCount > 0" />
     </section>
+    <section>
+      <commento />
+    </section>
   </article>
 </template>
 
@@ -26,6 +29,7 @@ import TableOfContents, {
   buildToc,
   TOC,
 } from "../../components/ui/TableOfContents.vue"
+import Commento from "../../components/ui/Commento.vue"
 import { useI18n } from "vue-i18n"
 
 export default defineComponent({
@@ -35,6 +39,7 @@ export default defineComponent({
     ContentReferences,
     TableOfContents,
     PostHeader,
+    Commento,
   },
   props: {
     post: {

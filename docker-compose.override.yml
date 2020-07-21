@@ -47,6 +47,18 @@ services:
     volumes:
       - frontend_node_modules:/app/node_modules
       - ./:/app
+  commento:
+    environment:
+      - COMMENTO_ORIGIN=http://commento.${DOMAIN}
+    ports:
+      - 8060:8060
+    labels:
+      # Commento should live under commento.DOMAIN
+      - traefik.http.routers.commento.rule=Host(`commento.${DOMAIN}`)
+      # Make sure the loadbalancer uses the correct port
+      - traefik.http.services.commento.loadbalancer.server.port=8060
+      # Development env only uses http
+      - traefik.http.routers.commento.entrypoints=web
 
 volumes:
   frontend_node_modules:

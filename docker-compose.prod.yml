@@ -83,6 +83,26 @@ services:
         - traefik.http.routers.ghost.entrypoints=websecure
     depends_on:
       - db
+  commento:
+    environment:
+      - COMMENTO_ORIGIN=https://commento.${DOMAIN}
+    deploy:
+      labels:
+        # Enable traefik
+        - traefik.enable=true
+        # Traefik constraints
+        - traefik.tags=traefik-public
+        # Use the proxy network for communication
+        - traefik.docker.network=proxy
+        # Commento should live under commento.DOMAIN
+        - traefik.http.routers.commento.rule="Host(`commento.${DOMAIN}`)"
+        # Make sure the loadbalancer uses the correct port
+        - traefik.http.services.commento.loadbalancer.server.port=8060
+        # Enable tls through Lets Encrypt
+        - traefik.http.routers.commento.tls=true
+        - traefik.http.routers.commento.tls.certresolver=le
+        # Accept both http and https
+        - traefik.http.routers.commento.entrypoints=websecure
   db:
     image: mysql:5.7
     restart: always

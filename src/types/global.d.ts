@@ -15,4 +15,7 @@ declare interface Window {
       }
     }
   }
+  commento: {
+    main(): void
+  }
 }

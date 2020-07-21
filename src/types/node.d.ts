@@ -4,5 +4,6 @@ declare interface ImportMeta {
     VITE_GHOST_API_KEY: string
     VITE_FIREBASE_PROJECT_ID: string
     VITE_GHOST_API_URL: string
+    VITE_DOMAIN: string
   }
 }

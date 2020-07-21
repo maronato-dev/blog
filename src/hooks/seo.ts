@@ -142,11 +142,13 @@ export const useSEOTags = (content?: Ref<PostOrPage | undefined>) => {
         rel: "alternate",
         hreflang: locale,
         href: `${origin}/${locale}-${nonLocalizedSlug}`,
+        id: `hreflang-${locale}`,
       }))
       hreflang.push({
         rel: "alternate",
         hreflang: "x-default",
         href: `${origin}/${nonLocalizedSlug}`,
+        id: "hreflang-default",
       })
       link.value = link.value ? [...link.value, ...hreflang] : hreflang
     }

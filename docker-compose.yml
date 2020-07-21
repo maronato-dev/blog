@@ -23,6 +23,26 @@ services:
       context: .
     depends_on:
       - ghost
+  commento:
+    image: registry.gitlab.com/commento/commento:v1.8.0
+    environment:
+      COMMENTO_PORT: 8060
+      COMMENTO_POSTGRES: postgres://postgres:postgres@commento_db:5432/commento?sslmode=disable
+      COMMENTO_CONFIG_FILE: /etc/commento.env
+    depends_on:
+      - commento_db
+    volumes:
+      - ./commento.env:/etc/commento.env
+  commento_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: commento
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - commento_db_data_volume:/var/lib/postgresql/data
 
 volumes:
   ghost_data:
+  commento_db_data_volume:
