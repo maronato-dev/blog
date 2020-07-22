@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, toRefs } from "vue"
 import { useCurrentPageOrPost } from "../hooks/ghost/content"
 import {
   providePostFootnotes,
@@ -33,7 +33,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { content, fetchState } = useCurrentPageOrPost(props.slug)
+    const { slug } = toRefs(props)
+    const { content, fetchState } = useCurrentPageOrPost(slug)
 
     // Provide post counters
     providePostFootnotes()

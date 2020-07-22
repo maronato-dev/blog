@@ -52,8 +52,14 @@ module.exports = {
       "active",
       "group-hover",
     ],
-    borderColor: ["dark", "dark-focus", "dark-focus-within"],
-    textColor: ["dark", "dark-hover", "dark-active", "dark-placeholder"],
+    borderColor: ["dark", "dark-focus", "dark-focus-within", "hover"],
+    textColor: [
+      "dark",
+      "dark-hover",
+      "dark-active",
+      "dark-placeholder",
+      "hover",
+    ],
     translate: ["hover", "group-hover"],
     scale: ["hover", "focus", "active", "group-hover"],
     opacity: [

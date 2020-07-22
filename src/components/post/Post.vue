@@ -7,9 +7,12 @@
     <section>
       <post-content :aside="aside" :html="post.html" />
     </section>
-    <section class="py-10">
+    <section class="py-10 container mx-auto">
       <content-footnotes v-if="footnoteCount > 0" />
       <content-references v-if="referenceCount > 0" />
+    </section>
+    <section>
+      <related-posts :post="post" />
     </section>
     <section>
       <commento />
@@ -22,6 +25,7 @@ import { defineComponent, PropType, watch, ref, onMounted, computed } from "vue"
 import { PostOrPage } from "@tryghost/content-api"
 import PostContent from "./PostContent.vue"
 import PostHeader from "./PostHeader.vue"
+import RelatedPosts from "./RelatedPosts/RelatedPosts.vue"
 import { usePostFootnotes, usePostReferences } from "../../hooks/postHelpers"
 import ContentFootnotes from "../../components/collections/ContentFooter/ContentFootnotes.vue"
 import ContentReferences from "../../components/collections/ContentFooter/ContentReferences.vue"
@@ -40,6 +44,7 @@ export default defineComponent({
     TableOfContents,
     PostHeader,
     Commento,
+    RelatedPosts,
   },
   props: {
     post: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="post-feed">
+  <div class="relative flex flex-wrap">
     <post-card v-for="(post, i) in posts" :key="post.id" :post="post" :large="makeLarge(i)" />
   </div>
 </template>
@@ -23,9 +23,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped>
-.post-feed {
-  @apply relative flex flex-wrap;
-}
-</style>

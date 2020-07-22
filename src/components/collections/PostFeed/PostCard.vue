@@ -1,5 +1,8 @@
 <template>
-  <article class="post-card group" :class="{ large, 'no-image': !post.feature_image }">
+  <article
+    class="post-card group"
+    :class="{ large, 'no-image': !post.feature_image, 'border-b': !noBorder }"
+  >
     <router-link
       v-if="post.feature_image"
       :to="`/${post.slug}`"
@@ -60,13 +63,14 @@ export default defineComponent({
       required: true,
     },
     large: Boolean,
+    noBorder: Boolean,
   },
   setup(props) {
     props.post.custom_excerpt
     const i18n = useI18n()
     const isoDate = computed(() => {
       const date =
-        props.post.updated_at || props.post.published_at || new Date()
+        props.post.published_at || props.post.updated_at || new Date()
       return new Date(date).toISOString()
     })
     const dateString = computed(() => {
@@ -118,7 +122,6 @@ export default defineComponent({
   }
 
   @apply relative flex-grow flex-shrink flex flex-col border-gray-600 border-opacity-25 bg-cover pt-0 px-6 pb-8 mt-0 mx-0 mb-8;
-  border-bottom-width: 1px;
   flex-basis: 21rem;
   min-height: 14rem;
 

@@ -72,6 +72,18 @@ const history = createWebHistory()
 const routerOptions: RouterOptions = {
   history,
   routes,
+  scrollBehavior: async (to, from, savedPosition) => {
+    if (to.hash) {
+      return { el: to.hash, behavior: "smooth" }
+    }
+    if (savedPosition) {
+      return savedPosition
+    }
+    if (to.fullPath === from.fullPath) {
+      return
+    }
+    return { top: 0, left: 0, behavior: "auto" }
+  },
 }
 
 const router = createRouter(routerOptions)

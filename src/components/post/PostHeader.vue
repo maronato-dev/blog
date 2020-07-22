@@ -76,7 +76,7 @@ export default defineComponent({
     const i18n = useI18n()
     const isoDate = computed(() => {
       const date =
-        props.post.updated_at || props.post.published_at || new Date()
+        props.post.published_at || props.post.updated_at || new Date()
       return new Date(date).toISOString()
     })
 

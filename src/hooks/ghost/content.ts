@@ -2,19 +2,36 @@ import GhostContentAPI, {
   Pagination,
   SettingsResponse,
   PostOrPage,
+  PostsOrPages,
 } from "@tryghost/content-api"
 import { ref, watch, computed, onBeforeMount, Ref, reactive, isRef } from "vue"
 import axios, { AxiosError } from "axios"
 import { useI18n, Composer } from "vue-i18n"
+import { createGlobalState, useStorage } from "@vueuse/core"
+import { useRouter } from "vue-router"
+import dayjs from "dayjs"
 import { useFetchData } from "../fetch"
 import { useError } from "../layout"
 import { useTitle } from "../meta"
-import { createGlobalState, useStorage } from "@vueuse/core"
-import { useRouter } from "vue-router"
 import { useSEOTags } from "../seo"
 
 interface BrowseResults<T> extends Array<T> {
   meta: { pagination: Pagination }
+}
+
+const createEmptyPostsOrPages = () => {
+  const postsOrPages = ([] as unknown) as PostsOrPages
+  postsOrPages.meta = {
+    pagination: {
+      page: 1,
+      pages: 1,
+      limit: 0,
+      total: 0,
+      next: null,
+      prev: null,
+    },
+  }
+  return postsOrPages
 }
 
 export const useGhostContentApi = () => {
@@ -158,7 +175,7 @@ export const useSettings = () => {
   return { settings: settingsState, fetchState, fetch }
 }
 
-export const useCurrentPageOrPost = (slug: string) => {
+export const useCurrentPageOrPost = (slug: Ref<string>) => {
   const api = useGhostContentApi()
   const i18n = useI18n()
   const router = useRouter()
@@ -170,14 +187,14 @@ export const useCurrentPageOrPost = (slug: string) => {
     const getLocaleFromSlug = (path: string) =>
       i18n.availableLocales.find(locale => path.startsWith(`${locale}-`))
 
-    const slugLocale = getLocaleFromSlug(slug)
+    const slugLocale = getLocaleFromSlug(slug.value)
     let localizedSlug: string
 
     if (slugLocale) {
-      localizedSlug = slug
+      localizedSlug = slug.value
       i18n.locale.value = slugLocale
     } else {
-      localizedSlug = `${i18n.locale.value}-${slug}`
+      localizedSlug = `${i18n.locale.value}-${slug.value}`
     }
 
     return api.posts
@@ -195,7 +212,7 @@ export const useCurrentPageOrPost = (slug: string) => {
         content.value = response
         if (slugLocale) {
           // If content loaded using a localized slug, replace the path with non-localized slug
-          const nonLocalizedSlug = slug.substr(slugLocale.length + 1)
+          const nonLocalizedSlug = slug.value.substr(slugLocale.length + 1)
           router.replace({
             name: "postOrPage",
             params: { slug: nonLocalizedSlug },
@@ -208,6 +225,9 @@ export const useCurrentPageOrPost = (slug: string) => {
       })
   }
   const [fetch, fetchState] = useFetchData(getContent)
+
+  // Reload on post/page change
+  watch(slug, fetch)
 
   // Reload post when changing locale
   watch(i18n.locale, fetch)
@@ -300,4 +320,112 @@ export const useSubscribe = (emailRef: Ref<string>) => {
     }
   }
   return subscribe
+}
+
+const getGhostFormattedDate = (post: PostOrPage) => {
+  return dayjs(post.published_at || new Date()).format("YYYY-MM-DD HH:mm:ss")
+}
+
+const useNextPost = (post: PostOrPage) => {
+  const api = useGhostContentApi()
+  const i18n = useI18n()
+  const next = ref<PostOrPage | undefined>(undefined)
+
+  const fetchNextPost = () => {
+    return api.posts
+      .browse({
+        limit: 1,
+        include: ["tags", "authors"],
+        filter: `slug:-${post.slug}+published_at:>'${getGhostFormattedDate(
+          post
+        )}'+tag:hash-${i18n.locale.value}`,
+        order: "published_at asc",
+      })
+      .then(posts => posts[0] && removeLocaleFromSlug(i18n)(posts[0]))
+  }
+
+  const [fetch, fetchState] = useFetchData(async () => {
+    next.value = await fetchNextPost()
+  })
+
+  return { next, fetch, fetchState }
+}
+
+const usePrevPost = (post: PostOrPage) => {
+  const api = useGhostContentApi()
+  const i18n = useI18n()
+  const prev = ref<PostOrPage | undefined>(undefined)
+
+  const fetchPrevPost = () => {
+    return api.posts
+      .browse({
+        limit: 1,
+        include: ["tags", "authors"],
+        filter: `slug:-${post.slug}+published_at:<'${getGhostFormattedDate(
+          post
+        )}'+tag:hash-${i18n.locale.value}`,
+        order: "published_at desc",
+      })
+      .then(posts => posts[0] && removeLocaleFromSlug(i18n)(posts[0]))
+  }
+
+  const [fetch, fetchState] = useFetchData(async () => {
+    prev.value = await fetchPrevPost()
+  })
+
+  return { prev, fetch, fetchState }
+}
+
+export const usePostsWithTag = (tag?: string, limit = 15) => {
+  const api = useGhostContentApi()
+  const i18n = useI18n()
+
+  const fetchTagPosts = (page = 0) => {
+    if (typeof tag === "undefined") {
+      return Promise.resolve(createEmptyPostsOrPages())
+    }
+    return api.posts.browse({
+      include: ["tags", "authors"],
+      limit,
+      page,
+      filter: `tag:hash-${i18n.locale.value}+tag:${tag}`,
+    })
+  }
+
+  const {
+    content,
+    loadMore,
+    fetchState,
+    canLoadMore,
+    fetchInitial,
+  } = useContentBrowser(fetchTagPosts)
+
+  const meta = computed(() => content.value.meta)
+
+  // Reload posts when changing locale
+  watch(i18n.locale, fetchInitial)
+
+  const posts = computed(() => content.value.map(removeLocaleFromSlug(i18n)))
+
+  return { posts, loadMore, fetchState, canLoadMore, meta }
+}
+
+export const useRelatedPosts = (post: PostOrPage) => {
+  const { next, fetchState: nextState } = useNextPost(post)
+  const { prev, fetchState: prevState } = usePrevPost(post)
+  const { posts, meta, fetchState: tagsState } = usePostsWithTag(
+    post.primary_tag ? post.primary_tag.slug : undefined,
+    4
+  )
+  const withTags = computed(() => posts.value.filter(p => p.id !== post.id))
+  const withTagsTotal = computed(() => meta.value.pagination.total)
+
+  const pending = computed(
+    () => nextState.pending || prevState.pending || tagsState.pending
+  )
+  const error = computed(
+    () => nextState.error || prevState.error || tagsState.error
+  )
+
+  return { next, prev, withTags, withTagsTotal, pending, error }
 }
