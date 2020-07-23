@@ -5,7 +5,7 @@
   >
     <router-link
       v-if="post.feature_image"
-      :to="`/${post.slug}`"
+      :to="{ name: 'postOrPage', params: { slug: post.slug } }"
       class="relative block overflow-hidden rounded-lg shadow-md group-hover:shadow-lg translate-y-0 group-hover:-translate-y-2 dark-group-hover:opacity-100 transform transition-all duration-200 image-link delay-150"
     >
       <img
@@ -18,12 +18,12 @@
     </router-link>
 
     <div class="flex-grow flex flex-col content">
-      <router-link :to="`/${post.slug}`" class="relative block">
+      <router-link :to="{ name: 'postOrPage', params: { slug: post.slug } }" class="relative block">
         <header class="mt-4 mx-0 mb-3">
           <router-link
             v-if="post.primary_tag"
             class="mt-0 mb-2 text-primary-400 dark:text-primary-300 font-semibold uppercase animated-underline opacity-100 text-sm"
-            :to="`/tag/${post.primary_tag.slug}`"
+            :to="{ name: 'tag', params: { slug: post.primary_tag.slug } }"
           >{{ post.primary_tag.name }}</router-link>
           <h2 class="mb-1 mt-1 leading-tight text-2xl font-medium title">{{ post.title }}</h2>
         </header>
@@ -48,25 +48,20 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue"
-import { PostOrPage } from "@tryghost/content-api"
 import { useI18n } from "vue-i18n"
 import { getImageUrl, getSrcset } from "./imageUtils"
-
-interface Props {
-  post: PostOrPage
-}
+import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
 
 export default defineComponent({
   props: {
     post: {
-      type: Object as PropType<PostOrPage>,
+      type: Object as PropType<LocalizedPostOrPage>,
       required: true,
     },
     large: Boolean,
     noBorder: Boolean,
   },
   setup(props) {
-    props.post.custom_excerpt
     const i18n = useI18n()
     const isoDate = computed(() => {
       const date =

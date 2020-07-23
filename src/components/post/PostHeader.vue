@@ -15,7 +15,7 @@
       <div class="flex flex-row justify-center text-base my-8 font-bold flex-wrap">
         <time
           class="flex-grow w-full md:w-auto text-center mb-2 md:mb-0"
-          :datetime="isoString"
+          :datetime="isoDate"
         >{{ dateString }}</time>
         <span class="mx-3 opacity-50 font-normal text-xl leading-6 hidden md:block">/</span>
         <span>{{ readingTime }}</span>
@@ -58,17 +58,17 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue"
-import { PostOrPage } from "@tryghost/content-api"
 import { useI18n } from "vue-i18n"
 import HeartIcon from "../../assets/img/icons/heart.svg"
 import EmptyHeartIcon from "../../assets/img/icons/heart-empty.svg"
 import { usePostLikes } from "../../hooks/likes"
 import { getImageUrl, getSrcset } from "../collections/PostFeed/imageUtils"
+import { LocalizedPostOrPage } from "../../hooks/ghost/content/utils"
 
 export default defineComponent({
   props: {
     post: {
-      type: Object as PropType<PostOrPage>,
+      type: Object as PropType<LocalizedPostOrPage>,
       required: true,
     },
   },
@@ -91,13 +91,8 @@ export default defineComponent({
       })
     })
 
-    const nonLocalizedSlug = computed(() =>
-      props.post.slug.startsWith(`${i18n.locale.value}-`)
-        ? props.post.slug.substr(i18n.locale.value.length + 1)
-        : props.post.slug
-    )
     const { likes, toggleLike, liked, loading: loadingLikes } = usePostLikes(
-      nonLocalizedSlug.value
+      props.post.slug
     )
     const likeIcon = computed(() => (liked.value ? HeartIcon : EmptyHeartIcon))
 

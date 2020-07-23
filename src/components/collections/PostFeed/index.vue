@@ -6,14 +6,14 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import { PostOrPage } from "@tryghost/content-api"
 import PostCard from "./PostCard.vue"
+import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
 
 export default defineComponent({
   components: { PostCard },
   props: {
     posts: {
-      type: Array as PropType<PostOrPage[]>,
+      type: Array as PropType<LocalizedPostOrPage[]>,
       required: true,
     },
   },

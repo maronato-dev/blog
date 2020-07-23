@@ -4,9 +4,9 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue"
+import { useWindowSize } from "@vueuse/core"
 import LangAccordion from "./LangAccordion.vue"
 import LangDropdown from "./LangDropdown.vue"
-import { useWindowSize } from "@vueuse/core"
 
 export default defineComponent({
   components: { LangAccordion, LangDropdown },

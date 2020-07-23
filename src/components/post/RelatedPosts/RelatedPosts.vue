@@ -1,7 +1,6 @@
 <template>
   <transition name="fade" mode="out-in" appear>
-    <loading-content v-if="pending" />
-    <div v-else-if="!error" class="flex relative flex-wrap container mx-auto">
+    <div class="flex relative flex-wrap container mx-auto">
       <same-tag-posts
         v-if="withTags.length > 0"
         :posts="withTags"
@@ -16,36 +15,25 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue"
-import { PostOrPage } from "@tryghost/content-api"
 import SameTagPosts from "./SameTagPosts.vue"
-import { useRelatedPosts } from "../../../hooks/ghost/content"
-import LoadingContent from "../../ui/LoadingContent.vue"
+import { useRelatedPosts } from "../../../hooks/ghost/content/db/posts"
 import PostCard from "../../collections/PostFeed/PostCard.vue"
+import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
 
 export default defineComponent({
   name: "RelatedPosts",
-  components: { LoadingContent, PostCard, SameTagPosts },
+  components: { PostCard, SameTagPosts },
   props: {
     post: {
-      type: Object as PropType<PostOrPage>,
+      type: Object as PropType<LocalizedPostOrPage>,
       required: true,
     },
   },
   setup(props) {
-    const {
-      next,
-      prev,
-      withTags,
-      pending,
-      error,
-      withTagsTotal,
-    } = useRelatedPosts(props.post)
+    const { next, prev, withTags, withTagsTotal } = useRelatedPosts(props.post)
     const nextAndPrev = computed(() => !!next && !!prev)
 
-    return { next, prev, withTags, pending, error, nextAndPrev, withTagsTotal }
+    return { next, prev, withTags, nextAndPrev, withTagsTotal }
   },
 })
 </script>
-
-<style lang="postcss" scoped>
-</style>

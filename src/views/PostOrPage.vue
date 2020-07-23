@@ -2,9 +2,8 @@
   <main class="mt-5 pb-2 relative flex-grow outer">
     <div class="max-1500 w-full mx-auto">
       <transition name="fade" mode="out-in" appear>
-        <loading-content v-if="fetchState.pending" />
-        <div v-else-if="fetchState.error">Error</div>
-        <template v-else>
+        <loading-content v-if="loading" />
+        <template v-else-if="content">
           <div v-if="content.page">Page</div>
           <post v-else :post="content" />
         </template>
@@ -15,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, toRefs } from "vue"
-import { useCurrentPageOrPost } from "../hooks/ghost/content"
+import { useCurrentPageOrPost } from "../hooks/ghost/content/posts"
 import {
   providePostFootnotes,
   providePostReferences,
@@ -34,13 +33,13 @@ export default defineComponent({
   },
   setup(props) {
     const { slug } = toRefs(props)
-    const { content, fetchState } = useCurrentPageOrPost(slug)
+    const { content, loading } = useCurrentPageOrPost(slug)
 
     // Provide post counters
     providePostFootnotes()
     providePostReferences()
 
-    return { content, fetchState }
+    return { content, loading }
   },
 })
 </script>

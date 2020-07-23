@@ -1,8 +1,7 @@
 import { Ref, watch, computed } from "vue"
 import { createGlobalState, useStorage } from "@vueuse/core"
 import { useI18n } from "vue-i18n"
-
-type Locales = "pt" | "en"
+import { Locales } from "./util"
 
 export const useLocaleState = createGlobalState(() => {
   const preferredLangs = navigator.languages.map(l => l.split("-")[0])

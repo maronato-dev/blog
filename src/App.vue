@@ -9,8 +9,9 @@ import { defineComponent, onMounted, watch } from "vue"
 import { useLocaleSync } from "./hooks/locale"
 import { useTheme } from "./hooks/theme"
 import { useLayoutComponent, useLayout, components } from "./hooks/layout"
-import { useSettings } from "./hooks/ghost"
+import { useSettings } from "./hooks/ghost/content/settings"
 import { useSEOTags } from "./hooks/seo"
+import { useDatabaseSync } from "./hooks/ghost/content/worker/index"
 
 export default defineComponent({
   name: "App",
@@ -21,6 +22,9 @@ export default defineComponent({
     useSEOTags()
     const { layout } = useLayout()
     const { fetch, settings } = useSettings()
+    const sync = useDatabaseSync()
+    sync()
+
     watch(
       settings,
       () => {
@@ -32,9 +36,11 @@ export default defineComponent({
       },
       { immediate: true }
     )
+
     // Make sure settings are updated on app load
     onMounted(fetch)
     const layoutComponent = useLayoutComponent()
+
     return { layoutComponent, settings }
   },
 })

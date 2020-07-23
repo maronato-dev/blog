@@ -60,7 +60,7 @@
 import { defineComponent, ref, computed, watch } from "vue"
 import { useRouter } from "vue-router"
 import { useWindowScroll, useThrottle } from "@vueuse/core"
-import { useSettings } from "../../hooks/ghost"
+import { useSettings } from "../../hooks/ghost/content/settings"
 import { useTheme } from "../../hooks/theme"
 import LangSelector from "./LangSelector/LangSelector.vue"
 

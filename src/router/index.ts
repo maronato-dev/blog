@@ -74,15 +74,21 @@ const routerOptions: RouterOptions = {
   routes,
   scrollBehavior: async (to, from, savedPosition) => {
     if (to.hash) {
-      return { el: to.hash, behavior: "smooth" }
+      return { el: to.hash, behavior: "smooth" } as ReturnType<
+        NonNullable<RouterOptions["scrollBehavior"]>
+      >
     }
     if (savedPosition) {
-      return savedPosition
+      return savedPosition as ReturnType<
+        NonNullable<RouterOptions["scrollBehavior"]>
+      >
     }
     if (to.fullPath === from.fullPath) {
       return
     }
-    return { top: 0, left: 0, behavior: "auto" }
+    return { top: 0, left: 0, behavior: "auto" } as ReturnType<
+      NonNullable<RouterOptions["scrollBehavior"]>
+    >
   },
 }
 

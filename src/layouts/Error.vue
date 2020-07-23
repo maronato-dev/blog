@@ -28,7 +28,7 @@ import Page404 from "../components/layout/404.vue"
 import Page500 from "../components/layout/500.vue"
 import { useI18n } from "vue-i18n"
 import { useLayout } from "../hooks/layout"
-import { useFormattedTitle } from "../hooks/ghost/content"
+import { useFormattedTitle } from "../hooks/ghost/content/title"
 
 export default defineComponent({
   name: "ErrorLayout",

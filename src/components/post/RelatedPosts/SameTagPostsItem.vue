@@ -1,10 +1,10 @@
 <template>
   <li>
     <h4 class="text-base font-bold opacity-75 hover:opacity-100 transition-opacity duration-200">
-      <router-link :to="{ name: 'postOrPage', params: { slug } }">{{ post.title }}</router-link>
+      <router-link :to="{ name: 'postOrPage', params: { slug: post.slug } }">{{ post.title }}</router-link>
     </h4>
     <div>
-      <time :datetime="isoString">{{ dateString }}</time> -
+      <time :datetime="isoDate">{{ dateString }}</time> -
       <span>{{ readingTime }}</span>
     </div>
   </li>
@@ -12,13 +12,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue"
-import { PostOrPage } from "@tryghost/content-api"
 import { useI18n } from "vue-i18n"
+import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
 
 export default defineComponent({
   props: {
     post: {
-      type: Object as PropType<PostOrPage>,
+      type: Object as PropType<LocalizedPostOrPage>,
       required: true,
     },
   },
@@ -41,12 +41,7 @@ export default defineComponent({
       })
     })
 
-    const slug = computed(() =>
-      props.post.slug.startsWith(`${i18n.locale.value}-`)
-        ? props.post.slug.substr(i18n.locale.value.length + 1)
-        : props.post.slug
-    )
-    return { isoDate, dateString, readingTime, slug }
+    return { isoDate, dateString, readingTime }
   },
 })
 </script>

@@ -1,9 +1,8 @@
-import { Ref, watchEffect } from "vue"
-import { PostOrPage, SettingsResponse } from "@tryghost/content-api"
-import { useSettings } from "./ghost"
-import { useMeta } from "./meta"
-import { computed } from "vue"
+import { Ref, watchEffect, computed } from "vue"
 import { useI18n } from "vue-i18n"
+import { PostOrPage, SettingsResponse } from "@tryghost/content-api"
+import { useSettings } from "./ghost/content/settings"
+import { useMeta } from "./meta"
 
 const getCurrentUrl = () => {
   if (typeof window === "undefined") {

@@ -22,7 +22,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType, watch, ref, onMounted, computed } from "vue"
-import { PostOrPage } from "@tryghost/content-api"
 import PostContent from "./PostContent.vue"
 import PostHeader from "./PostHeader.vue"
 import RelatedPosts from "./RelatedPosts/RelatedPosts.vue"
@@ -35,6 +34,7 @@ import TableOfContents, {
 } from "../../components/ui/TableOfContents.vue"
 import Commento from "../../components/ui/Commento.vue"
 import { useI18n } from "vue-i18n"
+import { LocalizedPostOrPage } from "../../hooks/ghost/content/utils"
 
 export default defineComponent({
   components: {
@@ -48,7 +48,7 @@ export default defineComponent({
   },
   props: {
     post: {
-      type: Object as PropType<PostOrPage>,
+      type: Object as PropType<LocalizedPostOrPage>,
       required: true,
     },
   },

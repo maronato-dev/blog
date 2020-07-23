@@ -1,7 +1,7 @@
 import { ref, Ref, computed } from "vue"
 import axios, { AxiosResponse, AxiosRequestConfig, AxiosError } from "axios"
 import type { PostOrPage, Pagination } from "@tryghost/content-api"
-import { useFetchData } from "../fetch"
+import { useFetchData } from "../../fetch"
 
 interface RequestParams extends AxiosRequestConfig {
   endpoint: string

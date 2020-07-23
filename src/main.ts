@@ -4,7 +4,7 @@ import App from "./App.vue"
 import router from "./router"
 import pt from "./locales/pt.json"
 import en from "./locales/en.json"
-import { useLocaleState } from "./hooks/locale"
+import { useLocaleState } from "./hooks/locale/index"
 import "./index.css"
 
 const i18n = () => {

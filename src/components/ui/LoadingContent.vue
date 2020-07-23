@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue"
-import LoadingSpinner from "./LoadingSpinner.vue"
 import { useTimeoutFn } from "@vueuse/core"
+import LoadingSpinner from "./LoadingSpinner.vue"
 
 export default defineComponent({
   components: { LoadingSpinner },

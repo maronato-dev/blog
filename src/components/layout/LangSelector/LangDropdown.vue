@@ -48,8 +48,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue"
-import { useLocaleNameAndFlag } from "../../../hooks/locale"
 import { useI18n } from "vue-i18n"
+import { useLocaleNameAndFlag } from "../../../hooks/locale"
 
 export default defineComponent({
   setup() {

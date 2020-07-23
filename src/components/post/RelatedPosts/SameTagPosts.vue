@@ -23,14 +23,15 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import { PostOrPage, Tag } from "@tryghost/content-api"
+import { Tag } from "@tryghost/content-api"
 import SameTagItems from "./SameTagPostsItem.vue"
+import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
 
 export default defineComponent({
   components: { SameTagItems },
   props: {
     posts: {
-      type: Array as PropType<PostOrPage[]>,
+      type: Array as PropType<LocalizedPostOrPage[]>,
       required: true,
     },
     total: {

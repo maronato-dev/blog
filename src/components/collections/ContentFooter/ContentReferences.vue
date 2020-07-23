@@ -12,10 +12,10 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue"
+import { useI18n } from "vue-i18n"
 import BaseFooter from "./BaseFooter.vue"
 import FooterElement from "./FooterElement.vue"
 import { usePostReferences } from "../../../hooks/postHelpers"
-import { useI18n } from "vue-i18n"
 
 export default defineComponent({
   components: { BaseFooter, FooterElement },

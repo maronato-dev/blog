@@ -17,10 +17,10 @@ import {
   providePostFootnotes,
   providePostReferences,
 } from "../hooks/postHelpers"
+import { useError } from "../hooks/layout"
+import { useFormattedTitle } from "../hooks/ghost/content/title"
 import LoadingContent from "../components/ui/LoadingContent.vue"
 import Post from "../components/post/Post.vue"
-import { useError } from "../hooks/layout"
-import { useFormattedTitle } from "../hooks/ghost"
 
 export default defineComponent({
   name: "PreviewPage",

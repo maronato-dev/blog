@@ -2,20 +2,19 @@
   <div class="container mx-auto">
     <div>{{ route.name }}</div>
     <transition name="fade" mode="out-in" appear>
-      <loading-content v-if="fetchState.pending" />
-      <div v-else-if="fetchState.error">Error</div>
+      <loading-content v-if="loading" />
       <post-feed v-else :posts="posts" />
     </transition>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from "vue"
+import { defineComponent } from "vue"
 import { useRoute } from "vue-router"
 import PostFeed from "../components/collections/PostFeed/index.vue"
 import LoadingContent from "../components/ui/LoadingContent.vue"
-import { usePosts, useDefaultTitle } from "../hooks/ghost/content"
-import { useError } from "../hooks/layout"
+import { useDefaultTitle } from "../hooks/ghost/content/title"
+import { usePosts } from "../hooks/ghost/content/posts"
 
 export default defineComponent({
   name: "IndexPage",
@@ -23,17 +22,11 @@ export default defineComponent({
   setup() {
     useDefaultTitle()
     const route = useRoute()
-    const { trigger500 } = useError()
-    const { posts, fetchState } = usePosts(15)
-    watch(
-      () => fetchState.error,
-      error => {
-        if (error) {
-          trigger500()
-        }
-      }
-    )
-    return { route, posts, fetchState }
+    const { posts, loading, loadMore } = usePosts(2)
+
+    window.loadMore = loadMore
+
+    return { route, posts, loading }
   },
 })
 </script>
