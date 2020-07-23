@@ -66,7 +66,7 @@ export function useCurrentDBPageOrPost(slug: Ref<string>) {
   return content
 }
 
-export function useNextPost(post: LocalizedPostOrPage) {
+export function useNextPost(post: Ref<LocalizedPostOrPage>) {
   const db = useGhostDatabase()
   const nextPost = ref<LocalizedPostOrPage | undefined>()
 
@@ -74,17 +74,17 @@ export function useNextPost(post: LocalizedPostOrPage) {
     nextPost.value = (
       await db.posts
         .where("publishedDate")
-        .above(post.publishedDate)
-        .and(p => p.id !== post.id && p.language === post.language)
+        .above(post.value.publishedDate)
+        .and(p => p.id !== post.value.id && p.language === post.value.language)
         .toArray()
     )[0]
   }
 
-  loadNext()
+  watch(post, loadNext, { immediate: true })
   return nextPost
 }
 
-export function usePrevPost(post: LocalizedPostOrPage) {
+export function usePrevPost(post: Ref<LocalizedPostOrPage>) {
   const db = useGhostDatabase()
   const prevPost = ref<LocalizedPostOrPage | undefined>()
 
@@ -92,14 +92,14 @@ export function usePrevPost(post: LocalizedPostOrPage) {
     prevPost.value = (
       await db.posts
         .where("publishedDate")
-        .below(post.publishedDate)
-        .and(p => p.id !== post.id && p.language === post.language)
+        .below(post.value.publishedDate)
+        .and(p => p.id !== post.value.id && p.language === post.value.language)
         .reverse()
         .toArray()
     )[0]
   }
 
-  loadPrev()
+  watch(post, loadPrev, { immediate: true })
   return prevPost
 }
 
@@ -117,36 +117,38 @@ export function paginateDBContent<T>(content: Ref<T[]>, pageSize = 15) {
   return { content: paginatedContent, loadMore, canLoadMore }
 }
 
-export function usePostsWithTag(tagSlug?: string, pageSize = 15) {
+export function usePostsWithTag(
+  tagSlug: Ref<string | undefined>,
+  pageSize = 15
+) {
   const db = useGhostDatabase()
   const i18n = useI18n()
   const posts = ref<LocalizedPostOrPage[]>([])
 
   async function loadPosts() {
-    if (tagSlug) {
+    if (tagSlug?.value) {
       posts.value = await db.posts
-        .where({ language: i18n.locale.value, primaryTagSlug: tagSlug })
+        .where({ language: i18n.locale.value, primaryTagSlug: tagSlug.value })
         .toArray()
     }
   }
 
-  watch(i18n.locale, loadPosts, { immediate: true })
+  watch([i18n.locale, tagSlug], loadPosts, { immediate: true })
 
   const { content, canLoadMore, loadMore } = paginateDBContent(posts, pageSize)
+  const total = computed(() => posts.value.length)
 
-  return { posts: content, canLoadMore, loadMore, total: posts.value.length }
+  return { posts: content, canLoadMore, loadMore, total }
 }
 
-export function useRelatedPosts(post: LocalizedPostOrPage) {
+export function useRelatedPosts(post: Ref<LocalizedPostOrPage>) {
   const next = useNextPost(post)
   const prev = usePrevPost(post)
-  const { posts: rawPostsWithTag, total } = usePostsWithTag(
-    post.primaryTagSlug,
-    4
-  )
+  const primaryTagSlug = computed(() => post.value.primaryTagSlug)
+  const { posts: rawPostsWithTag, total } = usePostsWithTag(primaryTagSlug, 4)
 
   const withTags = computed(() =>
-    rawPostsWithTag.value.filter(p => p.id !== post.id)
+    rawPostsWithTag.value.filter(p => p.id !== post.value.id)
   )
 
   return { next, prev, withTags, withTagsTotal: total }

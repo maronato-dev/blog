@@ -15,7 +15,7 @@
       <related-posts :post="post" />
     </section>
     <section>
-      <commento />
+      <commento v-if="online" />
     </section>
   </article>
 </template>
@@ -35,6 +35,7 @@ import TableOfContents, {
 import Commento from "../../components/ui/Commento.vue"
 import { useI18n } from "vue-i18n"
 import { LocalizedPostOrPage } from "../../hooks/ghost/content/utils"
+import { useGlobalOnline } from "../../hooks/online"
 
 export default defineComponent({
   components: {
@@ -72,7 +73,9 @@ export default defineComponent({
       return footnoteCount.value > 0 || showToc.value
     })
 
-    return { footnoteCount, referenceCount, toc, aside, showToc }
+    const online = useGlobalOnline()
+
+    return { footnoteCount, referenceCount, toc, aside, showToc, online }
   },
 })
 </script>

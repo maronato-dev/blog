@@ -2,7 +2,7 @@
   <transition name="fade" mode="out-in" appear>
     <div class="flex relative flex-wrap container mx-auto">
       <same-tag-posts
-        v-if="withTags.length > 0"
+        v-if="withTags.length > 0 && post.primary_tag"
         :posts="withTags"
         :total="withTagsTotal"
         :tag="post.primary_tag"
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from "vue"
+import { defineComponent, PropType, computed, toRefs } from "vue"
 import SameTagPosts from "./SameTagPosts.vue"
 import { useRelatedPosts } from "../../../hooks/ghost/content/db/posts"
 import PostCard from "../../collections/PostFeed/PostCard.vue"
@@ -30,7 +30,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { next, prev, withTags, withTagsTotal } = useRelatedPosts(props.post)
+    const { post } = toRefs(props)
+    const { next, prev, withTags, withTagsTotal } = useRelatedPosts(post)
     const nextAndPrev = computed(() => !!next && !!prev)
 
     return { next, prev, withTags, nextAndPrev, withTagsTotal }

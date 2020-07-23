@@ -66,7 +66,7 @@ import EmptyHeartIcon from "../../assets/img/icons/heart-empty.svg"
 import { usePostLikes } from "../../hooks/likes"
 import { getImageUrl, getSrcset } from "../collections/PostFeed/imageUtils"
 import { LocalizedPostOrPage } from "../../hooks/ghost/content/utils"
-import { useOnline } from "@vueuse/core"
+import { useGlobalOnline } from "../../hooks/online"
 
 export default defineComponent({
   props: {
@@ -99,7 +99,7 @@ export default defineComponent({
     )
     const likeIcon = computed(() => (liked.value ? HeartIcon : EmptyHeartIcon))
 
-    const online = useOnline()
+    const online = useGlobalOnline()
 
     return {
       isoDate,
