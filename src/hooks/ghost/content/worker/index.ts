@@ -50,7 +50,7 @@ export function useDatabaseSync() {
 
   const sync = async () => {
     setComplete(false)
-    const worker: Worker = new GhostWorker()
+    const worker = new GhostWorker()
     const request: WorkerRequest = {
       action: "sync",
       data: {

@@ -76,7 +76,6 @@ export function useNextPost(post: LocalizedPostOrPage) {
         .where("publishedDate")
         .above(post.publishedDate)
         .and(p => p.id !== post.id && p.language === post.language)
-        .reverse()
         .toArray()
     )[0]
   }
@@ -95,6 +94,7 @@ export function usePrevPost(post: LocalizedPostOrPage) {
         .where("publishedDate")
         .below(post.publishedDate)
         .and(p => p.id !== post.id && p.language === post.language)
+        .reverse()
         .toArray()
     )[0]
   }

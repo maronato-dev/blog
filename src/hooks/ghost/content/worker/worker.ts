@@ -75,7 +75,7 @@ async function syncDatabase(lastSync: Date) {
   return results
 }
 
-onmessage = event => {
+onmessage = (event: MessageEvent) => {
   const request: WorkerRequest = event.data
 
   if (request.action === "sync") {

@@ -19,21 +19,23 @@
         >{{ dateString }}</time>
         <span class="mx-3 opacity-50 font-normal text-xl leading-6 hidden md:block">/</span>
         <span>{{ readingTime }}</span>
-        <span class="mx-3 opacity-50 font-normal text-xl leading-6">/</span>
-        <span
-          class="cursor-pointer flex flex-row justify-between group items-center"
-          @click="toggleLike"
-        >
+        <template v-if="online">
+          <span class="mx-3 opacity-50 font-normal text-xl leading-6">/</span>
           <span
-            class="transition-opacity duration-500 likes-number"
-            :class="{ 'opacity-0': loadingLikes }"
-          >{{ likes }}</span>
-          <img
-            class="h-5 text-red-600 ml-2 fill-current transition-all duration-300 group-hover:scale-125 active:scale-125 transform"
-            :class="{ 'scale-125': liked }"
-            :src="likeIcon"
-          />
-        </span>
+            class="cursor-pointer flex flex-row justify-between group items-center"
+            @click="toggleLike"
+          >
+            <span
+              class="transition-opacity duration-500 likes-number"
+              :class="{ 'opacity-0': loadingLikes }"
+            >{{ likes }}</span>
+            <img
+              class="h-5 text-red-600 ml-2 fill-current transition-all duration-300 group-hover:scale-125 active:scale-125 transform"
+              :class="{ 'scale-125': liked }"
+              :src="likeIcon"
+            />
+          </span>
+        </template>
       </div>
       <p
         v-if="post.custom_excerpt"
@@ -64,6 +66,7 @@ import EmptyHeartIcon from "../../assets/img/icons/heart-empty.svg"
 import { usePostLikes } from "../../hooks/likes"
 import { getImageUrl, getSrcset } from "../collections/PostFeed/imageUtils"
 import { LocalizedPostOrPage } from "../../hooks/ghost/content/utils"
+import { useOnline } from "@vueuse/core"
 
 export default defineComponent({
   props: {
@@ -96,6 +99,8 @@ export default defineComponent({
     )
     const likeIcon = computed(() => (liked.value ? HeartIcon : EmptyHeartIcon))
 
+    const online = useOnline()
+
     return {
       isoDate,
       dateString,
@@ -107,6 +112,7 @@ export default defineComponent({
       getImageUrl,
       getSrcset,
       loadingLikes,
+      online,
     }
   },
 })

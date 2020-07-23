@@ -1,6 +1,12 @@
-import type { SharedConfig } from "vite"
+import type { UserConfig } from "vite"
+import { supportedExts } from "vite/dist/node/resolver"
 
-const config: SharedConfig = {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import webWorkerLoader from "rollup-plugin-web-worker-loader"
+
+const config: UserConfig = {
+  serviceWorker: false,
   alias: {
     vue: "vue/dist/vue.esm-bundler.js",
   },
@@ -10,6 +16,15 @@ const config: SharedConfig = {
       "prismjs/plugins/autoloader/prism-autoloader.min.js",
       "prismjs/plugins/toolbar/prism-toolbar.min.js",
       "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.min.js",
+    ],
+  },
+  rollupInputOptions: {
+    plugins: [
+      webWorkerLoader({
+        targetPlatform: "browser",
+        pattern: /(.+)\?worker$/,
+        extensions: supportedExts,
+      }),
     ],
   },
 }
