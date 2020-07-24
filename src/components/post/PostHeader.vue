@@ -94,8 +94,9 @@ export default defineComponent({
       })
     })
 
+    const slug = computed(() => props.post.slug)
     const { likes, toggleLike, liked, loading: loadingLikes } = usePostLikes(
-      props.post.slug
+      slug
     )
     const likeIcon = computed(() => (liked.value ? HeartIcon : EmptyHeartIcon))
 
