@@ -7,7 +7,7 @@
     "build:vite": "vite build",
     "build:generateSW": "workbox generateSW workbox-config.js",
     "build": "yarn build:vite && yarn build:generateSW",
-    "start": "ts-node server",
+    "start": "ts-node --project server/tsconfig.json server",
     "lint": "yarn lint:no-fix --fix",
     "lint:no-fix": "eslint --ext .js,.vue,.ts --ignore-path .gitignore ."
   },
