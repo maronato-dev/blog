@@ -11,7 +11,6 @@ import { useMeta, ScriptAttrs } from "../../hooks/meta"
 
 export default defineComponent(() => {
   const { script } = useMeta()
-  console.log("loaded commento")
 
   const id = "commento"
   const domain = import.meta.env.VITE_DOMAIN

@@ -32,13 +32,13 @@ COPY --from=postinstall /app/ /app/
 
 FROM cleanup as dev-prefinal
 
-COPY dev-entrypoint.sh /docker-entrypoint.sh
+COPY docker/dev-entrypoint.sh /docker-entrypoint.sh
 
 CMD ["yarn", "dev"]
 
 FROM cleanup as prod-prefinal
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
 
 # Configure folder ownership
 RUN chown -R user:user /app && chmod -R 755 /app

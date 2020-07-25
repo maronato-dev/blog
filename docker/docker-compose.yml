@@ -20,7 +20,8 @@ services:
       mail__options__auth__pass: ${MAILGUN_PASS}
   frontend:
     build:
-      context: .
+      dockerfile: ./docker/Dockerfile
+      context: ../
     depends_on:
       - ghost
   commento:
