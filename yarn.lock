@@ -558,6 +558,11 @@
     remark "^12.0.0"
     unist-util-find-all-after "^3.0.1"
 
+"@tailwindcss/typography@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/typography/-/typography-0.2.0.tgz#b597c83502e3c3c6641a8aaabda223cd494ab349"
+  integrity sha512-aPgMH+CjQiScLZculoDNOQUrrK2ktkbl3D6uCLYp1jgYRlNDrMONu9nMu8LfwAeetYNpVNeIGx7WzHSu0kvECg==
+
 "@tryghost/content-api@^1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@tryghost/content-api/-/content-api-1.4.1.tgz#6b5c66e07be3dd87b21086e08d664c205b0cdb33"
@@ -2382,6 +2387,11 @@ get-stream@^5.0.0:
   integrity sha512-EXr1FOzrzTfGeL0gQdeFEvOMm2mzMOglyiOXSTpPC+iAjAKftbr3jpCMWynogwYnM+eSj9sHGc6wjIcDvYiygw==
   dependencies:
     pump "^3.0.0"
+
+glightbox@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/glightbox/-/glightbox-3.0.1.tgz#fbd98c39747713532298fc2da2ac42c19c2fdbe2"
+  integrity sha512-qsUq4Crg/iuJ9Yzam3tJQ2+90nQm4X4MvW6OtNEF0huewu7mJyfV1saldffKvyiexkafKdI+bW1N3l8RWrpz1w==
 
 glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@~5.1.0:
   version "5.1.1"

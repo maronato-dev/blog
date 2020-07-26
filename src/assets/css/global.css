@@ -7,6 +7,16 @@ body {
   height: 100%;
 }
 
+html {
+  scroll-padding-top: 70px;
+  @screen md {
+    scroll-padding-top: 80px;
+  }
+  @screen xl {
+    scroll-padding-top: 90px;
+  }
+}
+
 body {
   @apply bg-white text-gray-800 flex flex-col antialiased;
   text-rendering: optimizeLegibility;

@@ -1,7 +1,7 @@
 <template>
-  <div class="ghost-content" :class="{ aside }">
+  <div class="prose prose-sm lg:prose-lg ghost-content" :class="{ aside, 'prose-dark': isDark }">
     <div class="flex flex-col items-center">
-      <render-html :key="html" :html="html" />
+      <render-html :html="html" />
     </div>
   </div>
 </template>
@@ -9,6 +9,7 @@
 <script lang="ts">
 import { defineComponent } from "vue"
 import RenderHtml from "../render/RenderHtml.vue"
+import { useTheme } from "../../hooks/theme"
 
 export default defineComponent({
   components: { RenderHtml },
@@ -18,6 +19,10 @@ export default defineComponent({
       required: true,
     },
     aside: Boolean,
+  },
+  setup() {
+    const { isDark } = useTheme()
+    return { isDark }
   },
 })
 </script>

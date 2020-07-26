@@ -5,6 +5,7 @@ import router from "./router"
 import pt from "./locales/pt.json"
 import en from "./locales/en.json"
 import { useLocaleState } from "./hooks/locale/index"
+import { availableLocales } from "./hooks/locale/util"
 import "./index.css"
 
 const i18n = () => {
@@ -13,7 +14,7 @@ const i18n = () => {
     locale: locale.value,
     fallbackLocale: "en",
     inheritLocale: true,
-    availableLocales: ["pt", "en"],
+    availableLocales,
     messages: {
       pt,
       en,

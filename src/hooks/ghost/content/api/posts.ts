@@ -27,6 +27,7 @@ export function useAPIPosts(pageSize = 15) {
       .browse({
         include: ["tags", "authors"],
         limit: pageSize,
+        filter: `tag:hash-${i18n.locale.value}`,
       })
       .then(posts => posts.map(localizePostOrPage))
       .finally(() => {

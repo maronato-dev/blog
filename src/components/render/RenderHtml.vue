@@ -5,10 +5,12 @@ import {
   onMounted,
   getCurrentInstance,
   computed,
+  onUnmounted,
 } from "vue"
 import components from "./components"
 import reframe from "reframe.js"
 import Prism from "prismjs"
+import GLightbox from "glightbox"
 
 // Configure prism
 import "prismjs/plugins/autoloader/prism-autoloader.min.js"
@@ -18,6 +20,8 @@ import "prismjs/plugins/show-language/prism-show-language.min.js"
 
 import "../../assets/css/prismjs/plugins/toolbar.css"
 import "../../assets/css/prismjs/themes/material-dark.css"
+import { useMeta } from "../../hooks/meta"
+import { useRoute } from "vue-router"
 
 Prism.plugins.autoloader.languages_path =
   "https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/"
@@ -37,6 +41,16 @@ const reframeEmbeds = (el: HTMLElement) => {
   }
 }
 
+const anchorHeadings = (el: HTMLElement) => {
+  el.querySelectorAll("h1,h2,h3,h4").forEach(heading => {
+    const anchor = document.createElement("a")
+    anchor.setAttribute("class", "heading-anchor")
+    anchor.setAttribute("href", `#${heading.id}`)
+    anchor.textContent = "#"
+    heading.appendChild(anchor)
+  })
+}
+
 export default defineComponent({
   components,
   props: {
@@ -47,6 +61,8 @@ export default defineComponent({
   },
   setup(props) {
     const html = computed(() => props.html.split("<code").join("<code v-pre"))
+
+    // Reframe videos and embeddings
     onMounted(() => {
       const vm = getCurrentInstance()
       if (!vm) throw "Component instance not available!"
@@ -58,6 +74,7 @@ export default defineComponent({
       reframeEmbeds(el)
     })
 
+    // Highlight code
     onMounted(() => Prism.highlightAll())
 
     // Load mathjax
@@ -73,7 +90,58 @@ export default defineComponent({
       window.MathJax.typeset()
     })
 
+    // Glightbox
+    const { link } = useMeta()
+    const linkValue = link.value ? link.value : []
+    linkValue.push({
+      rel: "stylesheet",
+      href: "https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css",
+    })
+    link.value = linkValue
+    const glightbox = new GLightbox({
+      selector: ".kg-image,.kg-gallery-image img",
+    })
+    onMounted(() => {
+      glightbox.reload()
+    })
+    onUnmounted(() => {
+      glightbox.destroy()
+    })
+
+    // Navigate to anchor on load
+    onMounted(() => {
+      const route = useRoute()
+      if (route.hash) {
+        const el = document.querySelector(route.hash)
+        if (el) {
+          el.scrollIntoView()
+        }
+      }
+    })
+
+    // Add anchors to headings
+    onMounted(() => {
+      const vm = getCurrentInstance()
+      if (!vm) throw "Component instance not available!"
+
+      let el = vm.vnode.el as HTMLElement
+      if (el) {
+        el = el.parentNode as HTMLElement
+      }
+      anchorHeadings(el)
+    })
+
     return compile(html.value)
   },
 })
 </script>
+<style lang="postcss">
+html.glightbox-open {
+  height: unset;
+  overflow: unset;
+}
+body.glightbox-open {
+  height: unset;
+  overflow: unset;
+}
+</style>

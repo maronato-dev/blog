@@ -1,8 +1,9 @@
 import { Ref, watchEffect, computed } from "vue"
-import { useI18n } from "vue-i18n"
-import { PostOrPage, SettingsResponse } from "@tryghost/content-api"
+import { SettingsResponse } from "@tryghost/content-api"
 import { useSettings } from "./ghost/content/settings"
 import { useMeta } from "./meta"
+import { LocalizedPostOrPage } from "./ghost/content/utils"
+import { availableLocales, Locales } from "./locale/util"
 
 const getCurrentUrl = () => {
   if (typeof window === "undefined") {
@@ -12,7 +13,7 @@ const getCurrentUrl = () => {
   return `${location.origin}${location.pathname}`
 }
 
-const get = <T extends SettingsResponse | PostOrPage>(
+const get = <T extends SettingsResponse | LocalizedPostOrPage>(
   obj: T | undefined,
   key: keyof T
 ): string | undefined => {
@@ -24,9 +25,8 @@ const get = <T extends SettingsResponse | PostOrPage>(
   }
 }
 
-export const useSEOTags = (content?: Ref<PostOrPage | undefined>) => {
+export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
   const { meta, link } = useMeta()
-  const i18n = useI18n()
   const { settings } = useSettings()
   const cte = computed(() => content && content.value)
   const sett = computed(() => (settings.value ? settings.value : undefined))
@@ -133,20 +133,18 @@ export const useSEOTags = (content?: Ref<PostOrPage | undefined>) => {
     )
     meta.value = metaValue.filter(m => typeof m.content !== "undefined")
     if (content && content.value) {
-      const nonLocalizedSlug = content.value.slug.substr(
-        i18n.locale.value.length + 1
-      )
+      const slug = content.value.slug
       const origin = window.location.origin
-      const hreflang = i18n.availableLocales.map(locale => ({
+      const hreflang = availableLocales.map(locale => ({
         rel: "alternate",
         hreflang: locale,
-        href: `${origin}/${locale}-${nonLocalizedSlug}`,
+        href: `${origin}/${locale}-${slug}`,
         id: `hreflang-${locale}`,
       }))
       hreflang.push({
         rel: "alternate",
-        hreflang: "x-default",
-        href: `${origin}/${nonLocalizedSlug}`,
+        hreflang: "x-default" as Locales,
+        href: `${origin}/${slug}`,
         id: "hreflang-default",
       })
       link.value = link.value ? [...link.value, ...hreflang] : hreflang

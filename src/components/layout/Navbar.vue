@@ -19,9 +19,8 @@
       </div>
       <div class="lg:order-last lg:ml-4">
         <a>
-          <component
-            :is="themeIcon"
-            class="w-8 h-8 cursor-pointer fill-current opacity-75 hover:opacity-100 transition-all duration-200"
+          <icon-toggle-theme
+            class="w-6 h-6 cursor-pointer fill-current opacity-75 hover:opacity-100 transition-all duration-200"
             @click="toggleTheme"
             @mousedown.prevent
           />
@@ -49,10 +48,10 @@
           >{{ nav.label }}</a>
         </div>
         <lang-selector />
-        <div class="tx-sm nav display-none lg:block ml-4">
+        <div class="tx-sm nav hidden lg:block ml-4">
           <a :href="feedUrl">
             <icon-rss
-              class="w-4 h-4 opacity-75 hover:opacity-100 hover:text-orange-500 transition-all duration-300"
+              class="w-6 h-6 opacity-75 hover:opacity-100 hover:text-orange-500 transition-all duration-300"
             />
           </a>
         </div>
@@ -68,17 +67,15 @@ import { useWindowScroll, useThrottle } from "@vueuse/core"
 import { useSettings } from "../../hooks/ghost/content/settings"
 import { useTheme } from "../../hooks/theme"
 import LangSelector from "./LangSelector/LangSelector.vue"
-import IconSun from "../ui/Icons/IconSun.vue"
-import IconMoon from "../ui/Icons/IconMoon.vue"
+import IconToggleTheme from "../ui/Icons/IconToggleTheme.vue"
 import IconRss from "../ui/Icons/IconRss.vue"
 import { useI18n } from "vue-i18n"
 
 export default defineComponent({
-  components: { LangSelector, IconSun, IconMoon, IconRss },
+  components: { LangSelector, IconToggleTheme, IconRss },
   setup() {
     const { settings } = useSettings()
-    const { isDark, toggleTheme } = useTheme()
-    const themeIcon = computed(() => (isDark.value ? "icon-sun" : "icon-moon"))
+    const { toggleTheme } = useTheme()
 
     const collapse = ref(true)
     const router = useRouter()
@@ -119,7 +116,6 @@ export default defineComponent({
       toggle,
       collapse,
       toggleTheme,
-      themeIcon,
       clickOutside,
       hide,
       feedUrl,

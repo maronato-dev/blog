@@ -45,9 +45,6 @@ export default defineComponent((_props, { slots }) => {
     width: calc(100% / 2);
   }
 }
-.ref-link {
-  @apply pt-24 -mt-24;
-}
 .footnote-ref.active {
   @apply bg-gray-400 bg-opacity-75;
   @nest .dark-mode & {

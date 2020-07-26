@@ -9,6 +9,80 @@
 module.exports = {
   theme: {
     darkSelector: ".dark-mode",
+    typography: theme => ({
+      default: {
+        css: {
+          table: {
+            width: "auto",
+          },
+          "code::before": {
+            // eslint-disable-next-line quotes
+            content: '""',
+          },
+          "code::after": {
+            // eslint-disable-next-line quotes
+            content: '""',
+          },
+        },
+      },
+      dark: {
+        css: {
+          color: theme("colors.gray.400"),
+          // eslint-disable-next-line quotes
+          '[class~="lead"]': {
+            color: theme("colors.gray.400"),
+          },
+          a: {
+            color: theme("colors.gray.100"),
+          },
+          strong: {
+            color: theme("colors.gray.100"),
+          },
+          "ol > li::before": {
+            color: theme("colors.gray.600"),
+          },
+          "ul > li::before": {
+            backgroundColor: theme("colors.gray.600"),
+          },
+          hr: {
+            borderColor: theme("colors.gray.700"),
+          },
+          blockquote: {
+            color: theme("colors.gray.100"),
+            borderLeftColor: theme("colors.gray.700"),
+          },
+          h1: {
+            color: theme("colors.gray.100"),
+          },
+          h2: {
+            color: theme("colors.gray.100"),
+          },
+          h3: {
+            color: theme("colors.gray.100"),
+          },
+          h4: {
+            color: theme("colors.gray.100"),
+          },
+          "figure figcaption": {
+            color: theme("colors.gray.600"),
+          },
+          code: {
+            color: theme("colors.gray.100"),
+          },
+          pre: {
+            color: theme("colors.gray.400"),
+            // backgroundColor: theme("colors.gray.300"),
+          },
+          thead: {
+            color: theme("colors.gray.100"),
+            borderBottomColor: theme("colors.gray.500"),
+          },
+          "tbody tr": {
+            borderBottomColor: theme("colors.gray.500"),
+          },
+        },
+      },
+    }),
     extend: {
       opacity: {
         "85": ".85",
@@ -82,11 +156,18 @@ module.exports = {
       "group-hover",
     ],
     transitionProperty: ["responsive", "hover"],
+    typography: ["responsive", "dark"],
   },
-  plugins: [require("tailwindcss-dark-mode")()],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("tailwindcss-dark-mode")(),
+  ],
   purge: {
     // Learn more on https://tailwindcss.com/docs/controlling-file-size/#removing-unused-css
     enabled: process.env.NODE_ENV === "production",
     content: ["./src/**/*.vue", "./src/**/*.ts", "./index.html"],
+    options: {
+      whitelist: ["dark-mode"],
+    },
   },
 }

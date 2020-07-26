@@ -17,9 +17,6 @@ export default defineComponent((_props, { slots }) => {
 })
 </script>
 <style lang="postcss" scoped>
-.ref-link {
-  @apply pt-24 -mt-24;
-}
 .reference-ref.active {
   @apply bg-gray-400 bg-opacity-75 px-1;
   @nest .dark-mode & {

@@ -86,7 +86,7 @@ const routerOptions: RouterOptions = {
     if (to.fullPath === from.fullPath) {
       return
     }
-    return { top: 0, left: 0, behavior: "auto" } as ReturnType<
+    return { top: 0, left: 0, behavior: "smooth" } as ReturnType<
       NonNullable<RouterOptions["scrollBehavior"]>
     >
   },

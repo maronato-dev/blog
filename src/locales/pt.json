@@ -5,9 +5,8 @@
   "postOrPage": {
     "head": {
       "title": {
-        "loading": "Carregando... - {blogTitle}",
-        "error": "Erro! - {blogTitle}",
-        "content": "{title} - {blogTitle}"
+        "loading": "Carregando...",
+        "error": "Erro!"
       }
     },
     "footer": {
