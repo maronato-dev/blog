@@ -29,11 +29,15 @@
               class="transition-opacity duration-500 likes-number"
               :class="{ 'opacity-0': loadingLikes }"
             >{{ likes }}</span>
-            <img
-              class="h-5 text-red-600 ml-2 fill-current transition-all duration-300 group-hover:scale-125 active:scale-125 transform"
-              :class="{ 'scale-125': liked }"
-              :src="likeIcon"
-            />
+            <div
+              class="ml transition-all duration-300 group-hover:scale-125 active:scale-125 transform"
+            >
+              <component
+                :is="likeIcon"
+                class="h-5 w-6 text-red-600 fill-current"
+                :class="{ 'scale-125': liked }"
+              />
+            </div>
           </span>
         </template>
       </div>
@@ -61,14 +65,15 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue"
 import { useI18n } from "vue-i18n"
-import HeartIcon from "../../assets/img/icons/heart.svg"
-import EmptyHeartIcon from "../../assets/img/icons/heart-empty.svg"
 import { usePostLikes } from "../../hooks/likes"
 import { getImageUrl, getSrcset } from "../collections/PostFeed/imageUtils"
 import { LocalizedPostOrPage } from "../../hooks/ghost/content/utils"
 import { useGlobalOnline } from "../../hooks/online"
+import IconHeart from "../ui/Icons/IconHeart.vue"
+import IconHeartEmpty from "../ui/Icons/IconHeartEmpty.vue"
 
 export default defineComponent({
+  components: { IconHeartEmpty, IconHeart },
   props: {
     post: {
       type: Object as PropType<LocalizedPostOrPage>,
@@ -98,7 +103,9 @@ export default defineComponent({
     const { likes, toggleLike, liked, loading: loadingLikes } = usePostLikes(
       slug
     )
-    const likeIcon = computed(() => (liked.value ? HeartIcon : EmptyHeartIcon))
+    const likeIcon = computed(() =>
+      liked.value ? "icon-heart" : "icon-heart-empty"
+    )
 
     const online = useGlobalOnline()
 

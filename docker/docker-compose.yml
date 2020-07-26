@@ -12,7 +12,7 @@ services:
   ghost:
     image: ghost:3-alpine
     volumes:
-      - ghost_data:/var/lib/ghost/content
+      - ../ghost:/var/lib/ghost/content
     environment:
       mail__transport: SMTP
       mail__options__service: Mailgun

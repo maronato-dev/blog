@@ -10,9 +10,8 @@
           aria-expanded="true"
           @click="toggle"
         >
-          <div class="text-lg leading-5">{{ locale.flag }}</div>
+          <div class="text-2xl leading-5">{{ locale.flag }}</div>
           <svg
-            :class="{ 'rotate-180': show }"
             class="-mr-1 ml-2 h-5 w-5 transform transition-transform duration-200"
             viewBox="0 0 20 20"
             fill="currentColor"

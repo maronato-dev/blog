@@ -19,14 +19,12 @@
       </div>
       <div class="lg:order-last lg:ml-4">
         <a>
-          <svg
-            viewBox="0 0 20 20"
+          <component
+            :is="themeIcon"
             class="w-8 h-8 cursor-pointer fill-current opacity-75 hover:opacity-100 transition-all duration-200"
             @click="toggleTheme"
             @mousedown.prevent
-          >
-            <path :d="svgPath" />
-          </svg>
+          />
         </a>
       </div>
       <div
@@ -51,6 +49,13 @@
           >{{ nav.label }}</a>
         </div>
         <lang-selector />
+        <div class="tx-sm nav display-none lg:block ml-4">
+          <a :href="feedUrl">
+            <icon-rss
+              class="w-4 h-4 opacity-75 hover:opacity-100 hover:text-orange-500 transition-all duration-300"
+            />
+          </a>
+        </div>
       </div>
     </div>
   </nav>
@@ -63,18 +68,17 @@ import { useWindowScroll, useThrottle } from "@vueuse/core"
 import { useSettings } from "../../hooks/ghost/content/settings"
 import { useTheme } from "../../hooks/theme"
 import LangSelector from "./LangSelector/LangSelector.vue"
-
-const sunSVG =
-  "M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-const moonSVG =
-  "M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+import IconSun from "../ui/Icons/IconSun.vue"
+import IconMoon from "../ui/Icons/IconMoon.vue"
+import IconRss from "../ui/Icons/IconRss.vue"
+import { useI18n } from "vue-i18n"
 
 export default defineComponent({
-  components: { LangSelector },
+  components: { LangSelector, IconSun, IconMoon, IconRss },
   setup() {
     const { settings } = useSettings()
     const { isDark, toggleTheme } = useTheme()
-    const svgPath = computed(() => (isDark.value ? sunSVG : moonSVG))
+    const themeIcon = computed(() => (isDark.value ? "icon-sun" : "icon-moon"))
 
     const collapse = ref(true)
     const router = useRouter()
@@ -103,14 +107,22 @@ export default defineComponent({
       }
     })
 
+    const i18n = useI18n()
+    const feedUrl = computed(() => {
+      const origin = location.origin
+      const locale = i18n.locale.value
+      return `https://feedly.com/i/subscription/feed/${origin}/${locale}/rss/`
+    })
+
     return {
       settings,
       toggle,
       collapse,
       toggleTheme,
-      svgPath,
+      themeIcon,
       clickOutside,
       hide,
+      feedUrl,
     }
   },
 })

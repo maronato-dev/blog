@@ -1,0 +1,12 @@
+[
+  {
+    "from": "/en/feed/",
+    "to": "/en/rss/",
+    "permanent": true
+  },
+  {
+    "from": "/pt/feed/",
+    "to": "/pt/rss/",
+    "permanent": true
+  }
+]

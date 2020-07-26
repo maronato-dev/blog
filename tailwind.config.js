@@ -81,6 +81,7 @@ module.exports = {
       "disabled",
       "group-hover",
     ],
+    transitionProperty: ["responsive", "hover"],
   },
   plugins: [require("tailwindcss-dark-mode")()],
   purge: {
