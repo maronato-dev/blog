@@ -4,7 +4,8 @@
       <transition name="fade" mode="out-in" appear>
         <loading-content v-if="requestState.pending" />
         <div v-else-if="requestState.error">Error</div>
-        <post v-else :post="post" />
+        <div v-else-if="content.page">Page: {{ content.title }}</div>
+        <post v-else :post="content" />
       </transition>
     </div>
   </main>
@@ -12,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, watchEffect } from "vue"
-import { usePreviewPost } from "../hooks/ghost/admin"
+import { usePreviewPostOrPage } from "../hooks/ghost/admin"
 import {
   providePostFootnotes,
   providePostReferences,
@@ -33,11 +34,11 @@ export default defineComponent({
   },
   setup(props) {
     const { trigger404 } = useError()
-    const { post, requestState } = usePreviewPost(props.uuid)
+    const { content, requestState } = usePreviewPostOrPage(props.uuid)
     watchEffect(() => {
-      const hasError = !!requestState.error
-      const pending = requestState.pending
-      const postLoaded = !!post.value
+      const hasError = !!requestState.value.error
+      const pending = requestState.value.pending
+      const postLoaded = !!content.value
       if (hasError || (!pending && !postLoaded)) {
         trigger404()
       }
@@ -50,7 +51,7 @@ export default defineComponent({
     // Set title
     useFormattedTitle("Preview")
 
-    return { post, requestState }
+    return { content, requestState }
   },
 })
 </script>

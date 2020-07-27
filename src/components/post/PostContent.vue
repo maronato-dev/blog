@@ -1,5 +1,5 @@
 <template>
-  <div class="prose prose-sm lg:prose-lg ghost-content" :class="{ aside, 'prose-dark': isDark }">
+  <div class="prose md:prose-lg xl:prose-xl ghost-content" :class="{ aside, 'prose-dark': isDark }">
     <div class="flex flex-col items-center">
       <render-html :html="html" />
     </div>

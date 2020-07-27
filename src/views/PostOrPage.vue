@@ -59,7 +59,6 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .outer {
   padding: 0 5vw;
-  font-size: 62.5%;
 }
 .max-1500 {
   max-width: 1500px;

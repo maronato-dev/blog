@@ -1,10 +1,14 @@
 import dayjs from "dayjs"
 import { useGhostContentApi } from "../api"
 import { useGhostDatabase, preparePostForDB } from "../db"
-import { localizePostOrPage } from "../utils"
+import { localizePostOrPage, LocalizedPostOrPage } from "../utils"
 import type { WorkerRequest, WorkerResponse } from "./workerTypes"
 
 const basePageSize = 20
+
+const fixPageProperty = (type: "pages" | "posts") => (
+  content: LocalizedPostOrPage
+): LocalizedPostOrPage => ({ ...content, page: type === "pages" })
 
 async function loadPostOrPage(
   lastSync: Date,
@@ -31,7 +35,10 @@ async function loadPostOrPage(
       filter: `updated_at:>'${formattedLastSync}'`,
     })
     return db.posts.bulkPut(
-      posts.map(localizePostOrPage).map(preparePostForDB),
+      posts
+        .map(localizePostOrPage)
+        .map(preparePostForDB)
+        .map(fixPageProperty(type)),
       { allKeys: true }
     )
   })
