@@ -50,6 +50,12 @@ services:
         - traefik.http.routers.http_catchall.middlewares=https_redirect
         # Accept only https
         - traefik.http.routers.traefik.entrypoints=websecure
+        # Redirect bare DOMAIN to blog.DOMAIN
+        - traefik.http.routers.root.entrypoints=websecure
+        - traefik.http.routers.root.rule=Host(`${DOMAIN}`)
+        - traefik.http.routers.root.middlewares=redirect-to-blog
+        - traefik.http.middlewares.redirect-to-blog.redirectregex.regex=^https://${DOMAIN}(.*)
+        - traefik.http.middlewares.redirect-to-blog.redirectregex.replacement=https://blog.${DOMAIN}$${1}
     secrets:
       - traefik_users
   ghost:

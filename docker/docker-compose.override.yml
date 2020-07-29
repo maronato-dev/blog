@@ -15,6 +15,12 @@ services:
       - traefik.http.routers.traefik.service=api@internal
       # Development env only uses http
       - traefik.http.routers.traefik.entrypoints=web
+      # Redirect bare DOMAIN to blog.DOMAIN
+      - traefik.http.routers.root.entrypoints=web
+      - traefik.http.routers.root.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.root.middlewares=redirect-to-blog
+      - traefik.http.middlewares.redirect-to-blog.redirectregex.regex=^http://${DOMAIN}(.*)
+      - traefik.http.middlewares.redirect-to-blog.redirectregex.replacement=http://blog.${DOMAIN}$${1}
   ghost:
     ports:
       - 8080:2368
