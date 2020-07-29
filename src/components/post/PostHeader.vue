@@ -23,20 +23,17 @@
           <span class="mx-3 opacity-50 font-normal text-xl leading-6">/</span>
           <span
             class="cursor-pointer flex flex-row justify-between group items-center"
-            @click="toggleLike"
+            @click="likeOnce"
           >
             <span
               class="transition-opacity duration-500 likes-number"
               :class="{ 'opacity-0': loadingLikes }"
             >{{ likes }}</span>
             <div
-              class="ml transition-all duration-300 group-hover:scale-125 active:scale-125 transform"
+              class="ml-1 transition-all duration-300 group-hover:scale-125 active:scale-125 transform"
+              :class="{ 'scale-125': liked }"
             >
-              <component
-                :is="likeIcon"
-                class="h-5 w-6 text-red-600 fill-current"
-                :class="{ 'scale-125': liked }"
-              />
+              <component :is="likeIcon" class="h-5 w-6 text-red-600 fill-current" />
             </div>
           </span>
         </template>
@@ -100,12 +97,15 @@ export default defineComponent({
     })
 
     const slug = computed(() => props.post.slug)
-    const { likes, toggleLike, liked, loading: loadingLikes } = usePostLikes(
-      slug
-    )
+    const { likes, like, liked, loading: loadingLikes } = usePostLikes(slug)
     const likeIcon = computed(() =>
       liked.value ? "icon-heart" : "icon-heart-empty"
     )
+    const likeOnce = () => {
+      if (!liked.value) {
+        like()
+      }
+    }
 
     const online = useGlobalOnline()
 
@@ -115,7 +115,7 @@ export default defineComponent({
       readingTime,
       likeIcon,
       likes,
-      toggleLike,
+      likeOnce,
       liked,
       getImageUrl,
       getSrcset,

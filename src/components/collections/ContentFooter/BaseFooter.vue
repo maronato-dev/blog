@@ -1,5 +1,5 @@
 <template>
-  <hr class="opacity-50 my-4" />
+  <hr class="my-4 border-t border-gray-400 dark:border-gray-800 border-solid h-px" />
   <div class="font-light text-base tracking-wider mb-1 xl:-mb-4 opacity-75">{{ title }}</div>
   <div class="content-list opacity-75">
     <ul>

@@ -22,9 +22,7 @@ export default defineComponent({
   setup() {
     useDefaultTitle()
     const route = useRoute()
-    const { posts, loading, loadMore } = usePosts(15)
-
-    window.loadMore = loadMore
+    const { posts, loading } = usePosts(15)
 
     return { route, posts, loading }
   },
