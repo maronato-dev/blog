@@ -1,67 +1,93 @@
 import { ref, watch, Ref, computed } from "vue"
 import { useI18n } from "vue-i18n"
-import { useRouter } from "vue-router"
 import { useGhostDatabase } from "."
 import { LocalizedPostOrPage, parseSlugLocale } from "../utils"
 import { useDBSyncComplete } from "../worker"
 import { useError } from "../../../layout"
+import { useDBReady } from "./reactive"
 
 export function useDBPosts() {
   const db = useGhostDatabase()
-  const posts = ref<LocalizedPostOrPage[]>([])
+  const dbReady = useDBReady()
+  const posts = ref<LocalizedPostOrPage[] | undefined>()
   const i18n = useI18n()
 
   const reloadPosts = async () => {
-    posts.value = await db.posts
+    const loadedPosts = await db.posts
       .where({ language: i18n.locale.value })
       .and(post => !post.page)
       .reverse()
       .sortBy("publishedDate")
+
+    if (loadedPosts.length === 0) {
+      // If loaded 0 posts, thet may still be loading from API
+      posts.value = undefined
+    } else {
+      posts.value = loadedPosts
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   db.on("changes", reloadPosts)
-  db.on("ready", reloadPosts)
-  watch(i18n.locale, reloadPosts, { immediate: true })
+  watch(i18n.locale, reloadPosts)
+
+  watch(dbReady, value => value && reloadPosts())
+  if (dbReady.value) {
+    reloadPosts()
+  }
 
   return posts
 }
 
 export function useCurrentDBPageOrPost(slug: Ref<string>) {
   const db = useGhostDatabase()
+  const dbReady = useDBReady()
   const i18n = useI18n()
-  const router = useRouter()
   const { isComplete } = useDBSyncComplete()
   const { trigger404 } = useError()
 
-  const content = ref<LocalizedPostOrPage | undefined>()
+  const content = ref<LocalizedPostOrPage | undefined | null>()
 
-  watch(
-    [isComplete, i18n.locale, slug],
-    async () => {
-      const { nonLocalized, locale, hasLocale } = parseSlugLocale(slug.value)
+  const loadPost = async () => {
+    if (!dbReady.value) {
+      // Do nothing if DB is not ready
+      return
+    }
+    // Reset content
+    content.value = undefined
+
+    const { nonLocalized, locale, hasLocale } = parseSlugLocale(slug.value)
+    const language = hasLocale ? locale : i18n.locale.value
+    const dbResult = (
+      await db.posts.where({ slug: nonLocalized, language }).toArray()
+    )[0]
+
+    if (typeof dbResult === "undefined") {
+      // Post was not found, set to null
+      content.value = null
+      // I don't really like to trigger this error here
       if (isComplete.value) {
-        const language = hasLocale ? locale : i18n.locale.value
-        content.value = (
-          await db.posts.where({ slug: nonLocalized, language }).toArray()
-        )[0]
-
-        if (!content.value) {
-          trigger404()
-        }
-        // Change locale if post has locale defined
-        if (hasLocale && locale !== i18n.locale.value) {
-          i18n.locale.value = locale
-          router.replace({
-            name: "postOrPage",
-            params: { slug: nonLocalized },
-          })
-        }
+        // If post was not found and sync has been completed, the post does not exist
+        trigger404()
       }
-    },
-    { immediate: true }
-  )
+    } else {
+      // Post was found
+      content.value = dbResult
+    }
+  }
+
+  // Update post on locale or slug change
+  watch([i18n.locale, slug], loadPost)
+  // Update post once sync is complete
+  watch([isComplete], value => value && loadPost())
+
+  // Fetch post when db is or becomes ready
+  watch(dbReady, value => value && loadPost())
+  if (dbReady.value) {
+    // Initial fetch attempt
+    loadPost()
+  }
 
   return content
 }
@@ -76,6 +102,7 @@ export function useNextPost(post: Ref<LocalizedPostOrPage>) {
         .where("publishedDate")
         .above(post.value.publishedDate)
         .and(p => p.id !== post.value.id && p.language === post.value.language)
+        .and(p => !p.page)
         .toArray()
     )[0]
   }
@@ -94,6 +121,7 @@ export function usePrevPost(post: Ref<LocalizedPostOrPage>) {
         .where("publishedDate")
         .below(post.value.publishedDate)
         .and(p => p.id !== post.value.id && p.language === post.value.language)
+        .and(p => !p.page)
         .reverse()
         .toArray()
     )[0]
@@ -103,11 +131,20 @@ export function usePrevPost(post: Ref<LocalizedPostOrPage>) {
   return prevPost
 }
 
-export function paginateDBContent<T>(content: Ref<T[]>, pageSize = 15) {
+export function paginateDBContent<T>(
+  content: Ref<T[] | undefined>,
+  pageSize = 15
+) {
   const page = ref(1)
-  const pages = computed(() => Math.ceil(content.value.length / pageSize))
+  const pages = computed(() =>
+    typeof content.value !== "undefined"
+      ? Math.ceil(content.value.length / pageSize)
+      : 0
+  )
   const paginatedContent = computed(() =>
-    content.value.slice(0, pageSize * page.value)
+    typeof content.value !== "undefined"
+      ? content.value.slice(0, pageSize * page.value)
+      : []
   )
   const loadMore = () => {
     page.value += 1

@@ -1,4 +1,5 @@
 import dayjs from "dayjs"
+import type { PostsOrPages } from "@tryghost/content-api"
 import { useGhostContentApi } from "../api"
 import { useGhostDatabase, preparePostForDB } from "../db"
 import { localizePostOrPage, LocalizedPostOrPage } from "../utils"
@@ -10,6 +11,26 @@ const fixPageProperty = (type: "pages" | "posts") => (
   content: LocalizedPostOrPage
 ): LocalizedPostOrPage => ({ ...content, page: type === "pages" })
 
+async function savePostsOrPagesToDB(
+  postsOrPages: PostsOrPages,
+  type: "pages" | "posts" = "posts"
+) {
+  const db = useGhostDatabase()
+  return db.posts
+    .bulkPut(
+      postsOrPages
+        .map(localizePostOrPage)
+        .map(preparePostForDB)
+        .map(fixPageProperty(type)),
+      { allKeys: true }
+    )
+    .then(keys => {
+      console.debug(`[GhostWorker] Updated ${keys.length} ${type}`)
+      return keys
+    })
+    .catch(console.error)
+}
+
 async function loadPostOrPage(
   lastSync: Date,
   isPage = false,
@@ -17,7 +38,6 @@ async function loadPostOrPage(
 ) {
   const type = isPage ? "pages" : "posts"
   const api = useGhostContentApi()
-  const db = useGhostDatabase()
   const formattedLastSync = dayjs(lastSync).format("YYYY-MM-DD HH:mm:ss")
   const initRequest = await api[type].browse({
     limit: 1,
@@ -28,19 +48,15 @@ async function loadPostOrPage(
     (_, i) => i + 1
   )
   const requests = pages.map(async page => {
-    const posts = await api[type].browse({
-      include: ["authors", "tags"],
-      limit: pageSize,
-      page,
-      filter: `updated_at:>'${formattedLastSync}'`,
-    })
-    return db.posts.bulkPut(
-      posts
-        .map(localizePostOrPage)
-        .map(preparePostForDB)
-        .map(fixPageProperty(type)),
-      { allKeys: true }
-    )
+    return await api[type]
+      .browse({
+        include: ["authors", "tags"],
+        limit: pageSize,
+        page,
+        filter: `updated_at:>'${formattedLastSync}'`,
+        order: "published_at desc",
+      })
+      .then(content => savePostsOrPagesToDB(content, type))
   })
   return Promise.all(requests)
 }
@@ -92,7 +108,8 @@ onmessage = (event: MessageEvent) => {
         "[GhostWorker] Done. Posts/Pages loaded:",
         results &&
           results.reduce(
-            (sum, result) => sum + result.reduce((s, r) => r.length + s, 0),
+            (sum, result) =>
+              sum + result.reduce((s, r) => (r || []).length + s, 0),
             0
           )
       )

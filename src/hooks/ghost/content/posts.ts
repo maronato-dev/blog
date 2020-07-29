@@ -1,73 +1,85 @@
-import { computed, watch, Ref } from "vue"
+import { computed, Ref, watch } from "vue"
+import { useI18n } from "vue-i18n"
+import { useRouter, useRoute } from "vue-router"
 import {
   useDBPosts,
   useCurrentDBPageOrPost,
   paginateDBContent,
 } from "./db/posts"
 import { useDBSyncComplete } from "./worker"
-import { useAPIPosts, useCurrentAPIPageOrPost } from "./api/posts"
+import { useCurrentAPIPageOrPost } from "./api/posts"
+import { useDBReady } from "./db/reactive"
+
+import { parseSlugLocale } from "./utils"
 
 export function usePosts(pageSize = 15) {
+  const dbReady = useDBReady()
   const dbPosts = useDBPosts()
   const { isComplete } = useDBSyncComplete()
 
-  const {
-    posts: apiPosts,
-    loading: loadingApiPosts,
-    stopWatch: stopApiPostsWatch,
-  } = useAPIPosts(pageSize)
-
-  // Stop api posts watch on db sync complete
-  watch(isComplete, () => {
-    if (isComplete.value) {
-      stopApiPostsWatch()
-    }
-  })
-
   // dynamic posts
-  const {
-    content: paginatedDBPosts,
-    canLoadMore,
-    loadMore,
-  } = paginateDBContent(dbPosts, pageSize)
-
-  const posts = computed(() => {
-    if (isComplete.value) {
-      return paginatedDBPosts.value
-    } else {
-      return apiPosts.value
-    }
-  })
-
-  const loading = computed(() =>
-    isComplete.value ? false : loadingApiPosts.value
+  const { content: posts, canLoadMore, loadMore } = paginateDBContent(
+    dbPosts,
+    pageSize
   )
+
+  const loading = computed(() => {
+    if (isComplete.value) {
+      return false
+    }
+    return !dbReady.value || typeof dbPosts.value === "undefined"
+  })
 
   return { posts, loading, canLoadMore, loadMore }
 }
 
 export const useCurrentPageOrPost = (slug: Ref<string>) => {
   const dbContent = useCurrentDBPageOrPost(slug)
-  const { isComplete } = useDBSyncComplete()
   const {
     content: apiContent,
     loading: loadingApiContent,
-    stopWatch: stopApiContentWatch,
+    loadPost: loadAPIPost,
   } = useCurrentAPIPageOrPost(slug)
 
-  // Stop api content watch on db sync complete
-  watch(isComplete, () => {
-    if (isComplete.value) {
-      stopApiContentWatch()
+  // Load API post only if post was not found on the database
+  watch(dbContent, value => value === null && loadAPIPost())
+
+  const loading = computed(() => {
+    // If dbContent is undefined, is loading from db
+    if (typeof dbContent.value === "undefined") {
+      return true
     }
+    // If was not found on db, is loading from API
+    if (dbContent.value === null) {
+      return loadingApiContent.value
+    }
+    // Else, not loading
+    return false
   })
 
   const content = computed(() =>
-    isComplete.value ? dbContent.value : apiContent.value
+    loading.value ? undefined : dbContent.value || apiContent.value
   )
-  const loading = computed(() =>
-    isComplete.value ? false : loadingApiContent.value
-  )
+
+  // Update locale if post has a different locale than the current one
+  const i18n = useI18n()
+  const router = useRouter()
+  const route = useRoute()
+  watch(content, () => {
+    if (content.value) {
+      const { hasLocale, locale, nonLocalized } = parseSlugLocale(slug.value)
+      if (hasLocale) {
+        if (locale !== i18n.locale.value) {
+          i18n.locale.value = locale
+        }
+        router.replace({
+          name: "postOrPage",
+          params: { slug: nonLocalized },
+          hash: route.hash,
+        })
+      }
+    }
+  })
 
   return { content, loading }
 }

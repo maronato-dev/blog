@@ -17,6 +17,7 @@ class GhostDatabase extends Dexie {
 
 export const useGhostDatabase = (() => {
   const db = new GhostDatabase()
+  db.open()
   return () => db
 })()
 
