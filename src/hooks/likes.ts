@@ -1,14 +1,15 @@
-import { createGlobalState, useStorage } from "@vueuse/core"
+import { createGlobalState } from "@vueuse/core"
 import { computed, Ref } from "vue"
 import firebase from "firebase/app"
 import { useFirestorePost, usePostRef } from "./firebase"
+import { useStorageAlt } from "./vueuse"
 
 interface LikedPosts {
   [slug: string]: boolean
 }
 
 export const useLocalLikesStore = createGlobalState(() =>
-  useStorage("likes", {} as LikedPosts)
+  useStorageAlt("likes", {} as LikedPosts)
 )
 
 export const useLocalPostLikes = (slug: Ref<string>) => {

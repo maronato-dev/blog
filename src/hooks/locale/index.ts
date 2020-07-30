@@ -1,6 +1,7 @@
 import { Ref, watch, computed } from "vue"
-import { createGlobalState, useStorage } from "@vueuse/core"
+import { createGlobalState } from "@vueuse/core"
 import { useI18n } from "vue-i18n"
+import { useStorageAlt } from "../vueuse"
 import { Locales } from "./util"
 
 export const useLocaleState = createGlobalState(() => {
@@ -15,7 +16,7 @@ export const useLocaleState = createGlobalState(() => {
     return false
   })
 
-  const state = useStorage("locale", locale) as Ref<Locales>
+  const state = useStorageAlt("locale", locale) as Ref<Locales>
   return state
 })
 

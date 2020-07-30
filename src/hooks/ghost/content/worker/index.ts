@@ -1,37 +1,13 @@
-import { Ref, ref, watch, readonly } from "vue"
+import { ref, readonly } from "vue"
 import { createGlobalState } from "@vueuse/core"
+import { useStorageAlt } from "../../../vueuse"
 import { WorkerRequest, WorkerResponse } from "./workerTypes"
 
 // eslint-disable-next-line import/no-unresolved
 import GhostWorker from "./worker?worker"
 
-const useLocalStorage = <T>(key: string, defaultData: T) => {
-  const data = ref<T>(defaultData) as Ref<T>
-  const storage = localStorage
-  function read() {
-    let raw = storage.getItem(key)
-    if (!raw) {
-      raw = JSON.stringify(defaultData)
-      storage.setItem(key, raw)
-    } else {
-      data.value = JSON.parse(raw)
-    }
-  }
-  read()
-  addEventListener("storage", read)
-  watch(
-    data,
-    () => {
-      const str = JSON.stringify(data.value)
-      storage.setItem(key, str)
-    },
-    { flush: "post", deep: true }
-  )
-  return data
-}
-
 const useLastSync = createGlobalState(() =>
-  useLocalStorage("lastSync", new Date(0))
+  useStorageAlt("lastSync", new Date(0))
 )
 
 export const useDBSyncComplete = (() => {

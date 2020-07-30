@@ -19,6 +19,7 @@ export default defineComponent(() => {
     src: `//commento.${domain}/js/commento.js`,
     "data-auto-init": "false",
     "data-id-root": id,
+    "data-no-fonts": "true",
   } as ScriptAttrs
 
   const scriptArray = script.value || []

@@ -1,18 +1,18 @@
 import { computed, Ref, watchEffect } from "vue"
-import { useStorage, usePreferredColorScheme } from "@vueuse/core"
+import {
+  usePreferredColorSchemeAlt,
+  createGlobalStateAlt,
+  useStorageAlt,
+} from "./vueuse"
 import { useMeta } from "./meta"
 
 type ColorOptions = "light" | "dark"
 type StoredTheme = ColorOptions | "system"
 
-function createGlobalState<T>(factory: () => T) {
-  const state = factory()
-  return () => state
-}
+const useThemeState = createGlobalStateAlt(() => {
+  const preference = usePreferredColorSchemeAlt()
 
-const useThemeState = createGlobalState(() => {
-  const preference = usePreferredColorScheme()
-  const manualValue = useStorage("theme-value", "system") as Ref<StoredTheme>
+  const manualValue = useStorageAlt("theme-value", "system") as Ref<StoredTheme>
 
   const theme = computed({
     get() {
