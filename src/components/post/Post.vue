@@ -22,9 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, watch, ref, onMounted, computed } from "vue"
-import PostContent from "./PostContent.vue"
-import PostHeader from "./PostHeader.vue"
-import RelatedPosts from "./RelatedPosts/RelatedPosts.vue"
+import { useI18n } from "vue-i18n"
 import { usePostFootnotes, usePostReferences } from "../../hooks/postHelpers"
 import ContentFootnotes from "../../components/collections/ContentFooter/ContentFootnotes.vue"
 import ContentReferences from "../../components/collections/ContentFooter/ContentReferences.vue"
@@ -33,9 +31,11 @@ import TableOfContents, {
   TOC,
 } from "../../components/ui/TableOfContents.vue"
 import Commento from "../../components/ui/Commento.vue"
-import { useI18n } from "vue-i18n"
 import { LocalizedPostOrPage } from "../../hooks/ghost/content/utils"
 import { useGlobalOnline } from "../../hooks/online"
+import RelatedPosts from "./RelatedPosts/RelatedPosts.vue"
+import PostHeader from "./PostHeader.vue"
+import PostContent from "./PostContent.vue"
 
 export default defineComponent({
   components: {

@@ -18,10 +18,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed, toRefs } from "vue"
-import SameTagPosts from "./SameTagPosts.vue"
 import { useRelatedPosts } from "../../../hooks/ghost/content/db/posts"
 import PostCard from "../../collections/PostFeed/PostCard.vue"
 import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
+import SameTagPosts from "./SameTagPosts.vue"
 
 export default defineComponent({
   name: "RelatedPosts",

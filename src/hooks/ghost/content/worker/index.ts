@@ -2,8 +2,7 @@ import { Ref, ref, watch, readonly } from "vue"
 import { createGlobalState } from "@vueuse/core"
 import { WorkerRequest, WorkerResponse } from "./workerTypes"
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
 import GhostWorker from "./worker?worker"
 
 const useLocalStorage = <T>(key: string, defaultData: T) => {

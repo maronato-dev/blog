@@ -1,10 +1,10 @@
-import { ref, watch, Ref, computed } from "vue"
+import { Ref, computed, ref, watch } from "vue"
 import { useI18n } from "vue-i18n"
-import { useGhostDatabase } from "."
 import { LocalizedPostOrPage, parseSlugLocale } from "../utils"
 import { useDBSyncComplete } from "../worker"
 import { useError } from "../../../layout"
 import { useDBReady } from "./reactive"
+import { useGhostDatabase } from "."
 
 export function useDBPosts() {
   const db = useGhostDatabase()

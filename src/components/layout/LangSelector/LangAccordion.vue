@@ -1,6 +1,9 @@
 <template>
   <div class="block mt-2 text-lg text-current">
-    <div class="flex justify-between cursor-pointer animated-underline" @click="toggle">
+    <div
+      class="flex justify-between cursor-pointer animated-underline"
+      @click="toggle"
+    >
       <div class="flex">
         <div class="text-lg leading-5">{{ locale.flag }}</div>
         <div class="text-lg leading-5 ml-3">{{ locale.name }}</div>

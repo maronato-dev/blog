@@ -1,6 +1,6 @@
 import { computed, Ref, isRef } from "vue"
-import { useSettings } from "./settings"
 import { useTitle } from "../../meta"
+import { useSettings } from "./settings"
 
 export const useDefaultTitle = () => {
   const { settings } = useSettings()

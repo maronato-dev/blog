@@ -1,13 +1,15 @@
 <template>
   <sup class="reference-ref" :class="{ active }">
-    <a :id="`rfref${assigned}`" class="ref-link" :href="`#rf${assigned}`">{{ assigned }}</a>
+    <a :id="`rfref${assigned}`" class="ref-link" :href="`#rf${assigned}`">
+      {{ assigned }}
+    </a>
   </sup>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from "vue"
-import { usePostReferences } from "../../../hooks/postHelpers"
 import { useRoute } from "vue-router"
+import { usePostReferences } from "../../../hooks/postHelpers"
 
 export default defineComponent((_props, { slots }) => {
   const { assigned } = usePostReferences(slots.default)

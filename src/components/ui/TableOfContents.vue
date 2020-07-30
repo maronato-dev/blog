@@ -1,9 +1,13 @@
 <template>
   <aside class="text-current text-sm tracking-wider toc">
-    <div class="opacity-75 font-semibold">{{ contentsText }}</div>
+    <div class="opacity-75 font-semibold">
+      {{ contentsText }}
+    </div>
     <ol class="list-decimal pl-5">
       <li v-for="heading in toc" :key="heading.id" class="py-1">
-        <a class="animated-underline pt-0" :href="`#${heading.id}`">{{ heading.text }}</a>
+        <a class="animated-underline pt-0" :href="`#${heading.id}`">
+          {{ heading.text }}
+        </a>
       </li>
     </ol>
   </aside>

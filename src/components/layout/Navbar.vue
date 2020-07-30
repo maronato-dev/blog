@@ -7,14 +7,25 @@
     <div class="container mx-auto flex items-center justify-between flex-wrap">
       <div class="flex items-center flex-shrink-0 mr-6">
         <div class="flex items-center py-2 pr-5 lg:hidden" @click="toggle">
-          <svg class="fill-current h-5 w-5" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            class="fill-current h-5 w-5"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <title>Menu</title>
             <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
           </svg>
         </div>
         <router-link to="/">
-          <img v-if="settings.logo" class="w-20 lg:w-32" :src="settings.logo" :alt="settings.title" />
-          <span v-else class="font-semibold text-xl tracking-tight">{{ settings.title }}</span>
+          <img
+            v-if="settings.logo"
+            class="w-20 lg:w-32"
+            :src="settings.logo"
+            :alt="settings.title"
+          />
+          <span v-else class="font-semibold text-xl tracking-tight">
+            {{ settings.title }}
+          </span>
         </router-link>
       </div>
       <div class="lg:order-last lg:ml-4">
@@ -37,7 +48,9 @@
             :to="nav.url"
             class="block mt-2 lg:inline-block lg:mt-0 lg:mr-4 text-lg lg:text-base text-current animated-underline"
             active-class="active"
-          >{{ nav.label }}</router-link>
+          >
+            {{ nav.label }}
+          </router-link>
         </div>
         <div class="lg:flex lg:items-center lg:flex-shrink-0">
           <a
@@ -45,7 +58,9 @@
             :key="nav.label"
             :href="nav.url"
             class="block mt-2 lg:inline-block lg:mt-0 lg:mr-4 text-lg lg:text-base animated-underline"
-          >{{ nav.label }}</a>
+          >
+            {{ nav.label }}
+          </a>
         </div>
         <lang-selector />
         <div class="tx-sm nav hidden lg:block ml-4">
@@ -64,12 +79,12 @@
 import { defineComponent, ref, computed, watch } from "vue"
 import { useRouter } from "vue-router"
 import { useWindowScroll, useThrottle } from "@vueuse/core"
+import { useI18n } from "vue-i18n"
 import { useSettings } from "../../hooks/ghost/content/settings"
 import { useTheme } from "../../hooks/theme"
-import LangSelector from "./LangSelector/LangSelector.vue"
 import IconToggleTheme from "../ui/Icons/IconToggleTheme.vue"
 import IconRss from "../ui/Icons/IconRss.vue"
-import { useI18n } from "vue-i18n"
+import LangSelector from "./LangSelector/LangSelector.vue"
 
 export default defineComponent({
   components: { LangSelector, IconToggleTheme, IconRss },

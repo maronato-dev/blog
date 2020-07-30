@@ -4,19 +4,28 @@
       <span class="opacity-50 mr-2">More in</span>
       <router-link
         class="opacity-100 animated-underline"
-        :to="{name: 'tag', params: { slug: tag.slug }}"
-      >{{ tag.name }}</router-link>
+        :to="{ name: 'tag', params: { slug: tag.slug } }"
+      >
+        {{ tag.name }}
+      </router-link>
     </h3>
     <div>
       <ul class="mt-5 mb-16">
-        <same-tag-items v-for="post in posts" :key="post.id" class="mb-10" :post="post" />
+        <same-tag-items
+          v-for="post in posts"
+          :key="post.id"
+          class="mb-10"
+          :post="post"
+        />
       </ul>
     </div>
     <div class>
       <router-link
         :to="{ name: 'tag', params: { slug: tag.slug } }"
         class="bg-transparent border rounded-full p-3 opacity-75 hover:opacity-100 hover:text-primary-400 hover:border-primary-400 transition-all duration-500 cursor-pointer text-sm"
-      >See all {{ total }} posts →</router-link>
+      >
+        See all {{ total }} posts →
+      </router-link>
     </div>
   </div>
 </template>
@@ -24,8 +33,8 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
 import { Tag } from "@tryghost/content-api"
-import SameTagItems from "./SameTagPostsItem.vue"
 import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
+import SameTagItems from "./SameTagPostsItem.vue"
 
 export default defineComponent({
   components: { SameTagItems },

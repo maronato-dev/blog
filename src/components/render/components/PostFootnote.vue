@@ -1,6 +1,8 @@
 <template>
   <sup class="footnote-ref" :class="{ active }">
-    <a :id="`fnref${assigned}`" class="ref-link" :href="`#fn${assigned}`">[{{ assigned }}]</a>
+    <a :id="`fnref${assigned}`" class="ref-link" :href="`#fn${assigned}`">
+      [{{ assigned }}]
+    </a>
   </sup>
   <aside :id="`fa${assigned}`" class="footnote-aside">
     <slot />
@@ -9,8 +11,8 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue"
-import { usePostFootnotes } from "../../../hooks/postHelpers"
 import { useRoute } from "vue-router"
+import { usePostFootnotes } from "../../../hooks/postHelpers"
 
 export default defineComponent((_props, { slots }) => {
   const { assigned } = usePostFootnotes(slots.default)

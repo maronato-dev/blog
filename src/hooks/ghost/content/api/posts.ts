@@ -1,6 +1,5 @@
-import { ref, watch, Ref } from "vue"
+import { Ref, ref, watch } from "vue"
 import { useI18n } from "vue-i18n"
-import { useGhostContentApi } from "."
 import {
   LocalizedPostOrPage,
   localizePostOrPage,
@@ -8,6 +7,7 @@ import {
 } from "../utils"
 import { useError } from "../../../layout"
 import { useDBSyncComplete } from "../worker"
+import { useGhostContentApi } from "."
 
 export const useCurrentAPIPageOrPost = (slug: Ref<string>) => {
   const api = useGhostContentApi()

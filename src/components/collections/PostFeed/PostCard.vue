@@ -18,14 +18,21 @@
     </router-link>
 
     <div class="flex-grow flex flex-col content">
-      <router-link :to="{ name: 'postOrPage', params: { slug: post.slug } }" class="relative block">
+      <router-link
+        :to="{ name: 'postOrPage', params: { slug: post.slug } }"
+        class="relative block"
+      >
         <header class="mt-4 mx-0 mb-3">
           <router-link
             v-if="post.primary_tag"
             class="mt-0 mb-2 text-primary-400 dark:text-primary-300 font-semibold uppercase animated-underline opacity-100 text-sm"
             :to="{ name: 'tag', params: { slug: post.primary_tag.slug } }"
-          >{{ post.primary_tag.name }}</router-link>
-          <h2 class="mb-1 mt-1 leading-tight text-2xl font-medium title">{{ post.title }}</h2>
+          >
+            {{ post.primary_tag.name }}
+          </router-link>
+          <h2 class="mb-1 mt-1 leading-tight text-2xl font-medium title">
+            {{ post.title }}
+          </h2>
         </header>
 
         <section class="excerpt text-gray-700 dark:text-gray-500">
@@ -47,10 +54,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from "vue"
+import { computed, PropType, defineComponent } from "vue"
 import { useI18n } from "vue-i18n"
-import { getImageUrl, getSrcset } from "./imageUtils"
+
 import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
+import { getImageUrl, getSrcset } from "./imageUtils"
 
 export default defineComponent({
   props: {

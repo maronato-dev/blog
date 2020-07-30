@@ -1,10 +1,10 @@
-import { computed, Ref, watch } from "vue"
+import { Ref, computed, watch } from "vue"
 import { useI18n } from "vue-i18n"
-import { useRouter, useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import {
-  useDBPosts,
-  useCurrentDBPageOrPost,
   paginateDBContent,
+  useCurrentDBPageOrPost,
+  useDBPosts,
 } from "./db/posts"
 import { useDBSyncComplete } from "./worker"
 import { useCurrentAPIPageOrPost } from "./api/posts"

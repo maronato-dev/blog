@@ -1,5 +1,8 @@
 <template>
-  <div v-click-outside="clickOutside" class="relative inline-block text-left z-20 capitalize">
+  <div
+    v-click-outside="clickOutside"
+    class="relative inline-block text-left z-20 capitalize"
+  >
     <div>
       <span class="rounded">
         <button
@@ -28,7 +31,12 @@
     <transition appear name="dropdown">
       <div v-if="show" class="absolute mt-2 w-auto rounded dropdown">
         <div class="rounded-md bg-white dark:bg-gray-900 shadow-lg">
-          <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+          <div
+            class="py-1"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="options-menu"
+          >
             <div
               v-for="l in locales"
               :key="l.locale"

@@ -1,9 +1,9 @@
 import { reactive, computed, toRefs, watch } from "vue"
 import { createGlobalState } from "@vueuse/core"
+import { useI18n } from "vue-i18n"
 import DefaultLayout from "../layouts/Default.vue"
 import ErrorLayout from "../layouts/Error.vue"
 import LoadingLayout from "../layouts/Loading.vue"
-import { useI18n } from "vue-i18n"
 import { useMeta } from "./meta"
 
 export const components = {

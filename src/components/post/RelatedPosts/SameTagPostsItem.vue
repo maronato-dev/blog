@@ -1,10 +1,15 @@
 <template>
   <li>
-    <h4 class="text-base font-bold opacity-75 hover:opacity-100 transition-opacity duration-200">
-      <router-link :to="{ name: 'postOrPage', params: { slug: post.slug } }">{{ post.title }}</router-link>
+    <h4
+      class="text-base font-bold opacity-75 hover:opacity-100 transition-opacity duration-200"
+    >
+      <router-link :to="{ name: 'postOrPage', params: { slug: post.slug } }">
+        {{ post.title }}
+      </router-link>
     </h4>
     <div>
-      <time :datetime="isoDate">{{ dateString }}</time> -
+      <time :datetime="isoDate">{{ dateString }}</time>
+      -
       <span>{{ readingTime }}</span>
     </div>
   </li>

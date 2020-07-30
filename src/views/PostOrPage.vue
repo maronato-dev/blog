@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, toRefs, computed } from "vue"
+import { useI18n } from "vue-i18n"
 import { useCurrentPageOrPost } from "../hooks/ghost/content/posts"
 import {
   providePostFootnotes,
@@ -23,7 +24,6 @@ import LoadingContent from "../components/ui/LoadingContent.vue"
 import Post from "../components/post/Post.vue"
 import { useSEOTags } from "../hooks/seo"
 import { useFormattedTitle } from "../hooks/ghost/content/title"
-import { useI18n } from "vue-i18n"
 
 export default defineComponent({
   name: "PostOrPage",

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 module.exports = {
   env: {
     browser: true,
@@ -7,9 +6,14 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:prettier/recommended",
     "plugin:vue/vue3-recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
+    "prettier/@typescript-eslint",
     "prettier/vue",
   ],
   parser: "vue-eslint-parser",
@@ -22,11 +26,8 @@ module.exports = {
   rules: {
     "no-undef": "error",
     "no-var": "error",
-    quotes: ["error", "double"],
-    semi: ["error", "never"],
     "vue/no-multiple-template-root": "off",
     camelcase: "off",
-    "vue/no-v-html": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       { args: "all", argsIgnorePattern: "^_" },
@@ -42,6 +43,6 @@ module.exports = {
       },
     ],
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-var-requires": "off",
+    "import/order": "error",
   },
 }

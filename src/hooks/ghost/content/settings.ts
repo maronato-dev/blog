@@ -1,9 +1,9 @@
 import { createGlobalState, useStorage } from "@vueuse/core"
 import { SettingsResponse } from "@tryghost/content-api"
 import { computed, onBeforeMount, Ref } from "vue"
-import { useGhostContentApi } from "./api"
-import { useFetchData } from "../../fetch"
 import { AxiosError } from "axios"
+import { useFetchData } from "../../fetch"
+import { useGhostContentApi } from "./api"
 
 const useSettingsState = createGlobalState(() => {
   const store = useStorage("ghost-settings", {}) as Ref<SettingsResponse>

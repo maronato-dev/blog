@@ -1,13 +1,18 @@
 <template>
   <div class="relative flex flex-wrap">
-    <post-card v-for="(post, i) in posts" :key="post.id" :post="post" :large="makeLarge(i)" />
+    <post-card
+      v-for="(post, i) in posts"
+      :key="post.id"
+      :post="post"
+      :large="makeLarge(i)"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import PostCard from "./PostCard.vue"
 import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
+import PostCard from "./PostCard.vue"
 
 export default defineComponent({
   components: { PostCard },

@@ -7,7 +7,6 @@ import {
   computed,
   onUnmounted,
 } from "vue"
-import components from "./components"
 import reframe from "reframe.js"
 import Prism from "prismjs"
 import GLightbox from "glightbox"
@@ -20,8 +19,9 @@ import "prismjs/plugins/show-language/prism-show-language.min.js"
 
 import "../../assets/css/prismjs/plugins/toolbar.css"
 import "../../assets/css/prismjs/themes/material-dark.css"
-import { useMeta } from "../../hooks/meta"
 import { useRoute } from "vue-router"
+import { useMeta } from "../../hooks/meta"
+import components from "./components"
 
 Prism.plugins.autoloader.languages_path =
   "https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/"

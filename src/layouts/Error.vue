@@ -12,7 +12,9 @@
           <div>{{ message }}</div>
         </template>
         <div class="flex-row">
-          <router-link class="animated-underline text-xl font-bold" to="/">{{ goBackMessage }}</router-link>
+          <router-link class="animated-underline text-xl font-bold" to="/">
+            {{ goBackMessage }}
+          </router-link>
         </div>
       </section>
     </div>
@@ -22,13 +24,13 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue"
-import NavBar from "../components/layout/Navbar.vue"
+import { useI18n } from "vue-i18n"
 import BlogFooter from "../components/layout/BlogFooter.vue"
+import NavBar from "../components/layout/Navbar.vue"
 import Page404 from "../components/layout/404.vue"
 import Page500 from "../components/layout/500.vue"
-import { useI18n } from "vue-i18n"
-import { useLayout } from "../hooks/layout"
 import { useFormattedTitle } from "../hooks/ghost/content/title"
+import { useLayout } from "../hooks/layout"
 
 export default defineComponent({
   name: "ErrorLayout",

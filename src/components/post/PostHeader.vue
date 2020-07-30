@@ -1,5 +1,7 @@
 <template>
-  <header class="flex justify-around flex-row mx-auto mt-32 flex-wrap items-center">
+  <header
+    class="flex justify-around flex-row mx-auto mt-32 flex-wrap items-center"
+  >
     <div
       class="flex-col flex items-center xl:items-start justify-center mx-auto order-1 xl:mx-0 xl:pl-8 xl:order-2 xl:w-1/2"
     >
@@ -7,17 +9,29 @@
         <router-link
           class="mt-0 mb-2 text-primary-400 dark:text-primary-300 font-semibold uppercase animated-underline opacity-100 text-base"
           :to="`/tag/${post.primary_tag.slug}`"
-        >{{ post.primary_tag.name }}</router-link>
+        >
+          {{ post.primary_tag.name }}
+        </router-link>
       </section>
       <h1
         class="mb-1 mt-1 leading-tight text-5xl md:text-6xl font-medium title my-8 text-center lg:text-left"
-      >{{ post.title }}</h1>
-      <div class="flex flex-row justify-center text-base my-8 font-bold flex-wrap">
+      >
+        {{ post.title }}
+      </h1>
+      <div
+        class="flex flex-row justify-center text-base my-8 font-bold flex-wrap"
+      >
         <time
           class="flex-grow w-full md:w-auto text-center mb-2 md:mb-0"
           :datetime="isoDate"
-        >{{ dateString }}</time>
-        <span class="mx-3 opacity-50 font-normal text-xl leading-6 hidden md:block">/</span>
+        >
+          {{ dateString }}
+        </time>
+        <span
+          class="mx-3 opacity-50 font-normal text-xl leading-6 hidden md:block"
+        >
+          /
+        </span>
         <span>{{ readingTime }}</span>
         <template v-if="online">
           <span class="mx-3 opacity-50 font-normal text-xl leading-6">/</span>
@@ -28,12 +42,17 @@
             <span
               class="transition-opacity duration-500 likes-number"
               :class="{ 'opacity-0': loadingLikes }"
-            >{{ likes }}</span>
+            >
+              {{ likes }}
+            </span>
             <div
               class="ml-1 transition-all duration-300 group-hover:scale-125 active:scale-125 transform"
               :class="{ 'scale-125': liked }"
             >
-              <component :is="likeIcon" class="h-5 w-6 text-red-600 fill-current" />
+              <component
+                :is="likeIcon"
+                class="h-5 w-6 text-red-600 fill-current"
+              />
             </div>
           </span>
         </template>
@@ -41,7 +60,9 @@
       <p
         v-if="post.custom_excerpt"
         class="mb-5 text-xl lg:text-2xl font-light max-w-screen-sm opacity-75 excerpt"
-      >{{ post.custom_excerpt }}</p>
+      >
+        {{ post.custom_excerpt }}
+      </p>
     </div>
     <figure
       v-if="post.feature_image"

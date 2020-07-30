@@ -13,9 +13,9 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue"
 import { useI18n } from "vue-i18n"
+import { usePostReferences } from "../../../hooks/postHelpers"
 import BaseFooter from "./BaseFooter.vue"
 import FooterElement from "./FooterElement.vue"
-import { usePostReferences } from "../../../hooks/postHelpers"
 
 export default defineComponent({
   components: { BaseFooter, FooterElement },

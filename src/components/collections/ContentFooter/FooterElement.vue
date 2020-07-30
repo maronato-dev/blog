@@ -6,7 +6,9 @@
       :id="`${hash}${index}`"
       :href="`#${hash}ref${index}`"
       class="ml-2 underline opacity-75 hover:opacity-100 transition-opacity duration-200"
-    >↩︎</a>
+    >
+      ↩︎
+    </a>
   </li>
 </template>
 
