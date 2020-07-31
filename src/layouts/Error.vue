@@ -12,7 +12,13 @@
           <div>{{ message }}</div>
         </template>
         <div class="flex-row">
-          <router-link class="animated-underline text-xl font-bold" to="/">
+          <router-link
+            class="animated-underline text-xl font-bold group"
+            to="/"
+          >
+            <icon-arrow-left
+              class="w-4 h-4 animate-none group-hover:animate-bounce-left rotate-90 inline-block"
+            />
             {{ goBackMessage }}
           </router-link>
         </div>
@@ -31,6 +37,7 @@ import Page404 from "../components/layout/404.vue"
 import Page500 from "../components/layout/500.vue"
 import { useFormattedTitle } from "../hooks/ghost/content/title"
 import { useLayout } from "../hooks/layout"
+import IconArrowLeft from "../components/ui/Icons/IconArrowLeft.vue"
 
 export default defineComponent({
   name: "ErrorLayout",
@@ -39,6 +46,7 @@ export default defineComponent({
     BlogFooter,
     Page404,
     Page500,
+    IconArrowLeft,
   },
   setup() {
     const { error } = useLayout()

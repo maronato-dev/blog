@@ -20,7 +20,7 @@
   },
   "layout": {
     "error": {
-      "go-back": "← Voltar para a tela inicial",
+      "go-back": "Voltar para a tela inicial",
       "404-message": "Página não encontrada!",
       "500-message": "Opa! Algo de errado aconteceu."
     }

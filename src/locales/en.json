@@ -3,7 +3,7 @@
     "error": {
       "500-message": "Oops! Something went wrong.",
       "404-message": "Page not found!",
-      "go-back": "← Go to the front page"
+      "go-back": "Go to the front page"
     }
   },
   "post-card": {

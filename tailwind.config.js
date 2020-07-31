@@ -111,6 +111,21 @@ module.exports = {
           1000: "#090a0b",
         },
       },
+      keyframes: {
+        "bounce-left": {
+          "50%": {
+            transform: "translateX(-25%)",
+            animationTimingFunction: "cubic-bezier(0.8,0,1,1)",
+          },
+          "0%, 100%": {
+            transform: "translateX(0)",
+            animationTimingFunction: "cubic-bezier(0,0,0.2,1)",
+          },
+        },
+      },
+      animation: {
+        "bounce-left": "bounce-left 1s infinite",
+      },
     },
   },
   variants: {
@@ -157,6 +172,7 @@ module.exports = {
     ],
     transitionProperty: ["responsive", "hover"],
     typography: ["responsive", "dark"],
+    animation: ["responsive", "hover", "focus", "group-hover"],
   },
   plugins: [
     require("@tailwindcss/typography"),
