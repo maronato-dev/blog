@@ -34,8 +34,8 @@ import Commento from "../../../components/ui/Commento.vue"
 import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
 import { useGlobalOnline } from "../../../hooks/online"
 import PostContent from "../PostOrPageContent.vue"
-import PostHeader from "../post/PostHeader.vue"
-import RelatedPosts from "../post/RelatedPosts/RelatedPosts.vue"
+import PostHeader from "./PostHeader.vue"
+import RelatedPosts from "./RelatedPosts/RelatedPosts.vue"
 
 export default defineComponent({
   components: {

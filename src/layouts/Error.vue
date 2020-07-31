@@ -2,27 +2,29 @@
   <div class="wrapper">
     <div class="flex-grow">
       <nav-bar />
-      <section
-        class="my-20 px-5 mx-auto container content-center text-center flex flex-col flex-wrap"
-      >
-        <page404 v-if="code === 404" />
-        <page500 v-else-if="code === 500" />
-        <template v-else>
-          <div>Error {{ code }}</div>
-          <div>{{ message }}</div>
-        </template>
-        <div class="flex-row">
-          <router-link
-            class="animated-underline text-xl font-bold group"
-            to="/"
-          >
-            <icon-arrow-left
-              class="w-4 h-4 animate-none group-hover:animate-bounce-left rotate-90 inline-block"
-            />
-            {{ goBackMessage }}
-          </router-link>
-        </div>
-      </section>
+      <transition name="fade" mode="out-in" appear>
+        <section
+          class="my-20 px-5 mx-auto container content-center text-center flex flex-col flex-wrap"
+        >
+          <page404 v-if="code === 404" />
+          <page500 v-else-if="code === 500" />
+          <template v-else>
+            <div>Error {{ code }}</div>
+            <div>{{ message }}</div>
+          </template>
+          <div class="flex-row">
+            <router-link
+              class="animated-underline text-xl font-bold group"
+              to="/"
+            >
+              <icon-arrow-left
+                class="w-4 h-4 animate-none group-hover:animate-bounce-left rotate-90 inline-block"
+              />
+              {{ goBackMessage }}
+            </router-link>
+          </div>
+        </section>
+      </transition>
     </div>
     <blog-footer />
   </div>
