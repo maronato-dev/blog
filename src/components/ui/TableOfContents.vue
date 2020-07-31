@@ -11,7 +11,7 @@
       </li>
     </ol>
   </aside>
-  <hr class="md:hidden my-10" />
+  <hr class="md:hidden dark:opacity-25 opacity-75 my-10" />
 </template>
 
 <script lang="ts">
