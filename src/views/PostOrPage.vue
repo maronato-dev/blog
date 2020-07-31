@@ -4,7 +4,7 @@
       <transition name="fade" mode="out-in" appear>
         <loading-content v-if="loading" />
         <template v-else-if="content">
-          <div v-if="content.page">Page</div>
+          <page v-if="content.page" :page="content" />
           <post v-else :key="content.id" :post="content" />
         </template>
       </transition>
@@ -21,13 +21,14 @@ import {
   providePostReferences,
 } from "../hooks/postHelpers"
 import LoadingContent from "../components/ui/LoadingContent.vue"
-import Post from "../components/post/Post.vue"
+import Post from "../components/postOrPage/post/Post.vue"
+import Page from "../components/postOrPage/page/Page.vue"
 import { useSEOTags } from "../hooks/seo"
 import { useFormattedTitle } from "../hooks/ghost/content/title"
 
 export default defineComponent({
   name: "PostOrPage",
-  components: { Post, LoadingContent },
+  components: { Post, Page, LoadingContent },
   props: {
     slug: {
       type: String,

@@ -4,7 +4,7 @@
       <transition name="fade" mode="out-in" appear>
         <loading-content v-if="requestState.pending" />
         <div v-else-if="requestState.error">Error</div>
-        <div v-else-if="content.page">Page: {{ content.title }}</div>
+        <page v-else-if="content.page" :page="content" />
         <post v-else :post="content" />
       </transition>
     </div>
@@ -21,11 +21,12 @@ import {
 import { useError } from "../hooks/layout"
 import { useFormattedTitle } from "../hooks/ghost/content/title"
 import LoadingContent from "../components/ui/LoadingContent.vue"
-import Post from "../components/post/Post.vue"
+import Post from "../components/postOrPage/post/Post.vue"
+import Page from "../components/postOrPage/page/Page.vue"
 
 export default defineComponent({
   name: "PreviewPage",
-  components: { Post, LoadingContent },
+  components: { Post, LoadingContent, Page },
   props: {
     uuid: {
       type: String,

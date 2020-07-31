@@ -33,7 +33,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
 import { Tag } from "@tryghost/content-api"
-import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
+import { LocalizedPostOrPage } from "../../../../hooks/ghost/content/utils"
 import SameTagItems from "./SameTagPostsItem.vue"
 
 export default defineComponent({

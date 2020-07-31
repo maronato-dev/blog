@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue"
 import { useI18n } from "vue-i18n"
-import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
+import { LocalizedPostOrPage } from "../../../../hooks/ghost/content/utils"
 
 export default defineComponent({
   props: {

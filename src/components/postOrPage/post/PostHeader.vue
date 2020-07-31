@@ -83,12 +83,12 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue"
 import { useI18n } from "vue-i18n"
-import { usePostLikes } from "../../hooks/likes"
-import { getImageUrl, getSrcset } from "../collections/PostFeed/imageUtils"
-import { LocalizedPostOrPage } from "../../hooks/ghost/content/utils"
-import { useGlobalOnline } from "../../hooks/online"
-import IconHeart from "../ui/Icons/IconHeart.vue"
-import IconHeartEmpty from "../ui/Icons/IconHeartEmpty.vue"
+import { usePostLikes } from "../../../hooks/likes"
+import { getImageUrl, getSrcset } from "../../collections/PostFeed/imageUtils"
+import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
+import { useGlobalOnline } from "../../../hooks/online"
+import IconHeart from "../../ui/Icons/IconHeart.vue"
+import IconHeartEmpty from "../../ui/Icons/IconHeartEmpty.vue"
 
 export default defineComponent({
   components: { IconHeartEmpty, IconHeart },
