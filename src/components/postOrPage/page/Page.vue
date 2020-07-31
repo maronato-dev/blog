@@ -17,7 +17,12 @@
 <script lang="ts">
 import { defineComponent, PropType, watch, ref, onMounted, computed } from "vue"
 import { useI18n } from "vue-i18n"
-import { usePostFootnotes, usePostReferences } from "../../../hooks/postHelpers"
+import {
+  usePostFootnotes,
+  usePostReferences,
+  providePostFootnotes,
+  providePostReferences,
+} from "../../../hooks/postHelpers"
 import ContentFootnotes from "../../../components/collections/ContentFooter/ContentFootnotes.vue"
 import ContentReferences from "../../../components/collections/ContentFooter/ContentReferences.vue"
 import TableOfContents, {
@@ -43,6 +48,10 @@ export default defineComponent({
     },
   },
   setup(props) {
+    // Provide page counters
+    providePostFootnotes()
+    providePostReferences()
+
     const { count: footnoteCount } = usePostFootnotes()
     const { count: referenceCount } = usePostReferences()
 

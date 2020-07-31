@@ -5,7 +5,7 @@
         <loading-content v-if="loading" />
         <template v-else-if="content">
           <page v-if="content.page" :page="content" />
-          <post v-else :key="content.id" :post="content" />
+          <post v-else :post="content" />
         </template>
       </transition>
     </div>
@@ -16,10 +16,6 @@
 import { defineComponent, toRefs, computed } from "vue"
 import { useI18n } from "vue-i18n"
 import { useCurrentPageOrPost } from "../hooks/ghost/content/posts"
-import {
-  providePostFootnotes,
-  providePostReferences,
-} from "../hooks/postHelpers"
 import LoadingContent from "../components/ui/LoadingContent.vue"
 import Post from "../components/postOrPage/post/Post.vue"
 import Page from "../components/postOrPage/page/Page.vue"
@@ -48,10 +44,6 @@ export default defineComponent({
     )
     useFormattedTitle(title)
     useSEOTags(content)
-
-    // Provide post counters
-    providePostFootnotes()
-    providePostReferences()
 
     return { content, loading }
   },
