@@ -1,17 +1,33 @@
-import { PostOrPage, Pagination } from "@tryghost/content-api"
+import { PostOrPage, Pagination, Tag } from "@tryghost/content-api"
 import { Locales, availableLocales } from "../../locale/util"
 
 export interface BrowseResults<T> extends Array<T> {
   meta: { pagination: Pagination }
 }
 
-export interface LocalizedPostOrPage extends PostOrPage {
+interface LocalizedEntry {
   localizedSlug: string
   language: Locales
-  primaryTagSlug?: string
+}
+
+export interface LocalizedPostOrPage extends LocalizedEntry, PostOrPage {
   publishedDate?: Date
   updatedDate?: Date
+  page: boolean
 }
+
+export interface PublicTag extends Omit<Tag, "visibility"> {
+  visibility: "public"
+}
+
+export interface InternalTag extends Omit<Tag, "visibility"> {
+  visibility: "internal"
+}
+
+export type InternalOrPublicTag = InternalTag | PublicTag
+
+export interface LocalizedPublicTag extends LocalizedEntry, PublicTag {}
+export type InternalOrLocalizedPublicTag = InternalTag | LocalizedPublicTag
 
 export const getSlugLocale = (slug: string) => {
   return availableLocales.find(l => slug.startsWith(`${l}-`))
@@ -34,7 +50,6 @@ export const parseSlugLocale = (slug: string) => {
 export const localizePostOrPage = (post: PostOrPage): LocalizedPostOrPage => {
   const { nonLocalized, localized, locale } = parseSlugLocale(post.slug)
 
-  const primaryTagSlug = post.primary_tag ? post.primary_tag.slug : undefined
   const publishedDate = post.published_at
     ? new Date(post.published_at)
     : undefined
@@ -42,11 +57,26 @@ export const localizePostOrPage = (post: PostOrPage): LocalizedPostOrPage => {
 
   return {
     ...post,
+    page: !!post.page,
     language: locale,
     slug: nonLocalized,
     localizedSlug: localized,
-    primaryTagSlug,
     publishedDate,
     updatedDate,
+  }
+}
+
+export const localizeTag = (tag: Tag): InternalOrLocalizedPublicTag => {
+  if (tag.visibility === "internal") {
+    return tag as InternalTag
+  }
+  const { nonLocalized, localized, locale } = parseSlugLocale(tag.slug)
+
+  return {
+    ...tag,
+    visibility: "public",
+    language: locale,
+    slug: nonLocalized,
+    localizedSlug: localized,
   }
 }
