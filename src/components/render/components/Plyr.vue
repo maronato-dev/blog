@@ -165,4 +165,12 @@ export default defineComponent({
     margin: unset;
   }
 }
+.plyr__controls {
+  & a.plyr__controls__item.plyr__control {
+    @apply text-white transition-all duration-300;
+    &:hover {
+      @apply opacity-100;
+    }
+  }
+}
 </style>
