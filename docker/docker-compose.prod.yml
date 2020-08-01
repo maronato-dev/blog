@@ -135,6 +135,21 @@ services:
         - traefik.http.routers.frontend.tls.certresolver=le
         # Accept both http and https
         - traefik.http.routers.frontend.entrypoints=websecure
+  prerender:
+    restart: always
+    build:
+      context: ./prerender
+    environment:
+      - S3_CACHE=1
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+      - S3_PREFIX_KEY=${S3_PREFIX_KEY}
+    deploy:
+      labels:
+        # Disable traefik
+        - traefik.enable=false
 secrets:
   traefik_users:
     file: ./traefik_users

@@ -61,7 +61,7 @@ export const useError = () => {
 }
 
 export const useLayoutComponent = () => {
-  const { layout } = useLayout()
+  const { layout, error } = useLayout()
   const layoutMap = {
     default: DefaultLayout,
     error: ErrorLayout,
@@ -84,6 +84,10 @@ export const useLayoutComponent = () => {
     metaArray = metaArray.filter(m => m.name !== "robots")
     if (layout.value === "error") {
       metaArray.push({ name: "robots", content: "noindex" })
+      metaArray.push({
+        name: "prerender-status-code",
+        content: error.value ? error.value.code.toString() : "404",
+      })
     }
     meta.value = metaArray
   })

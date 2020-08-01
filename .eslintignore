@@ -8,3 +8,4 @@ acme.json
 .env
 commento.env
 ghost/*
+docker/*

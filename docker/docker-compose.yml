@@ -9,6 +9,10 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      default:
+        aliases:
+          - blog.${DOMAIN}
   ghost:
     image: ghost:3-alpine
     volumes:
@@ -22,6 +26,8 @@ services:
     build:
       dockerfile: ./docker/Dockerfile
       context: ../
+    environment:
+      DOMAIN: ${DOMAIN}
     depends_on:
       - ghost
   commento:
