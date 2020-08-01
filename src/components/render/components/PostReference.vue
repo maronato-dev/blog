@@ -1,8 +1,12 @@
 <template>
   <sup class="reference-ref" :class="{ active }">
-    <a :id="`rfref${assigned}`" class="ref-link" :href="`#rf${assigned}`">
-      {{ assigned }}
-    </a>
+    <a
+      :id="`rfref${assigned}`"
+      class="ref-link"
+      :href="`#rf${assigned}`"
+      rel="tag"
+      >{{ assigned }}</a
+    >
   </sup>
 </template>
 
