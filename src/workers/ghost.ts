@@ -1,9 +1,9 @@
 import dayjs from "dayjs"
 import type { PostsOrPages, Tag, Author } from "@tryghost/content-api"
-import { useGhostContentApi } from "../api"
-import { useGhostDatabase } from "../db"
-import { localizePostOrPage, localizeTag } from "../utils"
-import { preparePostOrPageForDB } from "../db/transformers"
+import { useGhostContentApi } from "../hooks/ghost/content/api"
+import { useGhostDatabase } from "../hooks/ghost/content/db"
+import { localizePostOrPage, localizeTag } from "../hooks/ghost/content/utils"
+import { preparePostOrPageForDB } from "../hooks/ghost/content/db/transformers"
 import type { WorkerRequest, WorkerResponse } from "./workerTypes"
 
 const basePageSize = 30

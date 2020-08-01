@@ -11,7 +11,7 @@ import { useTheme } from "./hooks/theme"
 import { useLayoutComponent, useLayout, components } from "./hooks/layout"
 import { useSettings } from "./hooks/ghost/content/settings"
 import { useSEOTags } from "./hooks/seo"
-import { useDatabaseSync } from "./hooks/ghost/content/worker/index"
+import { useDatabaseSync } from "./hooks/ghost/content/worker"
 
 export default defineComponent({
   name: "App",

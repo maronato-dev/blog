@@ -1,10 +1,10 @@
 import { ref, readonly } from "vue"
 import { createGlobalState } from "@vueuse/core"
-import { useStorageAlt } from "../../../vueuse"
-import { WorkerRequest, WorkerResponse } from "./workerTypes"
+import { useStorageAlt } from "../../vueuse"
+import { WorkerRequest, WorkerResponse } from "../../../workers/workerTypes"
 
 // eslint-disable-next-line import/no-unresolved
-import GhostWorker from "./worker?worker"
+import GhostWorker from "../../../workers/ghost?worker"
 
 const useLastSync = createGlobalState(() =>
   useStorageAlt("lastSync", new Date(0))
