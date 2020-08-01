@@ -28,8 +28,7 @@ export default defineComponent((_props, { slots }) => {
 <style lang="postcss" scoped>
 .footnote-aside {
   @apply text-xs tracking-wide font-medium opacity-50 hidden absolute leading-normal;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: var(--ghost-alt-font-family);
 
   & strong,
   & b {

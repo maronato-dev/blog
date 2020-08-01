@@ -1,21 +1,21 @@
 import { InjectionKey, Ref, ref, provide, inject, Slot, watch } from "vue"
 import { useI18n } from "vue-i18n"
 
-interface SlotMap {
+export interface SlotMap {
   [counter: number]: Slot | undefined
 }
 
-interface Counter {
+export interface Counter {
   count: Ref<number>
   slots: Ref<SlotMap>
 }
 
-const createCouterKey = (keyName: string) => {
+export const createCouterKey = (keyName: string) => {
   const key: InjectionKey<Counter> = Symbol(keyName)
   return () => key
 }
 
-const provideCounter = <T extends Counter, K extends InjectionKey<T>>(
+export const provideCounter = <T extends Counter, K extends InjectionKey<T>>(
   injectionKey: K
 ) => {
   const count = ref(0)
@@ -30,7 +30,7 @@ const provideCounter = <T extends Counter, K extends InjectionKey<T>>(
   })
 }
 
-const useCounter = <T extends Counter, K extends InjectionKey<T>>(
+export const useCounter = <T extends Counter, K extends InjectionKey<T>>(
   injectionKey: K,
   slot?: Slot
 ) => {
@@ -47,16 +47,3 @@ const useCounter = <T extends Counter, K extends InjectionKey<T>>(
   const assigned = count.value
   return { assigned, count, slots }
 }
-
-const useFootnotesInjectionKey = createCouterKey("Post footnotes")
-const useReferencesInjectionKey = createCouterKey("Post references")
-
-export const providePostFootnotes = () =>
-  provideCounter(useFootnotesInjectionKey())
-export const usePostFootnotes = (slot?: Slot) =>
-  useCounter(useFootnotesInjectionKey(), slot)
-
-export const providePostReferences = () =>
-  provideCounter(useReferencesInjectionKey())
-export const usePostReferences = (slot?: Slot) =>
-  useCounter(useReferencesInjectionKey(), slot)

@@ -1,6 +1,6 @@
 <template>
   <main class="mt-5 pb-2 relative flex-grow outer">
-    <div class="max-1500 w-full mx-auto">
+    <div class="max-1500 mx-auto">
       <transition name="fade" mode="out-in" appear>
         <loading-content v-if="loading" />
         <template v-else-if="content">

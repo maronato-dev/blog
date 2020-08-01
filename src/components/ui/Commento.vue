@@ -1,8 +1,5 @@
 <template>
-  <div
-    :id="id"
-    class="mx-auto justify-center w-full md:w-3/4 lg:w-2/3 xl:w-1/2 commento-root-wrapper"
-  ></div>
+  <div :id="id" class="ghost-content-container commento-root-wrapper"></div>
 </template>
 
 <script lang="ts">

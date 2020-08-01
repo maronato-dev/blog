@@ -1,6 +1,7 @@
 import { Ref, computed, watch } from "vue"
 import { useI18n } from "vue-i18n"
 import { useRoute, useRouter } from "vue-router"
+import { provideGlobalCurrentPostOrPage } from "../../postHelpers/globalPost"
 import {
   paginateDBContent,
   useCurrentDBPageOrPost,
@@ -60,6 +61,8 @@ export const useCurrentPageOrPost = (slug: Ref<string>) => {
   const content = computed(() =>
     loading.value ? undefined : dbContent.value || apiContent.value
   )
+
+  provideGlobalCurrentPostOrPage(content)
 
   // Update locale if post has a different locale than the current one
   const i18n = useI18n()

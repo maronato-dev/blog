@@ -155,8 +155,7 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .kg-embed-card {
   @apply block;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: var(--ghost-alt-font-family);
 }
 </style>
 <style lang="postcss">

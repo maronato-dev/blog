@@ -35,7 +35,9 @@
           </h2>
         </header>
 
-        <section class="excerpt text-gray-700 dark:text-gray-500">
+        <section
+          class="max-w-4xl text-gray-700 dark:text-gray-500 ghost-body-font"
+        >
           <p>{{ exerpt }}</p>
         </section>
       </router-link>
@@ -118,12 +120,6 @@ export default defineComponent({
 
 <style lang="postcss">
 .post-card {
-  & .excerpt {
-    max-width: 56em;
-    font-family: "Merriweather", Georgia, Cambria, "Times New Roman", Times,
-      serif;
-  }
-
   @apply relative flex-grow flex-shrink flex flex-col border-gray-600 border-opacity-25 bg-cover pt-0 px-6 pb-8 mt-0 mx-0 mb-8;
   flex-basis: 21rem;
   min-height: 14rem;

@@ -1,7 +1,4 @@
 <template>
-  <hr
-    class="mb-10 container mx-auto border-t border-gray-400 dark:border-gray-800 border-solid h-px"
-  />
   <transition name="fade" mode="out-in" appear>
     <div class="flex relative flex-wrap container mx-auto">
       <same-tag-posts

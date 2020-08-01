@@ -15,51 +15,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from "vue"
+import { defineComponent, computed } from "vue"
 import { useI18n } from "vue-i18n"
-
-interface Heading {
-  type: "H1" | "H2" | "H3" | "H4"
-  id: string
-  text: string
-  el: Element
-}
-
-type Tags = Heading["type"]
-
-export type TOC = Heading[]
-
-const removeAnchor = (str: string) =>
-  str[str.length - 1] === "#" ? str.slice(0, str.length - 1) : str
-
-const makeHeading = (element: Element): Heading => {
-  return {
-    type: element.tagName as Tags,
-    id: element.id,
-    text: removeAnchor(element.textContent || ""),
-    el: element,
-  }
-}
-
-export const buildToc = (root: Element | null): TOC => {
-  if (!root) {
-    return []
-  }
-  return Array.from(root.querySelectorAll("h1, h2, h3")).map(makeHeading)
-}
+import { useTOC } from "../../hooks/postHelpers/toc"
 
 export default defineComponent({
   name: "TableOfContents",
-  props: {
-    toc: {
-      type: Array as PropType<TOC>,
-      required: true,
-    },
-  },
   setup() {
     const i18n = useI18n()
     const contentsText = computed(() => i18n.t("ui.toc.contents-text"))
-    return { contentsText }
+
+    const toc = useTOC()
+
+    return { contentsText, toc }
   },
 })
 </script>

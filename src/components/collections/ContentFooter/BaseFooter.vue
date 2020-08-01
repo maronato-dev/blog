@@ -5,7 +5,7 @@
   <div class="font-light text-base tracking-wider mb-1 xl:-mb-4 opacity-75">
     {{ title }}
   </div>
-  <div class="content-list opacity-75">
+  <div class="opacity-75 ghost-content-container" :class="{ aside }">
     <ul>
       <slot />
     </ul>
@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
+import { useAside } from "../../../hooks/postHelpers"
 
 export default defineComponent({
   props: {
@@ -22,13 +23,9 @@ export default defineComponent({
       required: true,
     },
   },
+  setup() {
+    const aside = useAside()
+    return { aside }
+  },
 })
 </script>
-<style lang="postcss" scoped>
-.content-list {
-  @screen xl {
-    @apply mx-auto;
-    max-width: calc(100% / 2);
-  }
-}
-</style>

@@ -59,7 +59,7 @@
       </div>
       <p
         v-if="post.custom_excerpt"
-        class="mb-5 text-xl lg:text-2xl font-light max-w-screen-sm opacity-75 excerpt"
+        class="mb-5 text-xl lg:text-2xl font-light max-w-screen-sm opacity-75 ghost-body-font"
       >
         {{ post.custom_excerpt }}
       </p>
@@ -147,9 +147,6 @@ export default defineComponent({
 })
 </script>
 <style lang="postcss" scoped>
-.excerpt {
-  font-family: "Merriweather", Georgia, Cambria, "Times New Roman", Times, serif;
-}
 .likes-number {
   font-variant-numeric: tabular-nums lining-nums;
 }

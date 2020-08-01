@@ -1,6 +1,6 @@
 <template>
   <div
-    class="prose md:prose-lg xl:prose-xl ghost-content"
+    class="prose md:prose-lg xl:prose-xl ghost-content ghost-content-container"
     :class="{ aside, 'prose-dark': isDark }"
   >
     <div class="flex flex-col items-center">
@@ -13,6 +13,7 @@
 import { defineComponent } from "vue"
 import RenderHtml from "../render/RenderHtml.vue"
 import { useTheme } from "../../hooks/theme"
+import { useAside } from "../../hooks/postHelpers/index"
 
 export default defineComponent({
   components: { RenderHtml },
@@ -21,11 +22,13 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    aside: Boolean,
   },
   setup() {
     const { isDark } = useTheme()
-    return { isDark }
+
+    const aside = useAside()
+
+    return { isDark, aside }
   },
 })
 </script>
