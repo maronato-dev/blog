@@ -60,11 +60,7 @@ services:
       - traefik_users
   ghost:
     environment:
-      database__client: mysql
-      database__connection__host: db
-      database__connection__user: user
-      database__connection__password: password
-      database__connection__database: ghost
+      database__client: sqlite3
       admin__url: https://blog.${DOMAIN}
       url: https://blog.${DOMAIN}
     deploy:
@@ -76,7 +72,7 @@ services:
         # Use the proxy network for communication
         - traefik.docker.network=proxy
         # Ghost should live under ghost.DOMAIN
-        - traefik.http.routers.ghost.rule="Host(`blog.${DOMAIN}`) && PathPrefix(`/ghost/`)"
+        - traefik.http.routers.ghost.rule=Host(`blog.${DOMAIN}`) && PathPrefix(`/ghost/`, `/content/`, `/members/`, `/sitemap`,  `/robots.txt`, `/{lang:.+}/{opt:(rss|feed)}/`)
         # Make sure the loadbalancer uses the correct port
         - traefik.http.services.ghost.loadbalancer.server.port=2368
         # Enable tls through Lets Encrypt
@@ -84,8 +80,6 @@ services:
         - traefik.http.routers.ghost.tls.certresolver=le
         # Accept both http and https
         - traefik.http.routers.ghost.entrypoints=websecure
-    depends_on:
-      - db
   commento:
     environment:
       - COMMENTO_ORIGIN=https://commento.${DOMAIN}
@@ -106,11 +100,6 @@ services:
         - traefik.http.routers.commento.tls.certresolver=le
         # Accept both http and https
         - traefik.http.routers.commento.entrypoints=websecure
-  db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
   frontend:
     command: yarn start
     build:
