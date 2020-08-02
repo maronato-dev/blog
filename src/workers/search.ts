@@ -11,7 +11,7 @@ import { Locales } from "../hooks/locale/util"
 import { hidratePostOrPageFromDB } from "../hooks/ghost/content/db/transformers"
 import { WorkerRequest, WorkerResponse } from "./workerTypes"
 
-const debug = false
+const debug = import.meta.env.DEV
 
 type SearchRef = string
 type Type = "post" | "page" | "tag"
