@@ -11,6 +11,8 @@ import { Locales } from "../hooks/locale/util"
 import { hidratePostOrPageFromDB } from "../hooks/ghost/content/db/transformers"
 import { WorkerRequest, WorkerResponse } from "./workerTypes"
 
+const debug = false
+
 type SearchRef = string
 type Type = "post" | "page" | "tag"
 type Table = "posts" | "tags"
@@ -153,18 +155,18 @@ const loadDocuments = async () => {
   const { setLoaded } = useDocumentsLoaded()
 
   const documents: SearchDocument[] = []
-  console.debug("[SearchWorker] Loading posts...")
+  debug && console.debug("[SearchWorker] Loading posts...")
   await db.posts.each(postOrPage => {
     documents.push(transformIntoSearchDocument(postOrPage))
   })
-  console.debug("[SearchWorker] Loading tags...")
+  debug && console.debug("[SearchWorker] Loading tags...")
   await db.tags.where({ visibility: "public" }).each(tag => {
     if (tag.visibility === "public") {
       documents.push(transformIntoSearchDocument(tag))
     }
   })
 
-  console.debug("[SearchWorker] Indexing documents...")
+  debug && console.debug("[SearchWorker] Indexing documents...")
   index.value = lunr(function () {
     this.ref("searchRef")
     this.field("id", { boost: 10 })
@@ -173,7 +175,7 @@ const loadDocuments = async () => {
     this.field("type", { boost: 5 })
     this.field("language", { boost: 10 })
     documents.forEach(doc => {
-      this.add(doc)
+      this.add(doc, { boost: doc.type === "tag" ? 3 : 1 })
     })
   })
 
@@ -197,7 +199,7 @@ const search = async (query: string) => {
   const { loaded } = useDocumentsLoaded()
 
   if (!loaded.value) {
-    console.debug("[SearchWorker] Indexing first search")
+    debug && console.debug("[SearchWorker] Indexing first search")
     await loadDocuments()
   }
 
@@ -217,13 +219,17 @@ onmessage = (event: MessageEvent) => {
   const request: WorkerRequest = event.data
 
   if (request.action === "search") {
-    console.debug(`[SearchWorker] Searching with query '${request.data.query}'`)
+    debug &&
+      console.debug(
+        `[SearchWorker] Searching with query '${request.data.query}'`
+      )
     const startTime = new Date()
     search(request.data.query).then(results => {
       const endTime = new Date().getTime() - startTime.getTime()
-      console.debug(
-        `[SearchWorker] Done! Found ${results.length} items in ${endTime} ms`
-      )
+      debug &&
+        console.debug(
+          `[SearchWorker] Done! Found ${results.length} items in ${endTime} ms`
+        )
     })
   }
 }

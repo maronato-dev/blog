@@ -5,7 +5,7 @@
     :class="{ hide }"
   >
     <div class="container mx-auto flex items-center justify-between flex-wrap">
-      <div class="flex items-center flex-shrink-0 mr-6">
+      <div class="flex items-center flex-shrink-0 mr-6 lg:order-first">
         <div class="flex items-center py-2 pr-5 lg:hidden" @click="toggle">
           <svg
             class="fill-current h-5 w-5"
@@ -28,7 +28,8 @@
           </span>
         </router-link>
       </div>
-      <div class="lg:order-last lg:ml-4">
+      <div class="lg:order-last lg:ml-4 flex align-middle items-center">
+        <search-box class="mr-4" />
         <a>
           <icon-toggle-theme
             class="w-6 h-6 cursor-pointer fill-current opacity-75 hover:opacity-100 transition-all duration-200"
@@ -38,7 +39,7 @@
         </a>
       </div>
       <div
-        class="w-full flex-grow lg:flex lg:items-center lg:w-auto nav-menu uppercase"
+        class="w-full flex-grow lg:flex lg:items-center lg:w-auto nav-menu uppercase lg:order-2"
         :class="{ collapse }"
       >
         <div class="text-sm lg:flex-grow nav">
@@ -62,7 +63,17 @@
             {{ nav.label }}
           </a>
         </div>
+      </div>
+      <div
+        class="w-full lg:flex lg:items-center lg:w-auto nav-menu uppercase lg:order-3"
+        :class="{ collapse }"
+      >
         <lang-selector />
+      </div>
+      <div
+        class="w-full lg:flex lg:items-center lg:w-auto nav-menu uppercase lg:order-4"
+        :class="{ collapse }"
+      >
         <div class="tx-sm nav hidden lg:block ml-4">
           <a :href="feedUrl">
             <icon-rss
@@ -85,9 +96,10 @@ import { useTheme } from "../../hooks/theme"
 import IconToggleTheme from "../ui/Icons/IconToggleTheme.vue"
 import IconRss from "../ui/Icons/IconRss.vue"
 import LangSelector from "./LangSelector/LangSelector.vue"
+import SearchBox from "./search/SearchBox.vue"
 
 export default defineComponent({
-  components: { LangSelector, IconToggleTheme, IconRss },
+  components: { LangSelector, IconToggleTheme, IconRss, SearchBox },
   setup() {
     const { settings } = useSettings()
     const { toggleTheme } = useTheme()
@@ -125,6 +137,8 @@ export default defineComponent({
       const locale = i18n.locale.value
       return `https://feedly.com/i/subscription/feed/${origin}/${locale}/rss/`
     })
+
+    watch(i18n.locale, clickOutside)
 
     return {
       settings,

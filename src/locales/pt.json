@@ -29,5 +29,11 @@
     "toc": {
       "contents-text": "Conteúdo"
     }
+  },
+  "navbar": {
+    "search": {
+      "placeholder": "Pesquisar",
+      "no-results": "Sem resultados  😔"
+    }
   }
 }

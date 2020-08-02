@@ -29,5 +29,11 @@
     "toc": {
       "contents-text": "Contents"
     }
+  },
+  "navbar": {
+    "search": {
+      "placeholder": "Search",
+      "no-results": "No results  😔"
+    }
   }
 }

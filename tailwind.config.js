@@ -161,6 +161,7 @@ module.exports = {
       "disabled",
       "active",
       "group-hover",
+      "group-focus",
     ],
     boxShadow: [
       "responsive",
@@ -173,6 +174,7 @@ module.exports = {
     transitionProperty: ["responsive", "hover"],
     typography: ["responsive", "dark"],
     animation: ["responsive", "hover", "focus", "group-hover"],
+    display: ["responsive", "last"],
   },
   plugins: [
     require("@tailwindcss/typography"),

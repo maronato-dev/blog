@@ -30,7 +30,7 @@
     </div>
     <transition appear name="dropdown">
       <div v-if="show" class="absolute mt-2 w-auto rounded dropdown">
-        <div class="rounded-md bg-white dark:bg-gray-900 shadow-lg">
+        <div class="rounded-md bg-white dark:bg-gray-800 shadow-lg">
           <div
             class="py-1"
             role="menu"
