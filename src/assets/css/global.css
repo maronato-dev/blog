@@ -1,6 +1,6 @@
 @import "./transitions";
 @import "./typography.css";
-@import "./c.css";
+@import "./content.css";
 
 html,
 body {

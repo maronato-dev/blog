@@ -1,82 +1,120 @@
+:root {
+  --ghost-body-font-family: "Merriweather", Georgia, Cambria, "Times New Roman",
+    Times, serif;
+  --ghost-alt-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;
+}
+
+/*
+ * Font family used on the body of ghost documents
+ */
+.ghost-body-font {
+  font-family: "Merriweather", Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+/*
+ * Font family used on the body of ghost documents
+ */
+.ghost-body-font {
+  font-family: var(--ghost-body-font-family);
+}
+
+/*
+ * Font family used on headers and distinct elements of ghost documents
+ */
+.ghost-alt-font {
+  font-family: var(--ghost-body-font-family);
+}
+
+/* 
+ * Container used to properly align content that is shown on pages
+ * like Pages, posts, tags, etc
+ */
+.ghost-content-container {
+  position: relative;
+  margin: 0 auto;
+  @screen md {
+    flex-basis: calc(100% * 3 / 4);
+    max-width: calc(100% * 3 / 4) !important;
+    &.aside {
+      @apply flex-grow-0 flex-shrink-0 m-0;
+    }
+  }
+  @screen lg {
+    flex-basis: calc(100% * 2 / 3);
+    max-width: calc(100% * 2 / 3) !important;
+  }
+  @screen xl {
+    flex-basis: calc(100% / 2);
+    max-width: calc(100% / 2) !important;
+    &.aside {
+      margin-left: calc(100% / 4);
+    }
+  }
+}
+
+/*
+ * General formatting for content from ghost
+ * Includes stuff like font
+ */
 .ghost-content {
-  /* Reset
-/* ---------------------------------------------------------- */
-  & blockquote,
-  q {
-    quotes: none;
+  min-height: 230px;
+  font-family: var(--ghost-body-font-family);
+
+  /* Links */
+  & a:not(.kg-bookmark-container) {
+    @apply transition-opacity duration-200 ease-in-out;
+
+    &:hover {
+      @apply opacity-75;
+    }
   }
-  & blockquote:before,
-  blockquote:after,
-  q:before,
-  q:after {
-    content: "";
-    content: none;
-  }
-  & img {
-    max-width: 100%;
-  }
-  & *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-  }
-  & a {
-    background-color: transparent;
-  }
-  & a:active,
-  a:hover {
-    outline: 0;
-  }
-  & b,
-  strong {
-    font-weight: bold;
-  }
-  & i,
-  em,
-  dfn {
-    font-style: italic;
-  }
-  & h1 {
-    margin: 0.67em 0;
-    font-size: 2em;
-  }
-  & small {
-    font-size: 80%;
-  }
+
+  /* References and footnotes */
   & sub,
-  sup {
-    position: relative;
+  & sup {
     font-size: 75%;
     line-height: 0;
-    vertical-align: baseline;
-  }
-  & sup {
-    top: -0.5em;
-  }
-  & sub {
-    bottom: -0.25em;
-  }
-  & img {
-    border: 0;
-  }
-  & svg:not(:root) {
-    overflow: hidden;
-  }
-  & mark {
-    background-color: #fdffb6;
-  }
-  & code,
-  kbd,
-  pre,
-  samp {
-    font-family: monospace, monospace;
-    font-size: 1em;
+    @apply align-baseline relative mx-1;
+    & a {
+      @apply no-underline border-b border-gray-500 border-solid border-opacity-100 transition-opacity duration-200;
+      &:hover {
+        @apply opacity-75 text-current;
+      }
+    }
   }
 
-  /* ==========================================================================
- Base styles: opinionated defaults
- ========================================================================== */
+  /* Code */
+  & pre {
+    @apply rounded-md shadow-md;
+  }
+  & :not(pre) {
+    & > code,
+    & > kbd,
+    & > samp {
+      @apply whitespace-normal p-1 rounded-md bg-gray-200;
+    }
+  }
+  /* Prism plugins */
+  & div.code-toolbar {
+    @apply w-full;
+    & > .toolbar {
+      @apply opacity-100;
+      & a,
+      & button,
+      & span {
+        &,
+        &:hover,
+        &:focus,
+        &:active {
+          @apply bg-transparent shadow-none font-bold text-xs opacity-100 text-yellow-500;
+          font-family: var(--ghost-alt-font-family);
+        }
+      }
+    }
+  }
 
+  /* Divider */
   & hr {
     position: relative;
     display: block;
@@ -85,286 +123,74 @@
     padding: 0;
     height: 1px;
     border: 0;
-    border-top: 1px solid color(var(--lightgrey) l(+10%));
+    @apply border-t border-gray-400 border-solid;
   }
 
-  & audio,
-  canvas,
-  iframe,
-  img,
-  svg,
-  video {
-    vertical-align: middle;
-  }
-
-  & fieldset {
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-
-  & textarea {
-    resize: vertical;
-  }
-
-  & p,
-  ul,
-  ol,
-  dl,
-  blockquote {
-    margin: 0 0 1.5em 0;
-  }
-
+  /* Align items to the left and center */
+  & blockquote,
+  & dl,
+  & h1,
+  & h2,
+  & h3,
+  & h4,
   & ol,
-  ul {
-    padding-left: 1.3em;
-    padding-right: 1.5em;
-  }
-
-  & ol ol,
-  ul ul,
-  ul ol,
-  ol ul {
-    margin: 0.5em 0 1em;
-  }
-
+  & p,
+  & pre,
   & ul {
-    list-style: disc;
-  }
-
-  & ol {
-    list-style: decimal;
-  }
-
-  & ul,
-  ol {
-    max-width: 100%;
-  }
-
-  & li {
-    margin: 0.5em 0;
-    padding-left: 0.3em;
-    line-height: 1.6em;
-  }
-
-  & dt {
-    float: left;
-    margin: 0 20px 0 0;
-    width: 120px;
-    color: var(--darkgrey);
-    font-weight: 500;
-    text-align: right;
-  }
-
-  & dd {
-    margin: 0 0 5px 0;
-    text-align: left;
-  }
-
-  & blockquote {
-    margin: 1.5em 0;
-    padding: 0 1.6em 0 1.6em;
-    border-left: var(--whitegrey) 0.5em solid;
-  }
-
-  & blockquote p {
-    margin: 0.8em 0;
-    font-size: 1.2em;
-    font-weight: 300;
-  }
-
-  & blockquote small {
-    display: inline-block;
-    margin: 0.8em 0 0.8em 1.5em;
-    font-size: 0.9em;
-    opacity: 0.8;
-  }
-  /* Quotation marks */
-  & blockquote small:before {
-    content: "\2014 \00A0";
-  }
-
-  & blockquote cite {
-    font-weight: bold;
-  }
-  & blockquote cite a {
-    font-weight: normal;
-  }
-
-  & a {
-    color: color(var(--blue) l(-5%));
-    text-decoration: none;
-  }
-
-  & a:hover {
-    text-decoration: underline;
-  }
-
-  & h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin-top: 0;
-    line-height: 1.15;
-    font-weight: 600;
-    text-rendering: optimizeLegibility;
-  }
-
-  & h1 {
-    margin: 0 0 0.5em 0;
-    font-size: 5.5rem;
-    font-weight: 600;
-  }
-  @media (max-width: 500px) {
-    & h1 {
-      font-size: 2.2rem;
-    }
-  }
-
-  & h2 {
-    margin: 1.5em 0 0.5em 0;
-    font-size: 2.2rem;
-  }
-  @media (max-width: 500px) {
-    & h2 {
-      font-size: 1.8rem;
-    }
-  }
-
-  & h3 {
-    margin: 1.5em 0 0.5em 0;
-    font-size: 1.8rem;
-    font-weight: 500;
-  }
-  @media (max-width: 500px) {
-    & h3 {
-      font-size: 1.7rem;
-    }
-  }
-
-  & h4 {
-    margin: 1.5em 0 0.5em 0;
-    font-size: 1.6rem;
-    font-weight: 500;
-  }
-
-  & h5 {
-    margin: 1.5em 0 0.5em 0;
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
-
-  & h6 {
-    margin: 1.5em 0 0.5em 0;
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
-
-  position: relative;
-  margin: 0 auto;
-  padding: 0 170px 6vw;
-  min-height: 230px;
-  font-size: 2rem;
-  line-height: 1.6em;
-  background: #fff;
-
-  @media (max-width: 1170px) {
-    padding: 0 11vw;
-  }
-  @media (max-width: 800px) {
-    padding: 0 5vw;
-    font-size: 1.8rem;
-  }
-
-  & h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  ul,
-  ol,
-  dl,
-  pre,
-  blockquote,
-  .post-full-comments,
-  .footnotes {
-    margin: 0 0 1.5em 0;
     min-width: 100%;
   }
 
-  @media (max-width: 500px) {
-    & p,
-    ul,
-    ol,
-    dl,
-    pre,
-    .post-full-comments,
-    .footnotes {
-      margin-bottom: 1.28em;
+  /* Header font family */
+  & h1,
+  & h2,
+  & h3,
+  & h4 {
+    font-family: var(--ghost-alt-font-family);
+  }
+  /* Header anchor tags */
+  & h1,
+  & h2,
+  & h3,
+  & h4 {
+    &:first-child {
+      @apply mt-0;
+    }
+    & .heading-anchor {
+      @apply select-none text-gray-500 opacity-50 transition-opacity duration-200 no-underline ml-1;
+      &:hover {
+        @apply opacity-100;
+      }
     }
   }
 
-  & li {
-    word-break: break-word;
-  }
-
-  & li p {
-    margin: 0;
-  }
-
-  & a {
-    color: var(--darkgrey);
-    word-break: break-word;
-    box-shadow: var(--darkgrey) 0 -1px 0 inset;
-    transition: all 0.2s ease-in-out;
-  }
-
-  & a:hover {
-    color: var(--blue);
-    text-decoration: none;
-    box-shadow: var(--blue) 0 -1px 0 inset;
-  }
-
-  & strong,
-  em {
-    color: color(var(--darkgrey) l(-5%));
-  }
-
-  & small {
-    display: inline-block;
-    line-height: 1.6em;
-  }
-
-  & li:first-child {
-    margin-top: 0;
-  }
-
+  /* Media */
+  /* ---------------------------------------------------------- */
+  & audio,
+  & canvas,
+  & iframe,
   & img,
-  video {
+  & svg,
+  & video {
+    vertical-align: middle;
+  }
+  & img,
+  & video {
     display: block;
     margin: 1.5em auto;
-    max-width: 1040px;
     height: auto;
   }
   @media (max-width: 1040px) {
     & img,
-    video {
+    & video {
       width: 100%;
     }
   }
 
   /* Full bleed images (#full)
-Super neat trick courtesy of @JoelDrapper
-
-Usage (In Ghost edtior):
-
-![img](/some/image.jpg#full)
-
-*/
+     Super neat trick courtesy of @JoelDrapper
+     Usage (In Ghost edtior):
+     ![img](/some/image.jpg#full)
+  */
   & img[src$="#full"] {
     max-width: none;
     width: 100vw;
@@ -372,12 +198,11 @@ Usage (In Ghost edtior):
 
   /* Image captions
 
-Usage (In Ghost editor):
+     Usage (In Ghost editor):
 
-![img](/some/image.jpg)
-<small>Your image caption</small>
-
-*/
+     ![img](/some/image.jpg)
+     <small>Your image caption</small>
+  */
   & img + br + small {
     display: block;
     margin-top: -3em;
@@ -385,231 +210,9 @@ Usage (In Ghost editor):
     text-align: center;
   }
 
-  /* Override third party iframe styles */
-  & iframe {
-    margin: 0 auto !important;
-  }
-
-  & blockquote {
-    margin: 0 0 1.5em;
-    padding: 0 1.5em;
-    border-left: color(var(--blue)) 3px solid;
-  }
-  @media (max-width: 500px) {
-    & blockquote {
-      padding: 0 1.3em;
-    }
-  }
-
-  & blockquote p {
-    margin: 0 0 1em 0;
-    color: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    font-style: italic;
-  }
-
-  & blockquote p:last-child {
-    margin-bottom: 0;
-  }
-
-  & code {
-    padding: 0 5px 2px;
-    font-size: 0.8em;
-    line-height: 1em;
-    font-weight: 400 !important;
-    background: var(--whitegrey);
-    border-radius: 3px;
-  }
-
-  & p code {
-    word-break: break-all;
-  }
-
-  & pre {
-    overflow-x: auto;
-    margin: 1.5em 0 3em;
-    padding: 20px;
-    max-width: 100%;
-    border: color(var(--darkgrey) l(-10%)) 1px solid;
-    color: var(--whitegrey);
-    font-size: 1.4rem;
-    line-height: 1.5em;
-    background: color(var(--darkgrey) l(-3%));
-    border-radius: 5px;
-  }
-
-  & pre ::selection {
-    color: color(var(--midgrey) l(-25%));
-  }
-
-  & pre code {
-    padding: 0;
-    font-size: inherit;
-    line-height: inherit;
-    background: transparent;
-  }
-
-  & pre code :not(span) {
-    color: inherit;
-  }
-
-  & .fluid-width-video-wrapper {
-    margin: 1.5em 0 3em;
-  }
-
-  & hr {
-    margin: 2em 0;
-  }
-
-  & hr:after {
-    content: "";
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    display: block;
-    margin-left: -10px;
-    width: 1px;
-    height: 30px;
-    background: color(var(--lightgrey) l(+10%));
-    box-shadow: #fff 0 0 0 5px;
-    transform: rotate(45deg);
-  }
-
-  & hr + p {
-    margin-top: 1.2em;
-  }
-
-  & h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: color(var(--darkgrey) l(-5%));
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  }
-
-  & h1 {
-    margin: 0.5em 0 0.4em;
-    font-size: 4.2rem;
-    line-height: 1.25em;
-    font-weight: 600;
-  }
-  & p + h1 {
-    margin-top: 0.8em;
-  }
-  @media (max-width: 800px) {
-    & h1 {
-      font-size: 3.2rem;
-      line-height: 1.25em;
-    }
-  }
-
-  & h2 {
-    margin: 0.5em 0 0.4em;
-    font-size: 3.2rem;
-    line-height: 1.25em;
-    font-weight: 600;
-  }
-  & p + h2 {
-    margin-top: 0.8em;
-  }
-  @media (max-width: 800px) {
-    & h2 {
-      margin-bottom: 0.3em;
-      font-size: 2.8rem;
-      line-height: 1.25em;
-    }
-  }
-
-  & h3 {
-    margin: 0.5em 0 0.2em;
-    font-size: 2.5rem;
-    line-height: 1.3em;
-    font-weight: 600;
-  }
-  & h2 + h3 {
-    margin-top: 0.7em;
-  }
-  @media (max-width: 800px) {
-    & h3 {
-      margin-bottom: 0.3em;
-      font-size: 2.4rem;
-      line-height: 1.3em;
-    }
-  }
-
-  & h4 {
-    margin: 0.5em 0 0.2em;
-    font-size: 2.5rem;
-    font-weight: 600;
-  }
-  & h2 + h4 {
-    margin-top: 0.7em;
-  }
-  & h3 + h4 {
-    margin-top: 0;
-  }
-  @media (max-width: 800px) {
-    & h4 {
-      margin-bottom: 0.3em;
-      font-size: 2.4rem;
-      line-height: 1.3em;
-    }
-  }
-
-  & h5 {
-    display: block;
-    margin: 0.5em 0;
-    padding: 0.4em 1em 0.9em;
-    border: 0;
-    color: var(--blue);
-    font-family: Georgia, serif;
-    font-size: 3.2rem;
-    line-height: 1.35em;
-    text-align: center;
-  }
-  @media (min-width: 1180px) {
-    & h5 {
-      max-width: 1060px;
-      width: 100vw;
-    }
-  }
-  @media (max-width: 800px) {
-    & h5 {
-      margin-bottom: 1em;
-      margin-left: 1.3em;
-      padding: 0 0 0.5em;
-      font-size: 2.4rem;
-      text-align: initial;
-    }
-  }
-
-  & h6 {
-    margin: 0.5em 0 0.2em 0;
-    font-size: 2rem;
-    font-weight: 700;
-  }
-  @media (max-width: 800px) {
-    & h6 {
-      font-size: 1.8rem;
-      line-height: 1.4em;
-    }
-  }
-
-  /* Some grouped styles for smaller viewports */
-
-  @media (max-width: 500px) {
-    padding: 0;
-    & ::before,
-    & ::after {
-      display: none;
-    }
-  }
-
   /* Tables */
+  /* ---------------------------------------------------------- */
+
   & table {
     display: inline-block;
     overflow-x: auto;
@@ -618,80 +221,51 @@ Usage (In Ghost editor):
     width: auto;
     border-spacing: 0;
     border-collapse: collapse;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    font-size: 1.6rem;
+    font-family: var(--ghost-alt-font-family);
+    font-size: 1rem;
     white-space: nowrap;
     vertical-align: top;
   }
 
   & table {
     -webkit-overflow-scrolling: touch;
-    background: radial-gradient(
-          ellipse at left,
-          rgba(0, 0, 0, 0.2) 0%,
-          rgba(0, 0, 0, 0) 75%
-        )
-        0 center,
-      radial-gradient(
-          ellipse at right,
-          rgba(0, 0, 0, 0.2) 0%,
-          rgba(0, 0, 0, 0) 75%
-        )
-        100% center;
     background-attachment: scroll, scroll;
     background-size: 10px 100%, 10px 100%;
     background-repeat: no-repeat;
   }
 
   & table td:first-child {
-    background-image: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
     background-size: 20px 100%;
     background-repeat: no-repeat;
   }
 
   & table td:last-child {
-    background-image: linear-gradient(
-      to left,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
     background-position: 100% 0;
     background-size: 20px 100%;
     background-repeat: no-repeat;
   }
 
   & table th {
-    color: var(--darkgrey);
-    font-size: 1.2rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.2px;
-    text-align: left;
+    text-align: center;
     text-transform: uppercase;
-    background-color: color(var(--whitegrey) l(+4%));
+    @apply text-gray-1000 bg-gray-200;
   }
 
   & table th,
-  table td {
-    padding: 6px 12px;
-    border: color(var(--whitegrey) l(-1%) s(-5%)) 1px solid;
+  & table td {
+    padding: 6px 12px !important;
+    @apply border-gray-300 border border-solid;
   }
 
-  /* 7.3. Comments
-/* ---------------------------------------------------------- */
-
-  .post-full-comments {
-    margin: 0 auto;
-    max-width: 840px;
+  /* Koenig styles */
+  /* ---------------------------------------------------------- */
+  & .kg-image,
+  & .kg-gallery-image img {
+    cursor: zoom-in;
   }
-
-  /* 7.5. Koenig Styles
-/* ---------------------------------------------------------- */
-
   & .kg-image {
     margin: 0 auto;
     max-width: 100%;
@@ -705,15 +279,23 @@ Usage (In Ghost editor):
     max-width: 100vw;
   }
 
-  & figure {
-    margin: 0.8em 0 2.3em;
+  &.aside {
+    & .kg-width-wide,
+    & .kg-width-full,
+    & .kg-embed-card {
+      @screen md {
+        @apply self-start left-0;
+        margin-left: -5vw;
+      }
+
+      @screen xl {
+        @apply self-center ml-0;
+      }
+    }
   }
 
-  & h1 + figure,
-  h2 + figure,
-  h3 + figure,
-  h4 + figure {
-    margin-top: 2em;
+  & figure {
+    margin: 0.8em 0 2.3em;
   }
 
   & figure img {
@@ -722,13 +304,12 @@ Usage (In Ghost editor):
 
   & figcaption {
     margin: 1em auto 0;
-    color: color(var(--midgrey) l(-10%));
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-family: var(--ghost-alt-font-family);
     font-size: 75%;
     line-height: 1.5em;
     text-align: center;
     max-width: 1040px;
+    @apply text-gray-600;
   }
 
   & .kg-width-full figcaption {
@@ -739,10 +320,10 @@ Usage (In Ghost editor):
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: min(100vw, 1040px);
   }
 
-  & .kg-embed-card .fluid-width-video-wrapper {
+  & .kg-embed-card .js-reframe {
     margin: 0;
   }
 
@@ -781,9 +362,9 @@ Usage (In Ghost editor):
   }
 
   & .kg-gallery-card + .kg-image-card.kg-width-wide,
-  .kg-gallery-card + .kg-gallery-card,
-  .kg-image-card.kg-width-wide + .kg-gallery-card,
-  .kg-image-card.kg-width-wide + .kg-image-card.kg-width-wide {
+  & .kg-gallery-card + .kg-gallery-card,
+  & .kg-image-card.kg-width-wide + .kg-gallery-card,
+  & .kg-image-card.kg-width-wide + .kg-image-card.kg-width-wide {
     margin: -2.25em 0 3em;
   }
 
@@ -807,18 +388,17 @@ Usage (In Ghost editor):
   & .kg-bookmark-container {
     display: flex;
     min-height: 148px;
-    color: var(--darkgrey);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-family: var(--ghost-alt-font-family);
     text-decoration: none;
     border-radius: 3px;
     box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.09);
+    @apply text-gray-900;
   }
 
   & .kg-bookmark-container:hover {
-    color: var(--darkgrey);
     text-decoration: none;
     box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.09);
+    @apply text-gray-900;
   }
 
   & .kg-bookmark-content {
@@ -831,15 +411,14 @@ Usage (In Ghost editor):
   }
 
   & .kg-bookmark-title {
-    color: color(var(--midgrey) l(-30%));
-    font-size: 1.6rem;
+    font-size: 1rem;
     line-height: 1.5em;
     font-weight: 600;
     transition: color 0.2s ease-in-out;
   }
 
   & .kg-bookmark-container:hover .kg-bookmark-title {
-    color: var(--blue);
+    @apply text-blue-500;
   }
 
   & .kg-bookmark-description {
@@ -847,13 +426,13 @@ Usage (In Ghost editor):
     overflow-y: hidden;
     margin-top: 12px;
     max-height: 48px;
-    color: color(var(--midgrey) l(-10%));
-    font-size: 1.5rem;
+    font-size: 0.9375rem;
     line-height: 1.5em;
     font-weight: 400;
 
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    @apply text-gray-700;
   }
 
   & .kg-bookmark-thumbnail {
@@ -878,9 +457,9 @@ Usage (In Ghost editor):
     flex-wrap: wrap;
     align-items: center;
     margin-top: 14px;
-    color: color(var(--midgrey) l(-10%));
-    font-size: 1.5rem;
+    font-size: 0.9375rem;
     font-weight: 400;
+    @apply text-gray-600;
   }
 
   & .kg-bookmark-icon {
@@ -906,22 +485,10 @@ Usage (In Ghost editor):
     white-space: nowrap;
   }
 
-  @media (max-width: 800px) {
-    & figure {
-      margin: 0.2em 0 1.3em;
-    }
-
-    & h1 + figure,
-    h2 + figure,
-    h3 + figure,
-    h4 + figure {
-      margin-top: 0.9em;
-    }
-  }
-
   @media (max-width: 500px) {
     & .kg-width-wide,
-    .kg-width-full {
+    & .kg-width-full,
+    & .kg-embed-card {
       margin-right: -5vw;
       margin-left: -5vw;
     }
@@ -935,9 +502,9 @@ Usage (In Ghost editor):
     }
 
     & .kg-bookmark-title,
-    .kg-bookmark-description,
-    .kg-bookmark-metadata {
-      font-size: 1.4rem;
+    & .kg-bookmark-description,
+    & .kg-bookmark-metadata {
+      font-size: 0.875rem;
       line-height: 1.5em;
     }
 
@@ -958,6 +525,61 @@ Usage (In Ghost editor):
 
     & .kg-bookmark-content {
       order: 2;
+    }
+  }
+
+  @nest .dark-mode & {
+    /* & a {
+      @apply text-white;
+      &:hover {
+        @apply text-blue-400;
+      }
+    }
+
+    & strong {
+      @apply text-white;
+    }
+
+    & em {
+      @apply text-white;
+    } */
+
+    & hr {
+      @apply border-gray-800;
+    }
+
+    & figcaption {
+      @apply text-white opacity-75;
+    }
+
+    & table th {
+      @apply bg-gray-800 text-gray-300;
+    }
+
+    & table th, & table td {
+      @apply border-gray-800 border border-solid;
+    }
+
+    & :not(pre) {
+      & > code, & > kbd, & > samp {
+        @apply bg-gray-800;
+      }
+    }
+
+    & .kg-bookmark-container, & .kg-bookmark-container:hover {
+      @apply text-white shadow-sm border-gray-700 border border-solid rounded-md border-opacity-75;
+    }
+
+    & .kg-bookmark-title {
+      @apply text-white;
+    }
+
+    & .kg-bookmark-description {
+      @apply text-white opacity-75;
+    }
+
+    & .kg-bookmark-metadata {
+      @apply text-white opacity-75;
     }
   }
 }
