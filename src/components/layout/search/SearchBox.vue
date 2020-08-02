@@ -127,9 +127,9 @@ export default defineComponent({
             : localizedResults.value[focus.value]
         const slug = focused.data.doc.slug
         if (focused.data.table === "tags") {
-          router.push({ name: "tag", params: { slug } })
+          return router.push({ name: "tag", params: { slug } })
         }
-        router.push({ name: "postOrPage", params: { slug } })
+        return router.push({ name: "postOrPage", params: { slug } })
       }
     }
 

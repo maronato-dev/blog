@@ -23,7 +23,7 @@
       <template v-else>
         <div class="flex text-xs mt-2">
           <div
-            class="text-white text-sm font-semibold mb-2 bg-primary-400 dark:bg-primary-300 py-2 px-3 uppercase rounded-full"
+            class="text-sm font-semibold mb-2 text-primary-400 dark:text-primary-300 uppercase"
           >
             {{ title }}
           </div>
