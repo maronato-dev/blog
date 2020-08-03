@@ -1,8 +1,8 @@
 <template>
   <router-link
-    class="px-4 py-2 flex hover:bg-gray-100 dark-hover:bg-gray-900"
+    class="px-4 py-2 flex hover:bg-gray-200 dark-hover:bg-gray-900"
     :to="routerTo"
-    :class="{ 'bg-gray-100 dark:bg-gray-900': focus }"
+    :class="{ 'bg-gray-200 dark:bg-gray-900': focus }"
   >
     <div class="flex flex-col w-full">
       <template v-if="isPostOrPage">
@@ -34,22 +34,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from "vue"
+import { defineComponent, PropType, computed, toRef } from "vue"
 import { useI18n } from "vue-i18n"
 import { DocumentResult } from "../../../workers/search"
 
 export default defineComponent({
   props: {
     result: {
-      type: Object as PropType<DocumentResult>,
+      type: Object as PropType<DocumentResult["data"]>,
       required: true,
     },
     focus: Boolean,
   },
   setup(props) {
-    const data = computed(() => props.result.data)
-    const doc = computed(() => data.value.doc)
-    const table = computed(() => data.value.table)
+    const result = toRef(props, "result")
+    const doc = computed(() => result.value.doc)
+    const table = computed(() => result.value.table)
 
     const isPostOrPage = computed(() => table.value === "posts")
     const title = computed(() => {
