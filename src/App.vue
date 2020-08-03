@@ -10,7 +10,7 @@ import { useLocaleSync } from "./hooks/locale"
 import { useTheme } from "./hooks/theme"
 import { useLayoutComponent, useLayout, components } from "./hooks/layout"
 import { useSettings } from "./hooks/ghost/content/settings"
-import { useSEOTags } from "./hooks/seo"
+import { useSEOTags, useFavicon } from "./hooks/seo"
 import { useDatabaseSync } from "./hooks/ghost/content/worker"
 
 export default defineComponent({
@@ -20,6 +20,7 @@ export default defineComponent({
     useLocaleSync()
     useTheme()
     useSEOTags()
+    useFavicon()
     const { layout } = useLayout()
     const { fetch, settings } = useSettings()
     const sync = useDatabaseSync()

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="pt-12 container mx-auto">
     <div>{{ route.name }}</div>
     <transition name="fade" mode="out-in" appear>
       <loading-content v-if="keyLoading" />

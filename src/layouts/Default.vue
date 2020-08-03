@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="flex-grow">
       <nav-bar />
-      <div class="mt-20">
+      <div class="mt-16 md:mt-20 xl:mt-24">
         <slot />
       </div>
     </div>

@@ -18,6 +18,7 @@ export interface LinkAttrs {
   rel?: string
   href?: string
   id?: string
+  type?: string
 }
 export interface StyleAttrs {
   cssText?: string

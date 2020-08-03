@@ -1,5 +1,5 @@
 <template>
-  <main class="mt-5 pb-2 relative flex-grow outer">
+  <main class="pb-2 relative flex-grow outer">
     <div class="max-1500 w-full mx-auto">
       <transition name="fade" mode="out-in" appear>
         <loading-content v-if="requestState.pending" />

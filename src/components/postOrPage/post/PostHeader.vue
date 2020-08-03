@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex justify-around flex-row mx-auto mt-32 flex-wrap items-center"
+    class="flex justify-around flex-row mx-auto pt-12 flex-wrap items-center"
   >
     <div
       class="flex-col flex items-center xl:items-start justify-center mx-auto order-1 xl:mx-0 xl:pl-8 xl:order-2 xl:w-1/2"

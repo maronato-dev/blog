@@ -1,4 +1,4 @@
-import { Ref, watchEffect, computed } from "vue"
+import { Ref, watchEffect, computed, watch } from "vue"
 import { SettingsResponse } from "@tryghost/content-api"
 import { useSettings } from "./ghost/content/settings"
 import { useMeta } from "./meta"
@@ -150,4 +150,27 @@ export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
       link.value = link.value ? [...link.value, ...hreflang] : hreflang
     }
   })
+}
+
+export const useFavicon = () => {
+  const { link } = useMeta()
+  const { settings } = useSettings()
+  const sett = computed(() => (settings.value ? settings.value : undefined))
+
+  watch(
+    sett,
+    () => {
+      const linkValue = link.value || []
+      if (get(sett.value, "icon")) {
+        linkValue.push({
+          rel: "shortcut icon",
+          type: "image/png",
+          href: get(sett.value, "icon"),
+          id: "favicon",
+        })
+      }
+      link.value = linkValue
+    },
+    { immediate: true }
+  )
 }

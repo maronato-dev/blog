@@ -30,7 +30,7 @@
     </div>
     <transition appear name="dropdown">
       <div v-if="show" class="absolute mt-2 w-auto rounded dropdown">
-        <div class="rounded-md bg-white dark:bg-gray-800 shadow-lg">
+        <div class="rounded-md bg-gray-100 dark:bg-gray-800 shadow-lg">
           <div
             class="py-1"
             role="menu"
@@ -40,7 +40,7 @@
             <div
               v-for="l in locales"
               :key="l.locale"
-              class="px-4 py-2 text-sm leading-5 hover:bg-gray-100 dark-hover:bg-gray-800 focus:bg-gray-100 cursor-pointer flex"
+              class="px-4 py-2 text-sm leading-5 hover:bg-gray-200 dark-hover:bg-gray-900 focus:bg-gray-200 cursor-pointer flex"
               @click="setLocale(l)"
             >
               <div class="text-lg leading-5">{{ l.flag }}</div>

@@ -1,7 +1,7 @@
 <template>
   <nav
     v-click-outside="clickOutside"
-    class="bg-white py-3 px-8 dark:bg-gray-900 dark:text-gray-100 shadow-sm fixed w-full z-10"
+    class="bg-gray-100 py-3 px-8 dark:bg-gray-900 dark:text-gray-100 shadow-sm fixed w-full z-10"
     :class="{ hide }"
   >
     <div class="container mx-auto flex items-center justify-between flex-wrap">
@@ -19,7 +19,7 @@
         <router-link to="/">
           <img
             v-if="settings.logo"
-            class="w-20 lg:w-32"
+            class="w-10 md:w-12 xl:w-16 hover:opacity-75 transition-opacity duration-200"
             :src="settings.logo"
             :alt="settings.title"
           />
