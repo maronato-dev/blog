@@ -150,13 +150,27 @@ export default defineComponent({
         height: 100%;
       }
       & .content {
-        flex: 0 1 361px;
+        flex: 0 1 384px;
         justify-content: center;
         padding-left: 2.5rem;
       }
       & .title {
         margin-top: 0;
         font-size: 2rem;
+      }
+    }
+  }
+  @screen lg {
+    &.large {
+      & .content {
+        flex: 0 1 361px;
+      }
+    }
+  }
+  @screen xl {
+    &.large {
+      & .content {
+        flex: 0 1 427px;
       }
     }
   }
