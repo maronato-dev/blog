@@ -14,6 +14,7 @@ export function useDBPosts() {
   const i18n = useI18n()
 
   const reloadPosts = async () => {
+    posts.value = undefined
     const loadedPosts = await db.posts
       .where({ language: i18n.locale.value })
       .and(post => !post.page)
@@ -148,10 +149,12 @@ export function paginateDBContent<T>(
       ? content.value.slice(0, pageSize * page.value)
       : []
   )
-  const loadMore = () => {
-    page.value += 1
-  }
   const canLoadMore = computed(() => page.value < pages.value)
+  const loadMore = () => {
+    if (canLoadMore.value) {
+      page.value += 1
+    }
+  }
 
   return { content: paginatedContent, loadMore, canLoadMore }
 }

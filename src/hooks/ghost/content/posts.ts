@@ -7,16 +7,12 @@ import {
   useCurrentDBPageOrPost,
   useDBPosts,
 } from "./db/posts"
-import { useDBSyncComplete } from "./worker"
 import { useCurrentAPIPageOrPost } from "./api/posts"
-import { useDBReady } from "./db/reactive"
 
 import { parseSlugLocale } from "./utils"
 
 export function usePosts(pageSize = 15) {
-  const dbReady = useDBReady()
   const dbPosts = useDBPosts()
-  const { isComplete } = useDBSyncComplete()
 
   // dynamic posts
   const { content: posts, canLoadMore, loadMore } = paginateDBContent(
@@ -25,10 +21,7 @@ export function usePosts(pageSize = 15) {
   )
 
   const loading = computed(() => {
-    if (isComplete.value) {
-      return false
-    }
-    return !dbReady.value || typeof dbPosts.value === "undefined"
+    return typeof dbPosts.value === "undefined"
   })
 
   return { posts, loading, canLoadMore, loadMore }
