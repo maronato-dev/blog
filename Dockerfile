@@ -6,7 +6,6 @@ WORKDIR /app
 
 ## add user
 RUN addgroup -S user && adduser -S user -G user
-RUN chown -R user:user /app && chmod -R 755 /app
 
 # Install prod env
 FROM base as install
@@ -27,6 +26,7 @@ COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 CMD ["yarn", "start"]
 
 RUN chmod a+x /docker-entrypoint.sh
+RUN chown -R user:user /app && chmod -R 755 /app
 
 # switch to non-root user
 USER user
