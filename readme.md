@@ -8,10 +8,12 @@ Environment vars:
 
 - `APP_ENV`: Build environment (`dev` or `prod`) defaults to `dev`
 - `NODE_ENV`: Regular old Node env
-- `DOMAIN`: The apps domain
+- `DOMAIN`: The app's root domain
 - `PRERENDER_URL`: Prerender service URL (e.g. `http://<internal-prerender-domain>:3000`)
 - `GHOST_API_KEY`: Content API key provided by Ghost
 - `FIREBASE_PROJECT_ID`: Firebase project ID to use as like's storage
+- `GHOST_API_DOMAIN`: Ghost's API domain
+- `COMMENTO_DOMAIN`: Commento's API domain
 
 
 You'll also need to configure nginx to redirect some requests to your Ghost container.
