@@ -1,3 +1,4 @@
+# Load env
 FROM node:lts-alpine as base
 
 ENV HOST 0.0.0.0
@@ -10,26 +11,9 @@ RUN mkdir /app/node_modules
 RUN addgroup -S user && adduser -S user -G user
 RUN chown -R user:user /app/node_modules && chmod -R 755 /app/node_modules
 
-# Install prod env
-FROM base as install
+COPY ./dev-entrypoint.sh /docker-entrypoint.sh
 
-COPY package.json /app/
-
-RUN yarn install
-
-COPY ./ /app/
-
-FROM base as final
-
-WORKDIR /app
-COPY --from=install /app/ /app/
-
-COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-
-# Configure folder ownership
-RUN chown -R user:user /app && chmod -R 755 /app
-
-CMD ["yarn", "start"]
+CMD ["yarn", "dev"]
 
 RUN chmod a+x /docker-entrypoint.sh
 
