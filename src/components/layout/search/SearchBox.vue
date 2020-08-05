@@ -35,18 +35,17 @@
                 @keyup.down="focusDown"
               />
             </div>
-            <template v-if="noResults">
-              <div class="px-4 py-2 flex">
-                {{ noResultsText }}
-              </div>
+            <div v-if="noResults" class="px-4 py-2 flex">
+              {{ noResultsText }}
+            </div>
+            <template v-else>
+              <search-result
+                v-for="(result, i) in localizedResults"
+                :key="result.doc.id"
+                :result="result"
+                :focus="i === focus"
+              />
             </template>
-            <search-result
-              v-for="(result, i) in localizedResults"
-              v-else
-              :key="result.doc.id"
-              :result="result"
-              :focus="i === focus"
-            />
           </div>
         </div>
       </div>
