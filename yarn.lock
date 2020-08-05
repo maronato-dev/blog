@@ -6011,7 +6011,7 @@ vfile@^4.0.0:
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
 
-vite@^1.0.0-beta.3:
+vite@v1.0.0-rc.3:
   version "1.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/vite/-/vite-1.0.0-rc.3.tgz#8ec2926656e044ab7e0122f10f14b48b6d8dbbe0"
   integrity sha512-3zYPtyHPIkNTXpdl8Tj/SnuTLONcSt/fxsehs6pm6+uFjOyfj++kp7JkGkRuPTE2GADUJKD1GLNLznC0VWUzng==
