@@ -5,14 +5,6 @@ import { useMeta } from "./meta"
 import { LocalizedPostOrPage } from "./ghost/content/utils"
 import { availableLocales, Locales } from "./locale/util"
 
-const getCurrentUrl = () => {
-  if (typeof window === "undefined") {
-    return undefined
-  }
-  const location = window.location
-  return `${location.origin}${location.pathname}`
-}
-
 const get = <T extends SettingsResponse | LocalizedPostOrPage>(
   obj: T | undefined,
   key: keyof T
@@ -72,8 +64,7 @@ export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
         },
         {
           property: "og:url",
-          content:
-            getCurrentUrl() || get(cte.value, "url") || get(sett.value, "url"),
+          content: get(cte.value, "url") || get(sett.value, "url"),
         },
         {
           property: "og:image",
@@ -119,8 +110,7 @@ export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
         },
         {
           name: "twitter:url",
-          content:
-            getCurrentUrl() || get(cte.value, "url") || get(sett.value, "url"),
+          content: get(cte.value, "url") || get(sett.value, "url"),
         },
         {
           name: "twitter:image",
