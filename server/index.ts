@@ -31,7 +31,7 @@ app.use(
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   require("prerender-node")
     .set("host", `blog.${process.env.DOMAIN}`)
-    .set("prerenderServiceUrl", "http://prerender:3000")
+    .set("prerenderServiceUrl", `${process.env.PRERENDER_URL}`)
     // eslint-disable-next-line prettier/prettier
     .blacklisted([".*\.js", ".*\.html", ".*\.css", ".*\.svg", ".*\.ico"])
 )

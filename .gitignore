@@ -5,5 +5,4 @@ dist
 logs/
 acme.json
 .htpasswd
-.env
 commento.env
