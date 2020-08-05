@@ -10,10 +10,10 @@ export default defineComponent(() => {
   const { script } = useMeta()
 
   const id = "commento"
-  const domain = import.meta.env.VITE_DOMAIN
+  const url = import.meta.env.VITE_COMMENTO_URL
   const commentoScript = {
     id: "commentoScript",
-    src: `//commento.${domain}/js/commento.js`,
+    src: `${url}/js/commento.js`,
     "data-auto-init": "false",
     "data-id-root": id,
     "data-no-fonts": "true",
