@@ -4,11 +4,9 @@ ENV HOST 0.0.0.0
 
 WORKDIR /app
 
-RUN mkdir /app/node_modules
-
 ## add user
 RUN addgroup -S user && adduser -S user -G user
-RUN chown -R user:user /app/node_modules && chmod -R 755 /app/node_modules
+RUN chown -R user:user /app && chmod -R 755 /app
 
 # Install prod env
 FROM base as install
@@ -25,9 +23,6 @@ WORKDIR /app
 COPY --from=install /app/ /app/
 
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-
-# Configure folder ownership
-RUN chown -R user:user /app && chmod -R 755 /app
 
 CMD ["yarn", "start"]
 
