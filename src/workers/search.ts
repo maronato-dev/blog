@@ -11,7 +11,11 @@ import { Locales } from "../hooks/locale/util"
 import { hidratePostOrPageFromDB } from "../hooks/ghost/content/db/transformers"
 import { WorkerRequest, WorkerResponse } from "./workerTypes"
 
-const debug = import.meta.env.DEV
+const debug = (...params: unknown[]) => {
+  if (import.meta.env.DEV) {
+    console.debug(...params)
+  }
+}
 
 type SearchRef = string
 type Type = "post" | "page" | "tag"
@@ -155,18 +159,18 @@ const loadDocuments = async () => {
   const { setLoaded } = useDocumentsLoaded()
 
   const documents: SearchDocument[] = []
-  debug && console.debug("[SearchWorker] Loading posts...")
+  debug("[SearchWorker] Loading posts...")
   await db.posts.each(postOrPage => {
     documents.push(transformIntoSearchDocument(postOrPage))
   })
-  debug && console.debug("[SearchWorker] Loading tags...")
+  debug("[SearchWorker] Loading tags...")
   await db.tags.where({ visibility: "public" }).each(tag => {
     if (tag.visibility === "public") {
       documents.push(transformIntoSearchDocument(tag))
     }
   })
 
-  debug && console.debug("[SearchWorker] Indexing documents...")
+  debug("[SearchWorker] Indexing documents...")
   index.value = lunr(function () {
     this.ref("searchRef")
     this.field("id", { boost: 10 })
@@ -199,7 +203,7 @@ const search = async (query: string) => {
   const { loaded } = useDocumentsLoaded()
 
   if (!loaded.value) {
-    debug && console.debug("[SearchWorker] Indexing first search")
+    debug("[SearchWorker] Indexing first search")
     await loadDocuments()
   }
 
@@ -219,17 +223,13 @@ onmessage = (event: MessageEvent) => {
   const request: WorkerRequest = event.data
 
   if (request.action === "search") {
-    debug &&
-      console.debug(
-        `[SearchWorker] Searching with query '${request.data.query}'`
-      )
+    debug(`[SearchWorker] Searching with query '${request.data.query}'`)
     const startTime = new Date()
     search(request.data.query).then(results => {
       const endTime = new Date().getTime() - startTime.getTime()
-      debug &&
-        console.debug(
-          `[SearchWorker] Done! Found ${results.length} items in ${endTime} ms`
-        )
+      debug(
+        `[SearchWorker] Done! Found ${results.length} items in ${endTime} ms`
+      )
     })
   }
 }

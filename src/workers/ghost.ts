@@ -6,7 +6,11 @@ import { localizePostOrPage, localizeTag } from "../hooks/ghost/content/utils"
 import { preparePostOrPageForDB } from "../hooks/ghost/content/db/transformers"
 import type { WorkerRequest, WorkerResponse } from "./workerTypes"
 
-const debug = import.meta.env.DEV
+const debug = (...params: unknown[]) => {
+  if (import.meta.env.DEV) {
+    console.debug(...params)
+  }
+}
 const basePageSize = 30
 
 async function loadTags(pageSize = basePageSize) {
@@ -31,7 +35,7 @@ async function loadTags(pageSize = basePageSize) {
     )
     .then(async content => {
       return await db.tags.bulkPut(content.map(localizeTag)).then(() => {
-        debug && console.debug(`[GhostWorker] Updated ${content.length} tags`)
+        debug(`[GhostWorker] Updated ${content.length} tags`)
         return content.map(() => [1])
       })
     })
@@ -59,8 +63,7 @@ async function loadAuthors(pageSize = basePageSize) {
     )
     .then(async content => {
       return await db.authors.bulkPut(content).then(() => {
-        debug &&
-          console.debug(`[GhostWorker] Updated ${content.length} authors`)
+        debug(`[GhostWorker] Updated ${content.length} authors`)
         return content.map(() => [1])
       })
     })
@@ -81,10 +84,10 @@ async function savePostsOrPagesToDB(
       }
     )
     .then(keys => {
-      debug && console.debug(`[GhostWorker] Updated ${keys.length} ${type}`)
+      debug(`[GhostWorker] Updated ${keys.length} ${type}`)
       return keys
     })
-    .catch(debug && console.error)
+    .catch(console.error)
 }
 
 async function loadPostOrPage(
@@ -141,7 +144,7 @@ async function syncDatabase(lastSync: Date) {
     loadTags(),
     loadAuthors(),
   ]).catch(e => {
-    debug && console.error(e)
+    console.error(e)
     const response: WorkerResponse = {
       action: "sync",
       status: "error",
@@ -161,7 +164,7 @@ onmessage = (event: MessageEvent) => {
   const request: WorkerRequest = event.data
 
   if (request.action === "sync") {
-    debug && console.debug("[GhostWorker] Syncing database...")
+    debug("[GhostWorker] Syncing database...")
     const startTime = new Date()
     syncDatabase(request.data.lastSync).then(results => {
       const endTime = new Date().getTime() - startTime.getTime()
@@ -176,10 +179,7 @@ onmessage = (event: MessageEvent) => {
             ),
           0
         )
-      debug &&
-        console.debug(
-          `[GhostWorker] Done. Loaded ${loadCount} items in ${endTime} ms`
-        )
+      debug(`[GhostWorker] Done. Loaded ${loadCount} items in ${endTime} ms`)
     })
   }
 }
