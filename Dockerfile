@@ -8,11 +8,13 @@ WORKDIR /app
 FROM base as install
 
 # Install server
-COPY ./server/package.json /app/server/package.json
+COPY ./server/package.json /app/server/
+COPY ./server/yarn.lock /app/server/
 RUN cd ./server && yarn install
 
 # Install frontend
 COPY package.json /app/
+COPY yarn.lock /app/
 RUN yarn install
 
 # Build frontend
