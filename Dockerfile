@@ -71,6 +71,6 @@ COPY --from=app /app/dist/ /app/dist/
 COPY --from=server /app/server/ /app/server/
 
 # switch to non-root user
-# USER user
+USER user
 
 CMD ["node", "server"]
