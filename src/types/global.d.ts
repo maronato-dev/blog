@@ -1,3 +1,16 @@
+function fathom(
+  cmd: "set",
+  config: "siteId" | "trackerUrl",
+  value: string
+): void
+function fathom(
+  cmd: "trackPageview",
+  vars?: { path?: string; hostname?: string; referrer?: string }
+): void
+function fathom(cmd: "setTrackerUrl", value: string): void
+declare type Fathom = typeof fathom
+declare type FathonQueue = { q: Parameters<Fathom>[] }
+
 declare interface Window {
   MathJax: {
     typeset(): void
@@ -18,4 +31,5 @@ declare interface Window {
   commento: {
     main(): void
   }
+  fathom: Fathom | FathonQueue | undefined
 }

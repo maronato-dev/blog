@@ -14,30 +14,33 @@ import {
   ToRefs,
 } from "vue"
 
-export interface LinkAttrs {
+interface BaseAttrs {
+  permanent?: boolean
+  id?: string
+}
+
+export interface LinkAttrs extends BaseAttrs {
   rel?: string
   href?: string
-  id?: string
   type?: string
 }
-export interface StyleAttrs {
+export interface StyleAttrs extends BaseAttrs {
   cssText?: string
   type?: string
-  id?: string
 }
-export interface MetaAttrs {
+export interface MetaAttrs extends BaseAttrs {
   name?: string
   content?: string
   property?: string
-  id?: string
   multiple?: boolean
 }
-export interface ScriptAttrs {
+export interface ScriptAttrs extends BaseAttrs {
   src?: string
   type?: string
-  id?: string
+  async?: 1
+  defer?: 1
 }
-export interface BodyAttrs {
+export interface BodyAttrs extends BaseAttrs {
   class?: string
 }
 export type Title = string
@@ -157,7 +160,9 @@ const removeNodeset = (nodeset: Nodeset) => {
     } else if (nodeType !== "title") {
       const nodes = value as HTMLElement[] | undefined
       if (nodes) {
-        nodes.forEach(node => node.remove())
+        nodes
+          .filter(node => !node.getAttribute("permanent"))
+          .forEach(node => node.remove())
       }
     }
   })

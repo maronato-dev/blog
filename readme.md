@@ -13,6 +13,8 @@ Environment vars:
 - `FIREBASE_PROJECT_ID`: Firebase project ID to use as like's storage
 - `GHOST_API_DOMAIN`: Ghost's API domain
 - `COMMENTO_DOMAIN`: Commento's API domain
+- `FATHOM_SITE_ID`: Fathom site id for tracking
+- `FATHOM_DOMAIN`: Fathom domain
 
 
 You'll also need to configure nginx to redirect some requests to your Ghost container.

@@ -6,12 +6,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, watch } from "vue"
+import { useRouter } from "vue-router"
 import { useLocaleSync } from "./hooks/locale"
 import { useTheme } from "./hooks/theme"
 import { useLayoutComponent, useLayout, components } from "./hooks/layout"
 import { useSettings } from "./hooks/ghost/content/settings"
 import { useSEOTags, useFavicon } from "./hooks/seo"
 import { useDatabaseSync } from "./hooks/ghost/content/worker"
+import { useAnalytics } from "./hooks/analytics"
 
 export default defineComponent({
   name: "App",
@@ -21,11 +23,12 @@ export default defineComponent({
     useTheme()
     useSEOTags()
     useFavicon()
-    const { layout } = useLayout()
-    const { fetch, settings } = useSettings()
+
     const sync = useDatabaseSync()
     sync()
 
+    const { layout } = useLayout()
+    const { fetch, settings } = useSettings()
     watch(
       settings,
       () => {
@@ -41,6 +44,13 @@ export default defineComponent({
     // Make sure settings are updated on app load
     onMounted(fetch)
     const layoutComponent = useLayoutComponent()
+
+    // Analytics
+    const { trackPageview } = useAnalytics()
+    const router = useRouter()
+    router.afterEach((_to, _from) => {
+      trackPageview()
+    })
 
     return { layoutComponent, settings }
   },
