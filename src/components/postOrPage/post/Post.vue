@@ -5,7 +5,7 @@
       <table-of-contents />
     </section>
     <section class="mb-10 lg:mb-20">
-      <post-content :html="post.html" />
+      <post-content :key="html" :html="html" />
     </section>
     <section class="mb-10 lg:mb-20">
       <content-footnotes v-if="footnoteCount > 0" />
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch, ref, onMounted } from "vue"
+import { defineComponent, PropType, watch, ref, onMounted, computed } from "vue"
 import { useI18n } from "vue-i18n"
 import {
   usePostFootnotes,
@@ -57,7 +57,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     // Provide post counters
     providePostFootnotes()
     providePostReferences()
@@ -77,7 +77,9 @@ export default defineComponent({
 
     const online = useGlobalOnline()
 
-    return { footnoteCount, referenceCount, showTOC, online }
+    const html = computed(() => props.post.html)
+
+    return { footnoteCount, referenceCount, showTOC, online, html }
   },
 })
 </script>

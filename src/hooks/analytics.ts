@@ -21,7 +21,6 @@ export const useFathom = () => {
   const loadedFathom = computed(() => {
     const loaded =
       typeof fathom.value !== "undefined" && fathom.value !== defaultFathom
-    console.log("loaded fathon", loaded)
     return loaded
   })
 

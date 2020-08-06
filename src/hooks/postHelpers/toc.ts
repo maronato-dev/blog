@@ -12,8 +12,8 @@ type Tags = Heading["type"]
 
 export type TOC = Heading[]
 
-const removeAnchor = (str: string) =>
-  str[str.length - 1] === "#" ? str.slice(0, str.length - 1) : str
+const removeAnchor = (str: string): string =>
+  str[str.length - 1] === "#" ? removeAnchor(str.slice(0, str.length - 1)) : str
 
 const makeHeading = (element: Element): Heading => {
   return {

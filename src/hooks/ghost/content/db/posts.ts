@@ -57,8 +57,6 @@ export function useCurrentDBPageOrPost(slug: Ref<string>) {
       // Do nothing if DB is not ready
       return
     }
-    // Reset content
-    content.value = undefined
 
     const { nonLocalized, locale, hasLocale } = parseSlugLocale(slug.value)
     const language = hasLocale ? locale : i18n.locale.value
