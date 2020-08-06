@@ -32,7 +32,6 @@ COPY package.json /app/
 COPY yarn.lock /app/
 RUN yarn install
 
-RUN printenv && sleep 60
 # Build frontend
 COPY ./ /app/
 RUN yarn build

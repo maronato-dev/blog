@@ -6,7 +6,6 @@ Requires [Buildkit](https://docs.docker.com/develop/develop-images/build_enhance
 
 Environment vars:
 
-- `APP_ENV`: Build environment (`dev` or `prod`) defaults to `dev`
 - `NODE_ENV`: Regular old Node env
 - `DOMAIN`: The app's root domain
 - `PRERENDER_URL`: Prerender service URL (e.g. `http://<internal-prerender-domain>:3000`)
