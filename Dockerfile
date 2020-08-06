@@ -1,6 +1,33 @@
-FROM node:lts-alpine as base
+FROM alpine:3.12 as base
 
-# Inject environment so we can build the image
+ENV HOST 0.0.0.0
+
+RUN apk add nodejs
+
+WORKDIR /app
+RUN mkdir server
+
+## add user
+RUN addgroup -S user && adduser -S user -G user
+RUN chown -R user:user /app/server && chmod -R 755 /app/server
+
+# Install server
+FROM node:lts-alpine as server
+
+WORKDIR /app/server
+
+# Install server as prod to cut on deps
+ENV NODE_ENV=production
+COPY ./server/package.json /app/server/
+COPY ./server/yarn.lock /app/server/
+COPY ./server/index.js /app/server/
+RUN yarn install
+
+# Install and build app
+FROM node:lts-alpine as app
+
+WORKDIR /app
+
 ARG NODE_ENV=production
 
 ARG DOMAIN=maronato.dev
@@ -26,19 +53,6 @@ ENV FATHOM_SITE_ID=$FATHOM_SITE_ID
 ARG FATHOM_DOMAIN=fathom.maronato.dev
 ENV FATHOM_DOMAIN=$FATHOM_DOMAIN
 
-ENV HOST 0.0.0.0
-
-WORKDIR /app
-
-# Install prod env
-FROM base as install
-
-# Install server as prod to cut on deps
-ENV NODE_ENV=production
-COPY ./server/package.json /app/server/
-COPY ./server/yarn.lock /app/server/
-RUN cd ./server && yarn install
-
 # Install frontend as dev so we can build later
 ENV NODE_ENV=development
 COPY package.json /app/
@@ -53,15 +67,10 @@ COPY ./ /app/
 RUN yarn build
 
 FROM base as final
-COPY --from=install /app/dist/ /app/dist/
-COPY --from=install /app/server/ /app/server/
+COPY --from=app /app/dist/ /app/dist/
+COPY --from=server /app/server/ /app/server/
 
-WORKDIR /app/server/
-
-## add user
-RUN addgroup -S user && adduser -S user -G user
-RUN chown -R user:user /app/server && chmod -R 755 /app/server
 # switch to non-root user
-USER user
+# USER user
 
-CMD ["yarn", "start"]
+CMD ["node", "server"]
