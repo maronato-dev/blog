@@ -1,6 +1,6 @@
 #!/bin/sh
 
 echo "Building locally"
-yarn build
+echo "Nope! Skipping build"
 echo "Done! Executing command"
 exec "$@"

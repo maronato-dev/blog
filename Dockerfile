@@ -4,31 +4,31 @@ ENV HOST 0.0.0.0
 
 WORKDIR /app
 
-## add user
-RUN addgroup -S user && adduser -S user -G user
-
 # Install prod env
 FROM base as install
 
-COPY package.json /app/
+# Install server
+COPY ./server/package.json /app/server/package.json
+RUN cd ./server && yarn install
 
+# Install frontend
+COPY package.json /app/
 RUN yarn install
 
+# Build frontend
 COPY ./ /app/
+RUN yarn build
 
 FROM base as final
+COPY --from=install /app/dist/ /app/dist/
+COPY --from=install /app/server/ /app/server/
 
-WORKDIR /app
-COPY --from=install /app/ /app/
+WORKDIR /app/server/
 
-COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-
-CMD ["yarn", "start"]
-
-RUN chmod a+x /docker-entrypoint.sh
-RUN chown -R user:user /app && chmod -R 755 /app
-
+## add user
+RUN addgroup -S user && adduser -S user -G user
+RUN chown -R user:user /app/server && chmod -R 755 /app/server
 # switch to non-root user
 USER user
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["yarn", "start"]

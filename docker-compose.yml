@@ -1,16 +1,15 @@
 version: "3.7"
 services:
   frontend:
-    command: yarn dev
+    command: yarn start
     build:
-      dockerfile: ./dev.dockerfile
-      context: ./
+      context: .
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       DOMAIN: maronato.dev
       GHOST_API_DOMAIN: ghost-dev.maronato.dev
       COMMENTO_DOMAIN: commento.maronato.dev
-      GHOST_API_KEY: 59b0c4d600d55880ca4c74c12a
+      GHOST_API_KEY: f717832a121379fe52006ef0e1
       FIREBASE_PROJECT_ID: blog-beef8
     ports:
       - 3000:3000
