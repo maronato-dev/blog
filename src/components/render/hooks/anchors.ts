@@ -12,7 +12,9 @@ const anchorHeadings = (el: HTMLElement) => {
 
 export const useHeadingAnchors = () => {
   const hasAnchors = ref(false)
+  console.log("USING ANCHORS", hasAnchors.value)
   onMounted(() => {
+    console.log("MOUNTING ANCHORS", hasAnchors.value)
     const vm = getCurrentInstance()
     if (!vm) throw "Component instance not available!"
 
@@ -21,6 +23,7 @@ export const useHeadingAnchors = () => {
       el = el.parentNode as HTMLElement
     }
     if (!hasAnchors.value) {
+      console.log("CREATING ANCHORS", hasAnchors.value)
       anchorHeadings(el)
       hasAnchors.value = true
     }
