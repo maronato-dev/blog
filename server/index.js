@@ -4,11 +4,14 @@
 const path = require("path")
 const express = require("express")
 const compression = require("compression")
+const morgan = require("morgan")
 
 const port = 3000
 const app = express()
 
 const distFolder = path.resolve(__dirname, "../dist")
+
+app.use(morgan("tiny"))
 
 // Prerender crawler requests
 app.use(
