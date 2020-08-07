@@ -8,6 +8,7 @@ export interface SlotMap {
 export interface Counter {
   count: Ref<number>
   slots: Ref<SlotMap>
+  reset(): void
 }
 
 export const createCouterKey = (keyName: string) => {
@@ -20,14 +21,17 @@ export const provideCounter = <T extends Counter, K extends InjectionKey<T>>(
 ) => {
   const count = ref(0)
   const slots = ref<SlotMap>({})
-  provide(injectionKey, { count, slots })
+
+  const reset = () => {
+    count.value = 0
+    slots.value = {}
+  }
+
+  provide(injectionKey, { count, slots, reset })
 
   // Reset on locale change
   const i18n = useI18n()
-  watch(i18n.locale, () => {
-    count.value = 0
-    slots.value = {}
-  })
+  watch(i18n.locale, reset)
 }
 
 export const useCounter = <T extends Counter, K extends InjectionKey<T>>(
@@ -38,12 +42,12 @@ export const useCounter = <T extends Counter, K extends InjectionKey<T>>(
   if (typeof counter === "undefined") {
     throw Error(`Counter "${injectionKey.description}" not provided!`)
   }
-  const { count, slots } = counter
+  const { count, slots, reset } = counter
   // Auto increment on use
   if (slot) {
     count.value += 1
     slots.value[count.value] = slot
   }
   const assigned = count.value
-  return { assigned, count, slots }
+  return { assigned, count, slots, reset }
 }

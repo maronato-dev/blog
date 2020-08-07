@@ -21,6 +21,7 @@ import "../../assets/css/prismjs/plugins/toolbar.css"
 import "../../assets/css/prismjs/themes/material-dark.css"
 import { useRoute } from "vue-router"
 import { useMeta } from "../../hooks/meta"
+import { usePostFootnotes, usePostReferences } from "../../hooks/postHelpers"
 import components from "./components"
 
 Prism.plugins.autoloader.languages_path =
@@ -130,6 +131,12 @@ export default defineComponent({
       }
       anchorHeadings(el)
     })
+
+    // Reset footnotes and references on created
+    const { reset: resetFootnotes } = usePostFootnotes()
+    const { reset: resetReferences } = usePostReferences()
+    resetFootnotes()
+    resetReferences()
 
     return compile(html.value)
   },
