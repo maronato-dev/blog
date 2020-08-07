@@ -4,7 +4,7 @@
     :class="{ aside, 'prose-dark': isDark }"
   >
     <div class="flex flex-col items-center">
-      <render-html :html="html" />
+      <render-html :key="html" :html="html" />
     </div>
   </div>
 </template>

@@ -5,7 +5,7 @@
       <table-of-contents />
     </section>
     <section class="mb-10 lg:mb-20">
-      <post-content :key="html" :html="html" />
+      <post-content :html="html" />
     </section>
     <section class="mb-10 lg:mb-20">
       <content-footnotes v-if="footnoteCount > 0" />
