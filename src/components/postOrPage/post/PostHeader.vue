@@ -6,12 +6,7 @@
       class="flex-col flex items-center xl:items-start justify-center mx-auto order-1 xl:mx-0 xl:pl-8 xl:order-2 xl:w-1/2"
     >
       <section v-if="post.primary_tag">
-        <router-link
-          class="mt-0 mb-2 text-primary-400 dark:text-primary-300 font-semibold uppercase animated-underline opacity-100 text-base"
-          :to="`/tag/${post.primary_tag.slug}`"
-        >
-          {{ post.primary_tag.name }}
-        </router-link>
+        <post-tags :post="post" />
       </section>
       <h1
         class="mb-1 mt-1 leading-tight text-5xl md:text-6xl font-medium title my-8 text-center lg:text-left"
@@ -89,9 +84,10 @@ import { LocalizedPostOrPage } from "../../../hooks/ghost/content/utils"
 import { useGlobalOnline } from "../../../hooks/online"
 import IconHeart from "../../ui/Icons/IconHeart.vue"
 import IconHeartEmpty from "../../ui/Icons/IconHeartEmpty.vue"
+import PostTags from "./PostTags.vue"
 
 export default defineComponent({
-  components: { IconHeartEmpty, IconHeart },
+  components: { IconHeartEmpty, IconHeart, PostTags },
   props: {
     post: {
       type: Object as PropType<LocalizedPostOrPage>,
