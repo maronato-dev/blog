@@ -21,10 +21,9 @@ class GhostDatabase extends Dexie {
 
   public constructor() {
     super("GhostDatabase")
-    this.version(1).stores({
-      posts:
-        "id,uuid,page,publishedDate,updatedDate,language,[slug+language],[primary_tag+language]",
-      tags: "id,slug,visibility,language",
+    this.version(2).stores({
+      posts: "id,uuid,page,publishedDate,updatedDate,language,[slug+language]",
+      tags: "id,slug,visibility,language,[slug+language]",
       authors: "id,slug",
     })
     this.posts = this.table("posts")

@@ -35,5 +35,10 @@
       "placeholder": "Search",
       "no-results": "No results  😔"
     }
+  },
+  "tag": {
+    "header": {
+      "colletion-total": "An empty collection | A collection of one post | A collection of {count} posts"
+    }
   }
 }

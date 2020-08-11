@@ -3,19 +3,21 @@ import { useI18n } from "vue-i18n"
 import { useRoute, useRouter } from "vue-router"
 import { provideGlobalCurrentPostOrPage } from "../../postHelpers/globalPost"
 import {
-  paginateDBContent,
   useCurrentDBPageOrPost,
   useDBPosts,
+  useDBPostsWithTag,
 } from "./db/posts"
+import { usePaginateDBContent } from "./db/utils"
 import { useCurrentAPIPageOrPost } from "./api/posts"
 
 import { parseSlugLocale } from "./utils"
+import { useCurrentTag } from "./tags"
 
 export function usePosts(pageSize = 15) {
   const dbPosts = useDBPosts()
 
   // dynamic posts
-  const { content: posts, canLoadMore, loadMore } = paginateDBContent(
+  const { content: posts, canLoadMore, loadMore } = usePaginateDBContent(
     dbPosts,
     pageSize
   )
@@ -78,4 +80,29 @@ export const useCurrentPageOrPost = (slug: Ref<string>) => {
   })
 
   return { content, loading }
+}
+
+export function usePostsWithTag(tagId: Ref<string | undefined>, pageSize = 15) {
+  const dbPosts = useDBPostsWithTag(tagId)
+
+  const total = computed(() => dbPosts.value.length)
+
+  const { content: posts, canLoadMore, loadMore } = usePaginateDBContent(
+    dbPosts,
+    pageSize
+  )
+
+  return { posts, canLoadMore, loadMore, total }
+}
+
+export function usePostsWithCurrentTag(slug: Ref<string>, pageSize = 15) {
+  const { tag, loading } = useCurrentTag(slug)
+
+  const tagId = computed(() => tag.value && tag.value.id)
+  const { posts, canLoadMore, loadMore, total } = usePostsWithTag(
+    tagId,
+    pageSize
+  )
+
+  return { posts, canLoadMore, loadMore, loading, tag, total }
 }

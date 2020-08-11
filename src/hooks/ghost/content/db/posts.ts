@@ -132,50 +132,20 @@ export function usePrevPost(post: Ref<LocalizedPostOrPage>) {
   return prevPost
 }
 
-export function paginateDBContent<T>(
-  content: Ref<T[] | undefined>,
-  pageSize = 15
-) {
-  const page = ref(1)
-  const pages = computed(() =>
-    typeof content.value !== "undefined"
-      ? Math.ceil(content.value.length / pageSize)
-      : 0
-  )
-  const paginatedContent = computed(() =>
-    typeof content.value !== "undefined"
-      ? content.value.slice(0, pageSize * page.value)
-      : []
-  )
-  const canLoadMore = computed(() => page.value < pages.value)
-  const loadMore = () => {
-    if (canLoadMore.value) {
-      page.value += 1
-    }
+export function useDBPostsWithTag(tagId: Ref<string | undefined>) {
+  const dbPosts = useDBPosts()
+
+  const postContainsTag = (post: LocalizedPostOrPage) => {
+    return (
+      !!post.tags && post.tags.findIndex(tag => tag.id === tagId.value) >= 0
+    )
   }
 
-  return { content: paginatedContent, loadMore, canLoadMore }
-}
+  const posts = computed(() =>
+    dbPosts.value ? dbPosts.value.filter(postContainsTag) : []
+  )
 
-export function usePostsWithTag(tagId: Ref<string | undefined>, pageSize = 15) {
-  const db = useGhostDatabase()
-  const i18n = useI18n()
-  const posts = ref<LocalizedPostOrPage[]>([])
-
-  async function loadPosts() {
-    if (tagId.value) {
-      posts.value = await db.posts
-        .where({ language: i18n.locale.value, primary_tag: tagId.value })
-        .toArray(arr => Promise.all(arr.map(hidratePostOrPageFromDB)))
-    }
-  }
-
-  watch([i18n.locale, tagId], loadPosts, { immediate: true })
-
-  const { content, canLoadMore, loadMore } = paginateDBContent(posts, pageSize)
-  const total = computed(() => posts.value.length)
-
-  return { posts: content, canLoadMore, loadMore, total }
+  return posts
 }
 
 export function useRelatedPosts(post: Ref<LocalizedPostOrPage>) {
@@ -184,10 +154,11 @@ export function useRelatedPosts(post: Ref<LocalizedPostOrPage>) {
   const primaryTagId = computed(() =>
     post.value.primary_tag ? post.value.primary_tag.id : undefined
   )
-  const { posts: rawPostsWithTag, total } = usePostsWithTag(primaryTagId, 4)
+  const postsWithTags = useDBPostsWithTag(primaryTagId)
+  const total = computed(() => postsWithTags.value.length)
 
   const withTags = computed(() =>
-    rawPostsWithTag.value.filter(p => p.id !== post.value.id)
+    postsWithTags.value.filter(p => p.id !== post.value.id).slice(0, 4)
   )
 
   return { next, prev, withTags, withTagsTotal: total }

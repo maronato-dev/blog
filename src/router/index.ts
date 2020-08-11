@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
     props: true,
     name: "tag",
     component: defineAsyncComponent({
-      loader: () => import("../views/Index.vue"),
+      loader: () => import("../views/Tag.vue"),
       loadingComponent: LoadingComponent,
     }),
   },
