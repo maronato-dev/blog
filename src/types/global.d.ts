@@ -32,4 +32,5 @@ declare interface Window {
     main(): void
   }
   fathom: Fathom | FathonQueue | undefined
+  prerenderReady: boolean
 }

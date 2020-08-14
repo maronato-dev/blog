@@ -7,6 +7,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, watch } from "vue"
 import { useRouter } from "vue-router"
+import { useTimeoutFn } from "@vueuse/core"
 import { useLocaleSync } from "./hooks/locale"
 import { useTheme } from "./hooks/theme"
 import { useLayoutComponent, useLayout, components } from "./hooks/layout"
@@ -14,6 +15,7 @@ import { useSettings } from "./hooks/ghost/content/settings"
 import { useSEOTags, useFavicon } from "./hooks/seo"
 import { useDatabaseSync } from "./hooks/ghost/content/worker"
 import { useAnalytics } from "./hooks/analytics"
+import { usePrerenderReady } from "./hooks/prerender"
 
 export default defineComponent({
   name: "App",
@@ -50,6 +52,13 @@ export default defineComponent({
     const router = useRouter()
     router.afterEach((_to, _from) => {
       trackPageview()
+    })
+
+    // Prerender
+    onMounted(() => {
+      // Set ready after 2 seconds since mounted
+      const { markReady } = usePrerenderReady()
+      useTimeoutFn(markReady, 2000)
     })
 
     return { layoutComponent, settings }
