@@ -14,7 +14,6 @@ Environment vars:
 - `GHOST_API_DOMAIN`: Ghost's API domain
 - `COMMENTO_DOMAIN`: Commento's API domain
 - `COMMENTO_JS_URL`: Commento JS source file URL
-- `COMMENTO_CSS_URL`: Commento CSS source file URL
 - `FATHOM_SITE_ID`: Fathom site id for tracking
 - `FATHOM_DOMAIN`: Fathom domain
 

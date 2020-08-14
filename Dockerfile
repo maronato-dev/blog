@@ -47,10 +47,8 @@ ENV GHOST_API_DOMAIN=$GHOST_API_DOMAIN
 
 ARG COMMENTO_DOMAIN=commento.maronato.dev
 ENV COMMENTO_DOMAIN=$COMMENTO_DOMAIN
-ARG COMMENTO_JS_URL=https://cdn.maronato.dev/commento/js/commento.js
+ARG COMMENTO_JS_URL=https://cdn.maronato.dev/commento/commento.js
 ENV COMMENTO_JS_URL=$COMMENTO_JS_URL
-ARG COMMENTO_CSS_URL=https://cdn.maronato.dev/commento/css/commento_alt.css
-ENV COMMENTO_CSS_URL=$COMMENTO_CSS_URL
 
 ARG FATHOM_SITE_ID=
 ENV FATHOM_SITE_ID=$FATHOM_SITE_ID

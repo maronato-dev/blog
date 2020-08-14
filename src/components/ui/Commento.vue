@@ -11,14 +11,12 @@ export default defineComponent(() => {
 
   const id = "commento"
   const jsUrl = import.meta.env.VITE_COMMENTO_JS_URL
-  const cssUrl = import.meta.env.VITE_COMMENTO_CSS_URL
   const commentoScript = {
     id: "commentoScript",
     src: jsUrl,
     "data-auto-init": "false",
     "data-id-root": id,
     "data-no-fonts": "true",
-    "data-css-override": cssUrl,
   } as ScriptAttrs
 
   const scriptArray = script.value || []
