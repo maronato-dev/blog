@@ -16,6 +16,7 @@ Environment vars:
 - `COMMENTO_JS_URL`: Commento JS source file URL
 - `FATHOM_SITE_ID`: Fathom site id for tracking
 - `FATHOM_DOMAIN`: Fathom domain
+- `FATHOM_JS_URL`: Fathom JS url
 
 
 You'll also need to configure nginx to redirect some requests to your Ghost container.

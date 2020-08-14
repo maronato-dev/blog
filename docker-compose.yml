@@ -15,6 +15,7 @@ services:
       FIREBASE_PROJECT_ID: blog-beef8
       FATHOM_SITE_ID: DEQVG
       FATHOM_DOMAIN: fathom.maronato.dev
+      FATHOM_JS_URL: https://cdn.maronato.dev/fathom/tracker.js
     ports:
       - 3000:3000
     volumes:

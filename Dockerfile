@@ -54,6 +54,8 @@ ARG FATHOM_SITE_ID=
 ENV FATHOM_SITE_ID=$FATHOM_SITE_ID
 ARG FATHOM_DOMAIN=fathom.maronato.dev
 ENV FATHOM_DOMAIN=$FATHOM_DOMAIN
+ARG FATHOM_JS_URL=https://cdn.maronato.dev/fathom/tracker.js
+ENV FATHOM_JS_URL=$FATHOM_JS_URL
 
 # Install frontend as dev so we can build later
 ENV NODE_ENV=development

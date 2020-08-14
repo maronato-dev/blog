@@ -73,9 +73,10 @@ export const useAnalytics = () => {
     if (siteId && !initialized.value) {
       fathom.value("set", "siteId", siteId)
       if (online.value) {
+        const jsUrl = import.meta.env.VITE_FATHOM_JS_URL as string
         const scriptValue = script.value || []
         scriptValue.push({
-          src: `${import.meta.env.VITE_FATHOM_URL}/tracker.js`,
+          src: jsUrl,
           async: 1,
           id: "fathom-script",
           permanent: true,
