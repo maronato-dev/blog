@@ -10,6 +10,8 @@ services:
       DOMAIN: maronato.dev
       GHOST_API_DOMAIN: ghost-dev.maronato.dev
       COMMENTO_DOMAIN: commento.maronato.dev
+      COMMENTO_JS_URL: https://cdn.maronato.dev/commento/js/commento.js
+      COMMENTO_CSS_URL: https://cdn.maronato.dev/commento/css/commento.css
       GHOST_API_KEY: f717832a121379fe52006ef0e1
       FIREBASE_PROJECT_ID: blog-beef8
       FATHOM_SITE_ID: DEQVG

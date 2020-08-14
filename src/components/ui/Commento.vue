@@ -10,13 +10,15 @@ export default defineComponent(() => {
   const { script } = useMeta()
 
   const id = "commento"
-  const url = import.meta.env.VITE_COMMENTO_URL
+  const jsUrl = import.meta.env.VITE_COMMENTO_JS_URL
+  const cssUrl = import.meta.env.VITE_COMMENTO_CSS_URL
   const commentoScript = {
     id: "commentoScript",
-    src: `${url}/js/commento.js`,
+    src: jsUrl,
     "data-auto-init": "false",
     "data-id-root": id,
     "data-no-fonts": "true",
+    "data-css-override": cssUrl,
   } as ScriptAttrs
 
   const scriptArray = script.value || []
