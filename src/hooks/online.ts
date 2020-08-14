@@ -1,6 +1,7 @@
 import { computed, ref } from "vue"
+import { createGlobalStateAlt } from "./vueuse"
 
-export const useGlobalOnline = (() => {
+export const useGlobalOnline = createGlobalStateAlt(() => {
   const online = ref(navigator.onLine)
   addEventListener("online", () => {
     online.value = true
@@ -9,8 +10,8 @@ export const useGlobalOnline = (() => {
     online.value = false
   })
 
-  return () => online
-})()
+  return online
+})
 
 export const useGlobalOffline = () => {
   const online = useGlobalOnline()
