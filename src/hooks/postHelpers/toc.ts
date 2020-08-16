@@ -58,7 +58,7 @@ export const useShowTOC = () => {
       !!postOrPage.value &&
       (!postOrPage.value.reading_time
         ? false
-        : postOrPage.value.reading_time >= 1)
+        : postOrPage.value.reading_time >= 5)
   )
   return showToc
 }
