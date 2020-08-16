@@ -20,6 +20,7 @@ import { useFormattedTitle } from "../hooks/ghost/content/title"
 import LoadingContent from "../components/ui/LoadingContent.vue"
 import Tag from "../components/tag/Tag.vue"
 import LoadMore from "../components/ui/LoadMore.vue"
+import { useSEOTags } from "../hooks/seo"
 
 export default defineComponent({
   components: { Tag, LoadingContent, LoadMore },
@@ -46,6 +47,7 @@ export default defineComponent({
       tag.value ? tag.value.name || "" : i18n.t("postOrPage.head.title.loading")
     )
     useFormattedTitle(title)
+    useSEOTags(tag)
 
     return { posts, canLoadMore, loadMore, loading, tag, total }
   },

@@ -17,12 +17,14 @@ import LoadingContent from "../components/ui/LoadingContent.vue"
 import { useDefaultTitle } from "../hooks/ghost/content/title"
 import { usePosts } from "../hooks/ghost/content/posts"
 import LoadMore from "../components/ui/LoadMore.vue"
+import { useLocalizableFrontPage } from "../hooks/locale"
 
 export default defineComponent({
   name: "IndexPage",
   components: { PostFeed, LoadingContent, LoadMore },
   setup() {
     useDefaultTitle()
+    useLocalizableFrontPage()
     const route = useRoute()
     const { posts, loading, loadMore, canLoadMore } = usePosts(6)
 

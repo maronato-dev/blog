@@ -8,15 +8,17 @@ import {
 
 import { useError, useLayout } from "../hooks/layout"
 import LoadingComponent from "../components/ui/LoadingContent.vue"
+import { availableLocales } from "../hooks/locale/util"
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    name: "home",
+    name: "index",
     component: defineAsyncComponent({
       loader: () => import("../views/Index.vue"),
       loadingComponent: LoadingComponent,
     }),
+    alias: availableLocales.map(locale => `/${locale}`),
   },
   {
     path: "/:slug",

@@ -25,8 +25,8 @@ export const useCurrentAPITag = (slug: Ref<string>) => {
     loading.value = true
     return api.tags
       .read({ slug: localizedSlug })
-      .then(tag => {
-        const internalOrPublicTag = localizeTag(tag)
+      .then(apiTag => {
+        const internalOrPublicTag = localizeTag(apiTag)
         if (internalOrPublicTag.visibility === "public") {
           tag.value = internalOrPublicTag
         } else {

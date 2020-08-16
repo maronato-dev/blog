@@ -1,5 +1,17 @@
-import { PostOrPage, Pagination, Tag } from "@tryghost/content-api"
+import {
+  PostOrPage,
+  Pagination,
+  Tag,
+  SocialMedia,
+  CodeInjection,
+  Nullable,
+} from "@tryghost/content-api"
 import { Locales, availableLocales } from "../../locale/util"
+
+export interface ExtraInfoTag extends Tag, SocialMedia, CodeInjection {
+  accent_color?: Nullable<string>
+  canonical_url?: Nullable<string>
+}
 
 export interface BrowseResults<T> extends Array<T> {
   meta: { pagination: Pagination }
@@ -16,11 +28,11 @@ export interface LocalizedPostOrPage extends LocalizedEntry, PostOrPage {
   page: boolean
 }
 
-export interface PublicTag extends Omit<Tag, "visibility"> {
+export interface PublicTag extends Omit<ExtraInfoTag, "visibility"> {
   visibility: "public"
 }
 
-export interface InternalTag extends Omit<Tag, "visibility"> {
+export interface InternalTag extends Omit<ExtraInfoTag, "visibility"> {
   visibility: "internal"
 }
 
@@ -66,7 +78,9 @@ export const localizePostOrPage = (post: PostOrPage): LocalizedPostOrPage => {
   }
 }
 
-export const localizeTag = (tag: Tag): InternalOrLocalizedPublicTag => {
+export const localizeTag = (
+  tag: ExtraInfoTag
+): InternalOrLocalizedPublicTag => {
   if (tag.visibility === "internal") {
     return tag as InternalTag
   }

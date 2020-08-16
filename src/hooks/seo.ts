@@ -1,11 +1,13 @@
-import { Ref, watchEffect, computed, watch } from "vue"
+import { Ref, computed, watch } from "vue"
 import { SettingsResponse } from "@tryghost/content-api"
 import { useSettings } from "./ghost/content/settings"
 import { useMeta } from "./meta"
-import { LocalizedPostOrPage } from "./ghost/content/utils"
+import { LocalizedPostOrPage, LocalizedPublicTag } from "./ghost/content/utils"
 import { availableLocales, Locales } from "./locale/util"
 
-const get = <T extends SettingsResponse | LocalizedPostOrPage>(
+const get = <
+  T extends SettingsResponse | LocalizedPostOrPage | LocalizedPublicTag
+>(
   obj: T | undefined,
   key: keyof T
 ): string | undefined => {
@@ -17,21 +19,37 @@ const get = <T extends SettingsResponse | LocalizedPostOrPage>(
   }
 }
 
-export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
+export const useSEOTags = (
+  content?: Ref<LocalizedPostOrPage | LocalizedPublicTag | undefined>
+) => {
   const { meta, link } = useMeta()
   const { settings } = useSettings()
-  const cte = computed(() => content && content.value)
+  const cte = computed(() =>
+    content && content.value && "title" in content.value
+      ? content.value
+      : undefined
+  )
+  const tag = computed(() =>
+    content && content.value && "name" in content.value
+      ? content.value
+      : undefined
+  )
   const sett = computed(() => (settings.value ? settings.value : undefined))
-  watchEffect(() => {
+  watch([cte, sett, tag], () => {
     const metaValue = meta.value || []
     metaValue.push(
       ...[
         {
           name: "description",
           content:
+            // Tag
+            get(tag.value, "meta_description") ||
+            get(tag.value, "description") ||
+            // Post or page
             get(cte.value, "meta_description") ||
             get(cte.value, "custom_excerpt") ||
             get(cte.value, "excerpt") ||
+            // Settings
             get(sett.value, "meta_description") ||
             get(sett.value, "description"),
         },
@@ -41,14 +59,20 @@ export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
         },
         {
           property: "og:type",
-          content: content && content.value ? "article" : "website",
+          content: cte.value ? "article" : "website",
         },
         {
           property: "og:title",
           content:
+            // Tag
+            get(tag.value, "og_title") ||
+            get(tag.value, "meta_title") ||
+            get(tag.value, "name") ||
+            // Post or page
             get(cte.value, "og_title") ||
             get(cte.value, "meta_title") ||
             get(cte.value, "title") ||
+            // Settings
             get(sett.value, "og_title") ||
             get(sett.value, "meta_title") ||
             get(sett.value, "title"),
@@ -56,21 +80,37 @@ export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
         {
           property: "og:description",
           content:
+            // Tag
+            get(tag.value, "og_description") ||
+            get(tag.value, "meta_description") ||
+            get(tag.value, "description") ||
+            // Post or page
             get(cte.value, "og_description") ||
+            get(cte.value, "meta_description") ||
             get(cte.value, "custom_excerpt") ||
             get(cte.value, "excerpt") ||
+            // Settings
             get(sett.value, "og_description") ||
+            get(sett.value, "meta_description") ||
             get(sett.value, "description"),
         },
         {
           property: "og:url",
-          content: get(cte.value, "url") || get(sett.value, "url"),
+          content:
+            get(tag.value, "url") ||
+            get(cte.value, "url") ||
+            get(sett.value, "url"),
         },
         {
           property: "og:image",
           content:
+            // Tag
+            get(tag.value, "og_image") ||
+            get(tag.value, "feature_image") ||
+            // Post or page
             get(cte.value, "og_image") ||
             get(cte.value, "feature_image") ||
+            // Settings
             get(sett.value, "og_image"),
         },
         {
@@ -84,17 +124,23 @@ export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
         {
           property: "article:tag",
           content:
-            content && content.value && content.value.primary_tag
-              ? content.value.primary_tag.name
+            cte.value && cte.value.primary_tag
+              ? cte.value.primary_tag.name
               : undefined,
         },
         { name: "twitter:card", content: "summary_large_image" },
         {
           name: "twitter:title",
           content:
+            // Tag
+            get(tag.value, "twitter_title") ||
+            get(tag.value, "meta_title") ||
+            get(tag.value, "name") ||
+            // Post or page
             get(cte.value, "twitter_title") ||
             get(cte.value, "meta_title") ||
             get(cte.value, "title") ||
+            // Settings
             get(sett.value, "twitter_title") ||
             get(sett.value, "meta_title") ||
             get(sett.value, "title"),
@@ -102,43 +148,57 @@ export const useSEOTags = (content?: Ref<LocalizedPostOrPage | undefined>) => {
         {
           name: "twitter:description",
           content:
+            // Tag
+            get(tag.value, "twitter_description") ||
+            get(tag.value, "meta_description") ||
+            get(tag.value, "description") ||
+            // Post or page
             get(cte.value, "twitter_description") ||
             get(cte.value, "custom_excerpt") ||
             get(cte.value, "excerpt") ||
+            // Settings
             get(sett.value, "twitter_description") ||
             get(sett.value, "description"),
         },
         {
           name: "twitter:url",
-          content: get(cte.value, "url") || get(sett.value, "url"),
+          content:
+            get(tag.value, "url") ||
+            get(cte.value, "url") ||
+            get(sett.value, "url"),
         },
         {
           name: "twitter:image",
           content:
+            // Tag
+            get(tag.value, "twitter_image") ||
+            get(tag.value, "feature_image") ||
+            // Post or page
             get(cte.value, "twitter_image") ||
             get(cte.value, "feature_image") ||
+            // Settings
             get(sett.value, "twitter_image"),
         },
       ]
     )
     meta.value = metaValue.filter(m => typeof m.content !== "undefined")
-    if (content && content.value) {
-      const slug = content.value.slug
-      const origin = window.location.origin
-      const hreflang = availableLocales.map(locale => ({
-        rel: "alternate",
-        hreflang: locale,
-        href: `${origin}/${locale}-${slug}`,
-        id: `hreflang-${locale}`,
-      }))
-      hreflang.push({
-        rel: "alternate",
-        hreflang: "x-default" as Locales,
-        href: `${origin}/${slug}`,
-        id: "hreflang-default",
-      })
-      link.value = link.value ? [...link.value, ...hreflang] : hreflang
-    }
+    const slug = content && content.value && content.value.slug
+    const origin = window.location.origin
+    const hreflang = availableLocales.map(locale => ({
+      rel: "alternate",
+      hreflang: locale,
+      href: `${origin}/${tag.value ? "tag/" : ""}${locale}${
+        slug ? `-${slug}` : ""
+      }`,
+      id: `hreflang-${locale}`,
+    }))
+    hreflang.push({
+      rel: "alternate",
+      hreflang: "x-default" as Locales,
+      href: `${origin}${slug ? `/${slug}` : ""}`,
+      id: "hreflang-default",
+    })
+    link.value = link.value ? [...link.value, ...hreflang] : hreflang
   })
 }
 

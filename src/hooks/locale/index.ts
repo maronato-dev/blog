@@ -1,15 +1,15 @@
-import { Ref, watch, computed } from "vue"
+import { Ref, watch, computed, onBeforeMount } from "vue"
 import { createGlobalState } from "@vueuse/core"
 import { useI18n } from "vue-i18n"
+import { useRoute } from "vue-router"
 import { useStorageAlt } from "../vueuse"
-import { Locales } from "./util"
+import { Locales, isLocale } from "./util"
 
 export const useLocaleState = createGlobalState(() => {
   const preferredLangs = navigator.languages.map(l => l.split("-")[0])
-  const availableLocales = ["pt", "en"]
   let locale = "en"
   preferredLangs.some(l => {
-    if (availableLocales.includes(l)) {
+    if (isLocale(l)) {
       locale = l
       return true
     }
@@ -86,4 +86,17 @@ export const useLocaleNameAndFlag = () => {
   const locale = computed(() => getNameAndFlag(i18n.locale.value))
   const locales = computed(() => i18n.availableLocales.map(getNameAndFlag))
   return { locale, locales }
+}
+
+export const useLocalizableFrontPage = () => {
+  onBeforeMount(() => {
+    const route = useRoute()
+    if (route.name === "index" && route.path !== "/") {
+      const locale = route.path.slice(1)
+      if (isLocale(locale)) {
+        const i18n = useI18n()
+        i18n.locale.value = locale
+      }
+    }
+  })
 }
