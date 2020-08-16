@@ -23,6 +23,7 @@
     "@tailwindcss/typography": "^0.2.0",
     "@tryghost/content-api": "^1.4.1",
     "@vueuse/core": "^4.0.0-beta.1",
+    "ackee-tracker": "^4.0.0",
     "axios": "^0.19.2",
     "dayjs": "^1.8.30",
     "dexie": "^3.0.1",

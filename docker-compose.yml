@@ -11,11 +11,10 @@ services:
       GHOST_API_DOMAIN: ghost-dev.maronato.dev
       COMMENTO_DOMAIN: commento.maronato.dev
       COMMENTO_JS_URL: https://cdn.maronato.dev/commento/commento.js
-      GHOST_API_KEY: f717832a121379fe52006ef0e1
-      FIREBASE_PROJECT_ID: blog-beef8
-      FATHOM_SITE_ID: DEQVG
-      FATHOM_DOMAIN: fathom.maronato.dev
-      FATHOM_JS_URL: https://cdn.maronato.dev/fathom/tracker.js
+      GHOST_API_KEY: 8e5d97ac2bd26cf1d16dd9d8d6
+      FIREBASE_PROJECT_ID: blog-dev-446e5
+      ANALYTICS_SITE_ID: f4a945c1-8381-49a7-ae7a-483f11ee542a
+      ANALYTICS_DOMAIN: ackee.maronato.dev
     ports:
       - 3000:3000
     volumes:
