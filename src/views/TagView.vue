@@ -23,6 +23,7 @@ import LoadMore from "../components/ui/LoadMore.vue"
 import { useSEOTags } from "../hooks/seo"
 
 export default defineComponent({
+  name: "TagView",
   components: { Tag, LoadingContent, LoadMore },
   props: {
     slug: {

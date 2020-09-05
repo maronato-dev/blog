@@ -20,7 +20,7 @@ import LoadMore from "../components/ui/LoadMore.vue"
 import { useLocalizableFrontPage } from "../hooks/locale"
 
 export default defineComponent({
-  name: "IndexPage",
+  name: "IndexView",
   components: { PostFeed, LoadingContent, LoadMore },
   setup() {
     useDefaultTitle()

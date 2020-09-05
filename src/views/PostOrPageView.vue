@@ -21,7 +21,7 @@ import { useSEOTags } from "../hooks/seo"
 import { useFormattedTitle } from "../hooks/ghost/content/title"
 
 export default defineComponent({
-  name: "PostOrPage",
+  name: "PostOrPageView",
   components: { PostOrPage, LoadingContent },
   props: {
     slug: {

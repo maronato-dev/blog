@@ -88,7 +88,7 @@ export function useStorageAlt<T extends Record<string, unknown>>(
   defaultValue: T,
   storage?: Storage
 ): Ref<T>
-export function useStorageAlt<T extends null>(
+export function useStorageAlt(
   key: string,
   defaultValue: null,
   storage?: Storage

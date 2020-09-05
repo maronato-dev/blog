@@ -85,8 +85,8 @@ module.exports = {
     }),
     extend: {
       opacity: {
-        "85": ".85",
-        "90": ".9",
+        85: ".85",
+        90: ".9",
       },
       colors: {
         primary: {

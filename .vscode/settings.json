@@ -17,5 +17,6 @@
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sourceLanguage": "en",
   "eslint.enable": true,
-  "prettier.configPath": "./.prettierrc"
+  "prettier.configPath": "./.prettierrc",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -24,7 +24,7 @@
     "@tryghost/content-api": "^1.4.1",
     "@vueuse/core": "^4.0.0-beta.1",
     "ackee-tracker": "^4.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "dayjs": "^1.8.30",
     "dexie": "^3.0.1",
     "dexie-observable": "^1.0.0-beta.7",
@@ -36,7 +36,7 @@
     "prismjs": "^1.20.0",
     "reframe.js": "^3.0.1",
     "tailwindcss": "^1.4.6",
-    "vue": "3.0.0-rc.4",
+    "vue": "^3.0.0-rc.4",
     "vue-i18n": "^9.0.0-alpha.11",
     "vue-router": "^4.0.0-beta.2"
   },
@@ -44,9 +44,9 @@
     "@types/lunr": "^2.3.3",
     "@types/prismjs": "^1.16.1",
     "@types/tryghost__content-api": "^1.3.4",
-    "@typescript-eslint/eslint-plugin": "^3.6.0",
-    "@typescript-eslint/parser": "^3.6.0",
-    "@vue/compiler-sfc": "3.0.0-rc.4",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "@vue/compiler-sfc": "^3.0.0-rc.4",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
@@ -61,7 +61,7 @@
     "stylelint": "^13.6.1",
     "stylelint-config-recommended": "^3.0.0",
     "tailwindcss-dark-mode": "^1.1.4",
-    "typescript": "^3.9.6",
-    "vite": "v1.0.0-rc.3"
+    "typescript": "^4.0.2",
+    "vite": "^v1.0.0-rc.3"
   }
 }

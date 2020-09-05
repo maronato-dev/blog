@@ -24,7 +24,7 @@ module.exports = {
   },
   plugins: ["vue", "@typescript-eslint", "prettier"],
   rules: {
-    "no-undef": "error",
+    "no-undef": "off",
     "no-var": "error",
     "vue/no-multiple-template-root": "off",
     camelcase: "off",

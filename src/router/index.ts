@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
     path: "/",
     name: "index",
     component: defineAsyncComponent({
-      loader: () => import("../views/Index.vue"),
+      loader: () => import("../views/IndexView.vue"),
       loadingComponent: LoadingComponent,
     }),
     alias: availableLocales.map(locale => `/${locale}`),
@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
     props: true,
     name: "postOrPage",
     component: defineAsyncComponent({
-      loader: () => import("../views/PostOrPage.vue"),
+      loader: () => import("../views/PostOrPageView.vue"),
       loadingComponent: LoadingComponent,
     }),
   },
@@ -34,7 +34,7 @@ const routes: RouteRecordRaw[] = [
     props: true,
     name: "tag",
     component: defineAsyncComponent({
-      loader: () => import("../views/Tag.vue"),
+      loader: () => import("../views/TagView.vue"),
       loadingComponent: LoadingComponent,
     }),
   },
@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
     props: true,
     name: "author",
     component: defineAsyncComponent({
-      loader: () => import("../views/Index.vue"),
+      loader: () => import("../views/IndexView.vue"),
       loadingComponent: LoadingComponent,
     }),
   },
@@ -52,14 +52,14 @@ const routes: RouteRecordRaw[] = [
     props: true,
     name: "preview",
     component: defineAsyncComponent({
-      loader: () => import("../views/Preview.vue"),
+      loader: () => import("../views/PreviewView.vue"),
       loadingComponent: LoadingComponent,
     }),
   },
   {
     path: "/:catchAll(.*)",
     component: defineAsyncComponent({
-      loader: () => import("../views/PageNotFound.vue"),
+      loader: () => import("../views/PageNotFoundView.vue"),
       loadingComponent: LoadingComponent,
     }),
     name: "notFound",

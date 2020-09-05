@@ -25,7 +25,7 @@ import Post from "../components/postOrPage/post/Post.vue"
 import Page from "../components/postOrPage/page/Page.vue"
 
 export default defineComponent({
-  name: "PreviewPage",
+  name: "PreviewView",
   components: { Post, LoadingContent, Page },
   props: {
     uuid: {
