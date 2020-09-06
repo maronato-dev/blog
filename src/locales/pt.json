@@ -40,5 +40,9 @@
     "header": {
       "colletion-total": "Um conjunto vazio | Um conjunto com um post| Um conjunto com {count} posts"
     }
+  },
+  "footer": {
+    "privacy-policy": "Política de Privacidade",
+    "made-by": "Feito por"
   }
 }

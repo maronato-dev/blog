@@ -40,5 +40,9 @@
     "header": {
       "colletion-total": "An empty collection | A collection of one post | A collection of {count} posts"
     }
+  },
+  "footer": {
+    "privacy-policy": "Privacy policy",
+    "made-by": "Made by"
   }
 }
