@@ -29,7 +29,7 @@ declare interface Window {
     }
   }
   commento: {
-    main(): void
+    main(callback?: () => void, url?: string): void
   }
   fathom: Fathom | FathonQueue | undefined
   prerenderReady: boolean

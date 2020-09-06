@@ -1,43 +1,40 @@
 <template>
-  <div :id="id" class="ghost-content-container commento-root-wrapper"></div>
+  <loading-spinner v-if="loading" />
+  <div
+    :id="id"
+    ref="target"
+    class="ghost-content-container commento-root-wrapper"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue"
-import { useMeta, ScriptAttrs } from "../../hooks/meta"
+import { defineComponent, ref, watch } from "vue"
+import { useIntersectionObserver } from "../../hooks/intersectionObserver"
+import LoadingSpinner from "./LoadingSpinner.vue"
+import "./commento"
 
-export default defineComponent(() => {
-  const { script } = useMeta()
+export default defineComponent({
+  components: { LoadingSpinner },
+  setup() {
+    const id = "commento"
+    const loading = ref(true)
 
-  const id = "commento"
-  const jsUrl = import.meta.env.VITE_COMMENTO_JS_URL
-  const commentoScript = {
-    id: "commentoScript",
-    src: jsUrl,
-    "data-auto-init": "false",
-    "data-id-root": id,
-    "data-no-fonts": "true",
-  } as ScriptAttrs
+    const target = ref<Element | null>(null)
+    const { isIntersecting, disconnect } = useIntersectionObserver(target, {
+      rootMargin: "200px",
+    })
 
-  const scriptArray = script.value || []
-  scriptArray.push(commentoScript)
-  script.value = scriptArray
+    const initCommento = () => {
+      disconnect()
+      window.commento.main(() => {
+        loading.value = false
+      }, (import.meta.env.VITE_COMMENTO_URL || "").toString())
+    }
 
-  const initCommento = (retry = 5) => {
-    setTimeout(() => {
-      if (window.commento.main) {
-        window.commento.main()
-      } else {
-        initCommento(retry - 1)
-      }
-    }, 100)
-  }
+    watch(isIntersecting, initCommento)
 
-  onMounted(() => {
-    initCommento()
-  })
-
-  return { id }
+    return { id, target, loading }
+  },
 })
 </script>
 <style lang="postcss">

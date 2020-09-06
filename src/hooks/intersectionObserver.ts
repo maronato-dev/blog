@@ -40,6 +40,12 @@ export function useIntersectionObserver(
     }
   }
 
+  const disconnect = () => {
+    if (observer.value) {
+      observer.value.disconnect()
+    }
+  }
+
   onMounted(() => {
     if (observeOnMount) {
       observe()
@@ -47,10 +53,8 @@ export function useIntersectionObserver(
   })
 
   onUnmounted(() => {
-    if (observer.value) {
-      observer.value.disconnect()
-    }
+    disconnect()
   })
 
-  return toRefs(readonly(entry))
+  return { ...toRefs(readonly(entry)), disconnect, observe }
 }
