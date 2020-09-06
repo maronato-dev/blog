@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, watch } from "vue"
+import { defineComponent, onBeforeMount, onMounted, watch } from "vue"
 import { useRouter } from "vue-router"
 import { useTimeoutFn } from "@vueuse/core"
 import { useLocaleSync } from "./hooks/locale"
@@ -27,7 +27,7 @@ export default defineComponent({
     useFavicon()
 
     const sync = useDatabaseSync()
-    sync()
+    onBeforeMount(sync)
 
     const { layout } = useLayout()
     const { fetch, settings } = useSettings()
@@ -44,7 +44,7 @@ export default defineComponent({
     )
 
     // Make sure settings are updated on app load
-    onMounted(fetch)
+    onBeforeMount(fetch)
     const layoutComponent = useLayoutComponent()
 
     // Analytics
