@@ -6,6 +6,7 @@
         v-model="value"
         class="appearance-none bg-transparent w-full border-none mr-3 pb-1 px-2 leading-tight focus:outline-none"
         type="text"
+        role="search"
         :placeholder="placeholder"
         :aria-label="placeholder"
       />
