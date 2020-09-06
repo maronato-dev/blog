@@ -13,15 +13,17 @@ const distFolder = path.resolve(__dirname, "../dist")
 
 app.use(morgan("tiny"))
 
-// Prerender crawler requests
-app.use(
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  require("prerender-node")
-    .set("host", `blog.${process.env.DOMAIN}`)
-    .set("prerenderServiceUrl", `${process.env.PRERENDER_URL}`)
-    // eslint-disable-next-line prettier/prettier
-    .blacklisted([".*.js", ".*.html", ".*.css", ".*.svg", ".*.ico"])
-)
+if (typeof process.env.PRERENDER_URL === "string") {
+  // Prerender crawler requests
+  app.use(
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require("prerender-node")
+      .set("host", `blog.${process.env.DOMAIN}`)
+      .set("prerenderServiceUrl", `${process.env.PRERENDER_URL}`)
+      // eslint-disable-next-line prettier/prettier
+      .blacklisted([".*.js", ".*.html", ".*.css", ".*.svg", ".*.ico"])
+  )
+}
 
 // Production static server
 app.use(compression())
