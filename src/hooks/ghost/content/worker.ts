@@ -5,9 +5,10 @@ import { WorkerRequest, WorkerResponse } from "../../../workers/workerTypes"
 
 // eslint-disable-next-line import/no-unresolved
 import GhostWorker from "../../../workers/ghost?worker"
+import { DBVersion } from "./db"
 
 const useLastSync = createGlobalState(() =>
-  useStorageAlt("lastSync", new Date(0))
+  useStorageAlt(`lastSync-${DBVersion}`, new Date(0))
 )
 
 export const useDBSyncComplete = (() => {

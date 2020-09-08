@@ -3,6 +3,8 @@ import "dexie-observable"
 import { Author } from "@tryghost/content-api"
 import { LocalizedPostOrPage, InternalOrLocalizedPublicTag } from "../utils"
 
+export const DBVersion = 2.1
+
 export interface DBLocalizedPostOrPage
   extends Omit<
     LocalizedPostOrPage,
@@ -21,7 +23,7 @@ class GhostDatabase extends Dexie {
 
   public constructor() {
     super("GhostDatabase")
-    this.version(2).stores({
+    this.version(DBVersion).stores({
       posts: "id,uuid,page,publishedDate,updatedDate,language,[slug+language]",
       tags: "id,slug,visibility,language,[slug+language]",
       authors: "id,slug",
