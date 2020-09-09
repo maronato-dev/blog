@@ -180,6 +180,10 @@ module.exports = {
     require("@tailwindcss/typography"),
     require("tailwindcss-dark-mode")(),
   ],
+  future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
+  },
   purge: {
     // Learn more on https://tailwindcss.com/docs/controlling-file-size/#removing-unused-css
     content: ["./src/**/*.vue", "./src/**/*.ts", "./index.html"],
